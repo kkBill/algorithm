@@ -70,15 +70,15 @@ private Node delete(Node x, Key key) {
 
 在自己实现的时候，我把语句1和语句2的顺序对调了，导致在删除节点时出现错误（当被删除节点有左右孩子的情况），这是为什么呢？以下图为例（为了方便说明，这里把空节点也画出来），现在要删除节点10。
 
-![bst1](https://github.com/kkBill/algorithm/tree/master/img/bst1.png)
+![bst1](https://github.com/kkBill/algorithm/blob/master/img/bst1.png)
 
 如果按照正确的顺序（即语句1->语句2），则执行完语句1后，因为`t.right`是节点17，而`deleteMin(17)`的语义就是删除以节点17为根节点的子树的最小节点，由于该子树实际上只有节点17这么一个节点，因此它会被删除，并返回`null`作为x的右节点；执行完语句2后，会把x的左指针指向t的左节点，即节点6。结果如下图所示：
 
-![bst1](D:\soft\others\YouDaoNoteImg\bst2.png)
+![bst1](https://github.com/kkBill/algorithm/blob/master/img/bst2.png)
 
 当`return x`之后，其实就是这样的：
 
-![bst1](D:\soft\others\YouDaoNoteImg\bst3.png)
+![bst1](https://github.com/kkBill/algorithm/blob/master/img/bst3.png)
 
 这样操作后，节点17被返回，作为调整后子树的根节点，从而节点10就被删除了。
 
@@ -86,11 +86,11 @@ private Node delete(Node x, Key key) {
 
 先执行`x.left = t.left;   `，则变成如下这样：
 
-![bst1](D:\soft\others\YouDaoNoteImg\bst4.png)
+![bst1](https://github.com/kkBill/algorithm/blob/master/img/bst4.png)
 
 再执行`x.right = deleteMin(t.right);`，**这个时候，`deleteMin(t.right)`就会把节点6给删除掉，并返回删除后子树的根节点，也就是节点17**，（请回顾deleteMin(Node x)的语义）。从而就变成了下面这样子：
 
-![bst1](D:\soft\others\YouDaoNoteImg\bst5.png)
+![bst1](https://github.com/kkBill/algorithm/blob/master/img/bst5.png)
 
 可见，顺序不正确就会发生致命的错误！
 
