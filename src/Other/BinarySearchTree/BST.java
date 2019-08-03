@@ -25,11 +25,11 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    public void printRoot(){
-        System.out.println("root: "+ "["+root.key+", "+root.value+"]");
-        if(root.left != null) System.out.println("root's left child: " + "["+root.left.key+", "+root.left.value+"]");
-        if(root.right != null) System.out.println("root's right child: " + "["+root.right.key+", "+root.right.value+"]");
-    }
+//    public void printRoot(){
+//        System.out.println("root: "+ "["+root.key+", "+root.value+"]");
+//        if(root.left != null) System.out.println("root's left child: " + "["+root.left.key+", "+root.left.value+"]");
+//        if(root.right != null) System.out.println("root's right child: " + "["+root.right.key+", "+root.right.value+"]");
+//    }
 
     public int size() {
         return size(root);
