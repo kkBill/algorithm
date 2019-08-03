@@ -2,7 +2,7 @@
 
 节点的结构如下：
 
-```
+```java
 // 由于BST中的节点是按序存放的，故Key要继承自Compare
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;
@@ -70,7 +70,7 @@ private Node delete(Node x, Key key) {
 
 在自己实现的时候，我把语句1和语句2的顺序对调了，导致在删除节点时出现错误（当被删除节点有左右孩子的情况），这是为什么呢？以下图为例（为了方便说明，这里把空节点也画出来），现在要删除节点10。
 
-![bst1](D:\soft\others\YouDaoNoteImg\bst1.png)
+![bst1](https://github.com/kkBill/algorithm/tree/master/img/bst1.png)
 
 如果按照正确的顺序（即语句1->语句2），则执行完语句1后，因为`t.right`是节点17，而`deleteMin(17)`的语义就是删除以节点17为根节点的子树的最小节点，由于该子树实际上只有节点17这么一个节点，因此它会被删除，并返回`null`作为x的右节点；执行完语句2后，会把x的左指针指向t的左节点，即节点6。结果如下图所示：
 
