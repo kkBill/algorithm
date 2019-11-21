@@ -4,6 +4,139 @@
 
 
 
+##### 17 Letter Combinations of a Phone Number
+
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+![img](http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png)
+
+**Example:**
+
+```
+Input: "23"
+Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+```
+
+Note:
+
+Although the above answer is in lexicographical order, your answer could be in any order you want.
+
+思路：参考[官方题解](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/solution/dian-hua-hao-ma-de-zi-mu-zu-he-by-leetcode/)
+
+![leetcode17](D:\workspace\algorithm\img\leetcode17.png)
+
+题解：
+
+```java
+class Solution {
+    Map<String, String> phone = new HashMap<String, String>() {{
+        put("2", "abc");
+        put("3", "def");
+        put("4", "ghi");
+        put("5", "jkl");
+        put("6", "mno");
+        put("7", "pqrs");
+        put("8", "tuv");
+        put("9", "wxyz");
+    }};
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits.length() == 0) return result;
+        backtrack("", 0, digits, result);
+        return result;
+    }
+    private void backtrack(String combination, int index, String digits, List<String> result) {
+        if (index == digits.length()) {
+            result.add(combination);
+            return;
+        }
+        String digit = digits.substring(index, index + 1);
+        String charSet = phone.get(digit);
+        for (int i = 0; i < charSet.length(); i++) {
+            backtrack(combination + charSet.substring(i, i + 1), index + 1, digits, result);
+        }
+    }
+}
+```
+
+
+
+
+
+##### 22 Generate Parentheses
+
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+```
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+```
+
+思路：以下思路摘自[这里](https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution)
+
+The goal is to print a string of “(“ ,”)” in certain order. The length of string is 2n. The constraints are that “(“s need to match “)”s.
+Without constraints, we just simply print out “(“ or “)” until length hits n. So the base case will be length ==2 n, recursive case is print out “(“ and “)”. The code will look like
+
+//base case
+if(string length == 2*n) {
+add(string);
+return;
+}
+//recursive case
+add a “(“
+add a “)"
+
+Let’s add in constraints now. We need to interpret the meanings of constraints. First, the first character should be “(“. Second, at each step, you can either print “(“ or “)”, but print “)” only when there are more “(“s than “)”s. Stop printing out “(“ when the number of “(“ s hit n. The first actually merges into the second condition.
+The code will be:
+
+//base case
+if(string length == 2*n) {
+add(string);
+return;
+}
+//recursive case
+if(number of “(“s < n){
+add a “(“
+}
+if(number of “(“s > number of “)”s){
+add a “)"
+}
+
+题解：
+
+```java
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        backtrack("",0,0,n,result);
+        return result;
+    }
+
+    // openCnt 是当前组合中"("的个数
+    // closeCnt 是当前组合中")"的个数
+    private void backtrack(String combination, int openCnt, 
+                           int closeCnt, int n, List<String> result){
+        if(combination.length() == 2*n){
+            result.add(combination);
+            return;
+        }
+        if(closeCnt < openCnt) // 理解这一条件是本题重点
+            backtrack(combination+")",openCnt,closeCnt+1,n,result);
+        if(openCnt < n)
+            backtrack(combination+"(",openCnt+1,closeCnt,n,result);
+    }
+}
+```
+
 
 
 ##### 39 Combination Sum
