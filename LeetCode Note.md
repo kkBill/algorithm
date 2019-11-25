@@ -289,7 +289,69 @@ Output:
 
 思路：
 
+code flow like this:
+
+path []
+
+i=0: used[0]==false -> path=[1],used[0]=true
+
+​	i=0: used[0]==true -> continue
+
+​	i=1: used[1]==false -> path=[1,2],used[1]=true
+
+​		i=0: used[0]==true -> continue
+
+​		i=1: used[1]==true -> continue
+
+​		i=2: used[2]==false -> path=[1,2,3],used[2]=true  ==> collect [1,2,3]
+
+​		(紧接着发生两次回溯)
+
+​	i=2: used[2]==false -> path=[1,3],used[2]=true
+
+​		i=0: used[0]==true -> continue
+
+​		i=1: used[1]==false -> path=[1,3,2],used[1]=true ==> collect [1,3,2]
+
+​		(紧接着发生一次回溯)
+
+​		i=2: used[2]==true -> continue
+
+​		(紧接着发生两次回溯)
+
+i=1: 	used[1]==false -> path=[2],used[1]=true
+
+​	...
+
+题解：
+
 ```java
+// 解法1（推荐，具有通用性）
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        backtrack(nums, used, new ArrayList<>(), result);
+        return result;
+    }
+    private void backtrack(int[] nums, boolean[] used, 
+                           List<Integer> path, List<List<Integer>> result) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!used[i]) {
+                path.add(nums[i]);
+                used[i] = true;
+                backtrack(nums, used, path, result);
+                used[i] = false;
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
+// 解法2
 class Solution {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -298,7 +360,7 @@ class Solution {
     }
 
     private void helper(int start, int[] nums, List<List<Integer>> result) {
-        if (start == nums.length - 1) {
+        if (start == nums.length) {
             List<Integer> perm = new ArrayList<>();
             for (Integer e : nums) {
                 perm.add(e);
@@ -337,13 +399,462 @@ Output:
 ]
 ```
 
+思路：有待进一步理解
+
+题解：
+
+```java
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        Arrays.sort(nums);
+        backtrack(nums, used, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(int[] nums, boolean[] used, 
+                           List<Integer> path, List<List<Integer>> result) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!used[i]) {
+                // 
+                if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
+                    continue;
+                path.add(nums[i]);
+                used[i] = true;
+                backtrack(nums, used, path, result);
+                used[i] = false;
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
+```
+
+
+
+##### 51 N-Queens
+
+
+
+##### 52 N-Queens II    
+
+
+
+##### 78 Subsets
+
+Given a set of distinct integers, nums, return all possible subsets (the power set).
+
+Note: The solution set must not contain duplicate subsets.
+
+Example:
+
+```
+Input: nums = [1,2,3]
+Output:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+```
+
 思路：
 
 ```
+start=0: path=[]
+i=0: add(1),path=[1]
+	start=1: path=[1]
+	i=1: add(2),path=[1,2]
+		start=2: path=[1,2]
+		i=2: add(3),path=[1,2,3]
+	i=2: add(3),path=[1,3]
+i=1: add(2),path=[2]
+	start=2: path=[2]
+	i=2: add(3),path=[2,3]
+i=2: add(3),path=[3]
+```
 
+题解：
+
+```java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<Integer> path = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(0, nums, path, result);
+        return result;
+    }
+    private void backtrack(int start, int[] nums, 
+                           List<Integer> path, List<List<Integer>> result) {
+        // 注意这里的边界条件，这里不能有return; 事实上这个判断条件根本不需要
+        // if (path.size() <= nums.length) 
+        result.add(new ArrayList<>(path)); 
+        for (int i = start; i < nums.length; i++) {
+            path.add(nums[i]);
+            backtrack(i + 1, nums, path, result);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+```
+
+##### 90 Subsets II
+
+Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
+
+Note: The solution set must not contain duplicate subsets.
+
+Example:
+
+```
+Input: [1,2,2]
+Output:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+```
+
+思路：
+
+```
+start=0: in this level the initial path is []
+i=0, add(1) -> path=[1]
+    start=1: in this level the initial path is [1]
+    i=1, add(2) -> path=[1,2]
+    	start=2: in this level the initial path is [1,2]
+    	//when i==start, always pick it，which means pick the first one of repeated sequence
+    	i=2, add(2) -> path=[1,2,2] 
+    i=2 // don't pick it,cause nums[i] == nums[i-1]
+i=1, add(2) -> path=[2]
+	start=2: in this level the initial path is [2]
+	i=2, add(2) -> path=[2,2]
+i=2 // don't pick it,cause nums[i] == nums[i-1]
+```
+
+题解：
+
+```java
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<Integer> path = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(0, nums, path, result);
+        return result;
+    }
+    private void backtrack(int start, int[] nums,
+                           List<Integer> path, List<List<Integer>> result) {
+        result.add(new ArrayList<>(path));
+        for (int i = start; i < nums.length; i++) {
+            if (i == start || nums[i] != nums[i - 1]) {
+                path.add(nums[i]);
+                backtrack(i + 1, nums, path, result);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+}
 ```
 
 
+
+##### [79] Word Search
+
+Given a 2D board and a word, find if the word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+Example:
+
+```
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+Given word = "ABCCED", return true.
+Given word = "SEE", return true.
+Given word = "ABCB", return false.
+```
+
+思路：
+
+题解：
+
+```java
+class Solution {
+    private int[] X = {0, 0, -1, 1};
+    private int[] Y = {1, -1, 0, 0};
+    private int ROW_SIZE;
+    private int COL_SIZE;
+    private boolean[][] visited;
+
+    public boolean exist(char[][] board, String word) {
+        ROW_SIZE = board.length;
+        if(ROW_SIZE == 0) return false;
+
+        COL_SIZE = board[0].length;
+        visited = new boolean[ROW_SIZE][COL_SIZE];
+
+        for (int r = 0; r < ROW_SIZE; r++) {
+            for (int c = 0; c < COL_SIZE; c++) {
+                if (dfs(board, word, r, c))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(char[][] board, String word, int row, int col) {
+        if (word.length() == 1) {
+            return word.charAt(0) == board[row][col];
+        }
+
+        if (board[row][col] == word.charAt(0)) {
+            visited[row][col] = true;
+
+            for (int i = 0; i < 4; i++) {
+                int nextRow = row + Y[i];
+                int nextCol = col + X[i];
+                boolean isValid = (nextRow >= 0 && nextRow < ROW_SIZE) 
+                                   && (nextCol >= 0 && nextCol < COL_SIZE);
+                if (isValid && !visited[nextRow][nextCol]) {
+                    if (dfs(board, word.substring(1), nextRow, nextCol)) {
+                        return true;
+                    }
+                }
+            }
+
+            visited[row][col] = false;
+        }
+        return false;
+    }
+}
+```
+
+
+
+
+
+##### [131] Palindrome Partitioning
+
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+Example:
+
+```
+Input: "aab"
+Output:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+```
+
+思路：
+
+xx
+
+题解：
+
+```java
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<String> path = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
+        helper(0, s, path, result);
+        return result;
+    }
+
+    private void helper(int start, String s, List<String> path, List<List<String>> result) {
+        if (start == s.length()) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = start; i < s.length(); i++) {
+            if (isPalindrome(s, start, i)) {
+                path.add(s.substring(start, i + 1));
+                helper(i + 1, s, path, result);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
+
+    private boolean isPalindrome(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start++) != s.charAt(end--)) return false;
+        }
+        return true;
+    }
+}
+```
+
+##### 
+
+##### 37. Sudoku Solver
+
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+1. Each of the digits 1-9 must occur exactly once in each row.
+2. Each of the digits 1-9 must occur exactly once in each column.
+3. Each of the the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+
+Empty cells are indicated by the character '.'.
+
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png)
+
+A sudoku puzzle...
+
+![img](https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/250px-Sudoku-by-L2G-20050714_solution.svg.png)
+
+...and its solution numbers marked in red.
+
+Note:
+
+* The given board contain only digits 1-9 and the character '.'.
+* You may assume that the given Sudoku puzzle will have a single unique solution.
+* The given board size is always 9x9.
+
+思路：
+
+3*3分块的索引计算如下：假设当前位置是(row, col)，那么**块索引 = (row / 3) * 3 + col / 3**，示意图如下：
+
+![36_boxes_2.png](https://pic.leetcode-cn.com/5a7856c3c2a2185600b7cb5cd3fd50101281af7391a70a63293d82d62873aadd-36_boxes_2.png)
+
+基本思路是逐行填写，填写的时候逐一检查1~9是否符合约束条件，如果当前数字d符合条件，就填入当前位置，然后递归填写下一个位置；
+
+这里的**约束条件**指的是：如果数字d放置在(row, col)，那么对于整个矩阵来说，第row行、第col列、以及第 i 块都不能再放置这个数字了（这里的 i = (row / 3) * 3 + col / 3）。
+
+我们定义三个布尔数组，分别标记数字 d 在行、列、块是否已经使用过
+
+* boolean\[9][10] rowUsed。如果rowUsed\[0][9]==true，表示在第0行，数字9已经使用过了，那么在第0行不能再填入数字9了。
+* boolean\[9][10] colUsed。解释同上。
+* boolean\[9][10] blockUsed。如果blockUsed\[0][9]==true，表示在第0块，数字9已经使用过了，那么在第0块不能再填入数字9了。
+
+
+思路：
+
+本题的题解完全符合“回溯思想”摘录中case 1（判断一个问题有没有解）的情况。自己做的时候没有严格遵循模板所以在细节处出错了。
+
+
+题解：
+
+```java
+// 基础版本（还有更优化的版本）
+class Solution {
+    private boolean[][] rowUsed = new boolean[9][10];
+    private boolean[][] colUsed = new boolean[9][10];
+    private boolean[][] blockUsed = new boolean[9][10];
+    private int ROW_SIZE;
+    private int COL_SIZE;
+
+    public void solveSudoku(char[][] board) {
+        ROW_SIZE = board.length;
+        COL_SIZE = board[0].length;
+
+        // 初始化棋盘
+        for (int i = 0; i < ROW_SIZE; i++) {
+            for (int j = 0; j < COL_SIZE; j++) {
+                if (board[i][j] != '.') {
+                    int d = Character.getNumericValue(board[i][j]);
+                    int blockIdx = (i / 3) * 3 + j / 3;
+                    rowUsed[i][d] = true;
+                    colUsed[j][d] = true;
+                    blockUsed[blockIdx][d] = true;
+                }
+            }
+        }
+        solve(board, 0, 0);
+    }
+
+    private boolean solve(char[][] board, int row, int col) {
+        if (col == COL_SIZE) {
+            col = 0;
+            row++;
+            if (row == ROW_SIZE) {
+                return true;
+            }
+        }
+
+        if (board[row][col] == '.') {
+            for (int d = 1; d <= 9; d++) {
+                if (check(d, row, col)) {
+                    int blockIdx = (row / 3) * 3 + col / 3;
+                    rowUsed[row][d] = true;
+                    colUsed[col][d] = true;
+                    blockUsed[blockIdx][d] = true;
+                    board[row][col] = (char) (d + '0');
+
+                    if(solve(board, row, col + 1)){
+                        return true;
+                    }
+
+                    board[row][col] = '.';
+                    rowUsed[row][d] = false;
+                    colUsed[col][d] = false;
+                    blockUsed[blockIdx][d] = false;
+                }
+            }
+        } else {
+            return solve(board, row, col + 1);
+        }
+        return false;
+    }
+
+    // 如果数字 d 允许放置在(row, col)，返回true
+    private boolean check(int d, int row, int col) {
+        int blockIdx = (row / 3) * 3 + col / 3;
+        return (!rowUsed[row][d]) && (!colUsed[col][d]) && (!blockUsed[blockIdx][d]);
+    }
+}
+```
+
+
+
+
+
+##### 89. Gray Code
+
+思路：本题应该不是回溯类别的，找规律背题目，不具有适用性。（参考[这里](https://leetcode-cn.com/problems/gray-code/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--12/)）
+
+题解：
+
+```java
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<>();
+        if (n < 0) return result;
+        result.add(0);
+        for (int i = 0; i < n; i++) {
+            int add = 1 << i;
+            for (int j = result.size() - 1; j >= 0; j--) {
+                result.add(result.get(j) + add);
+            }
+        }
+        return result;
+    }
+}
+```
 
 
 
@@ -476,10 +987,6 @@ public void postOrderTraversalWithIteration(TreeNode root) {
 }
 ```
 
-
-
-----
-
 ##### 112 Path Sum
 
 Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
@@ -603,7 +1110,7 @@ class Solution {
                          List<Integer> path, List<List<Integer>> result) {
         path.add(node.val);
         if (node.left == null && node.right == null && sum == node.val) {
-            result.add(new ArrayList<>(path)); // 注意，不能写成 result.add(path); java引用问题
+            result.add(new ArrayList<>(path)); 
             return;
         }
 
@@ -720,8 +1227,6 @@ class Solution {
 ##### 145 Binary Tree Postorder Traversal
 
 Given a binary tree, return the postorder traversal of its nodes' values.
-
-后续遍历的迭代实现，这属于基础题，要熟练到秒过。
 
 ```java
 class Solution {
