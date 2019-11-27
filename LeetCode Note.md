@@ -1,10 +1,8 @@
-### LeetCode Note
+## LeetCode Note
 
-#### 1. 回溯（Backtracking）
+#### 一、回溯（Backtracking）
 
-
-
-##### 17 Letter Combinations of a Phone Number
+#### 17. Letter Combinations of a Phone Number
 
 Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
 
@@ -24,8 +22,6 @@ Note:
 Although the above answer is in lexicographical order, your answer could be in any order you want.
 
 思路：参考[官方题解](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/solution/dian-hua-hao-ma-de-zi-mu-zu-he-by-leetcode/)
-
-![leetcode17](D:\workspace\algorithm\img\leetcode17.png)
 
 题解：
 
@@ -63,9 +59,7 @@ class Solution {
 
 
 
-
-
-##### 22 Generate Parentheses
+#### 22. Generate Parentheses
 
 Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 
@@ -84,6 +78,7 @@ For example, given n = 3, a solution set is:
 思路：以下思路摘自[这里](https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution)
 
 The goal is to print a string of “(“ ,”)” in certain order. The length of string is 2n. The constraints are that “(“s need to match “)”s.
+
 Without constraints, we just simply print out “(“ or “)” until length hits n. So the base case will be length ==2 n, recursive case is print out “(“ and “)”. The code will look like
 
 //base case
@@ -139,7 +134,7 @@ class Solution {
 
 
 
-##### 39 Combination Sum
+#### 39. Combination Sum
 
 Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
 
@@ -201,7 +196,7 @@ class Solution {
 }
 ```
 
-##### 40 Combination Sum II
+#### 40. Combination Sum II
 
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
 
@@ -268,7 +263,7 @@ class Solution {
 }
 ```
 
-##### 46 Permutations
+#### 46. Permutations
 
 Given a collection of **distinct** integers, return all possible permutations.
 
@@ -383,7 +378,7 @@ class Solution {
 }
 ```
 
-##### 47 Permutations II
+#### 47. Permutations II
 
 Given a collection of numbers that might contain duplicates, return all possible unique permutations.
 
@@ -437,15 +432,125 @@ class Solution {
 
 
 
-##### 51 N-Queens
+#### 60. Permutation Sequence
+
+The set [1,2,3,...,n] contains a total of n! unique permutations.
+
+By listing and labeling all of the permutations in order, we get the following sequence for n = 3:
+
+```
+1. "123"
+2. "132"
+3. "213"
+4. "231"
+5. "312"
+6. "321"
+```
+
+Given n and k, return the kth permutation sequence.
+
+Note:
+
+* Given n will be between 1 and 9 inclusive.
+* Given k will be between 1 and n! inclusive.
+
+Example 1:
+
+```
+Input: n = 3, k = 3
+Output: "213"
+```
+
+Example 2:
+
+```
+Input: n = 4, k = 9
+Output: "2314"
+```
+
+思路：（推荐指数5颗星！）
+
+题解1：
+
+```java
+// 采用和46题相同的解法，但是会超时！所以这一题和第46题的区别到底在哪里呢？
+class Solution {
+    public String getPermutation(int n, int k) {
+        boolean[] used = new boolean[n+1];
+        List<String> result = new ArrayList<>();
+        backtrack(n,used,"",result);
+        return result.get(k-1);
+    }
+
+    private void backtrack(int n, boolean[] used, String path, List<String> result){
+        if(path.length() == n){
+            result.add(path);
+            return;
+        }
+        for(int i=1;i<=n;i++){
+            if(!used[i]){
+                path = path + i; //ok
+                used[i] = true;
+                backtrack(n,used,path,result);
+                used[i] = false;
+                path = path.substring(0,path.length()-1);
+            }
+        }
+    }
+}
+```
+
+题解2：根据本题的特点进行剪枝！非常精妙！
+
+```java
+class Solution {
+    private int[] factorial = new int[10];
+
+    public String getPermutation(int n, int k) {
+        // 初始化阶乘表
+        factorial[0] = 1;
+        for (int i = 1; i < 10; i++)
+            factorial[i] = i * factorial[i - 1];
+
+        StringBuilder sb = new StringBuilder();
+        dfs(n, n, k, sb);
+        return sb.toString();
+    }
+
+    private void dfs(int n, int height, int k, StringBuilder path) {
+        if (path.length() == n) {
+            return;
+        }
+        int count = factorial[height - 1];
+        for (int i = 1; i <= n; i++) {
+            String num = Integer.toString(i);
+            if (!path.toString().contains(num)) {
+                // 剪枝（本题最关键之处！）
+                if (k > count) {
+                    k -= count;
+                    continue;
+                }
+                path.append(num);
+                dfs(n, height - 1, k, path);
+            }
+        }
+    }
+}
+```
 
 
 
-##### 52 N-Queens II    
+
+
+#### 51. N-Queens
 
 
 
-##### 78 Subsets
+#### 52. N-Queens II    
+
+
+
+#### 78. Subsets
 
 Given a set of distinct integers, nums, return all possible subsets (the power set).
 
@@ -508,7 +613,7 @@ class Solution {
 }
 ```
 
-##### 90 Subsets II
+#### 90. Subsets II
 
 Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
 
@@ -573,7 +678,96 @@ class Solution {
 
 
 
-##### [79] Word Search
+#### 93. Restore IP Addresses
+
+Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+
+**Example:**
+
+```
+Input: "25525511135"
+Output: ["255.255.11.135", "255.255.111.35"]
+```
+
+思路：
+
+
+
+题解1：暴力法（本题直接暴力也很快）
+
+```java
+class Solution {
+	public List<String> restoreIpAddresses(String s) {
+        List<String> result = new ArrayList<>();
+        int len = s.length();
+        for (int i = 1; i <= 3; i++) {
+            for (int j = i + 1; j <= i + 4; j++) {
+                for (int k = j + 1; k <= j + 4; k++) {
+                    if (k < len) {
+                        String tmp1 = s.substring(0, i);
+                        String tmp2 = s.substring(i, j);
+                        String tmp3 = s.substring(j, k);
+                        String tmp4 = s.substring(k);
+                        if (check(tmp1) && check(tmp2) && check(tmp3) && check(tmp4)) {
+                            result.add(tmp1 + "." + tmp2 + "." + tmp3 + "." + tmp4);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    private boolean check(String s) {
+        if (s.length() > 3 || (s.length() != 1 && s.charAt(0) == '0') 
+            || Integer.parseInt(s) > 255)
+            return false;
+        return true;
+    }
+}
+```
+
+题解2：回溯
+
+```java
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> result = new ArrayList<>();
+        if (s.length() > 12) return result;
+        backtrack(s, 0, new ArrayList<>(), result);
+        return result;
+    }
+    private void backtrack(String s, int curPos, List<String> segs, List<String> result) {
+        if (segs.size() == 4) {
+            if(curPos == s.length())
+                result.add(String.join(".", segs));
+            return;
+        }
+
+        for (int k = 1; k <= 3; k++) {
+            if (curPos + k > s.length()) break;
+            String seg = s.substring(curPos, curPos + k);
+            //System.out.println(seg);
+            if (check(seg)) {
+                segs.add(seg);
+                backtrack(s, curPos + k, segs, result);
+                segs.remove(segs.size() - 1);
+            }
+        }
+    }
+    private boolean check(String s) {
+        if (s.length() > 3 || (s.length() != 1 && s.charAt(0) == '0') 
+            || Integer.parseInt(s) > 255)
+            return false;
+        return true;
+    }
+}
+```
+
+
+
+
+
+#### 79. Word Search
 
 Given a 2D board and a word, find if the word exists in the grid.
 
@@ -652,7 +846,7 @@ class Solution {
 
 
 
-##### [131] Palindrome Partitioning
+#### 131. Palindrome Partitioning
 
 Given a string s, partition s such that every substring of the partition is a palindrome.
 
@@ -709,7 +903,7 @@ class Solution {
 
 ##### 
 
-##### 37. Sudoku Solver
+#### 37. Sudoku Solver
 
 Write a program to solve a Sudoku puzzle by filling the empty cells.
 
@@ -833,7 +1027,7 @@ class Solution {
 
 
 
-##### 89. Gray Code
+#### 89. Gray Code
 
 思路：本题应该不是回溯类别的，找规律背题目，不具有适用性。（参考[这里](https://leetcode-cn.com/problems/gray-code/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--12/)）
 
@@ -859,7 +1053,7 @@ class Solution {
 
 
 
-#### 2. 树（Tree）
+#### 二、树（Tree）
 
 ##### 前置知识
 
@@ -1262,15 +1456,15 @@ class Solution {
 
 
 
-#### 3. 深度优先搜索（Depth First Search）
+#### 三、深度优先搜索（Depth First Search）
 
 
 
-#### 4. 广度优先搜索（Breadth First Search）
+#### 四、广度优先搜索（Breadth First Search）
 
 
 
-#### 5. 动态规划（Dynamic Programming）
+#### 五、动态规划（Dynamic Programming）
 
 
 
