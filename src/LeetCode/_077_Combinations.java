@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _77_Combinations {
+public class _077_Combinations {
     public List<List<Integer>> combine(int n, int k) {
         List<Integer> path = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
@@ -25,7 +25,7 @@ public class _77_Combinations {
     }
 
     public static void main(String[] args) {
-        _77_Combinations obj = new _77_Combinations();
+        _077_Combinations obj = new _077_Combinations();
         System.out.println(obj.combine(4, 2));
     }
 }

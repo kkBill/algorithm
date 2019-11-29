@@ -1,6 +1,6 @@
 package LeetCode;
 
-public class _60_PermutationSequence {
+public class _060_PermutationSequence {
     private int[] factorial = new int[10];
 
     public String getPermutation(int n, int k) {
@@ -34,7 +34,7 @@ public class _60_PermutationSequence {
     }
 
     public static void main(String[] args) {
-        _60_PermutationSequence obj = new _60_PermutationSequence();
+        _060_PermutationSequence obj = new _060_PermutationSequence();
         System.out.println(obj.getPermutation(4, 9));
     }
 }

@@ -1,70 +1,89 @@
 package LeetCode;
 
+//class Trie {
+//    class TrieNode {
+//        private TrieNode[] child;
+//        private final int SIZE = 26;
+//        private boolean isEnd = false;
+//        public TrieNode() {
+//            child = new TrieNode[SIZE];
+//        }
+//    }
+//    private TrieNode root;
+//
+//    public Trie() {
+//        root = new TrieNode();
+//    }
+//
+//    public void insert(String word) {
+//        TrieNode node = root;
+//        for (int i = 0; i < word.length(); i++) {
+//            int idx = word.charAt(i) - 'a';
+//            if (node.child[idx] == null) {
+//                node.child[idx] = new TrieNode();
+//            }
+//            node = node.child[idx];
+//        }
+//        node.isEnd = true;
+//    }
+//
+//    private TrieNode searchPrefix(String word) {
+//        TrieNode node = root;
+//        for (int i = 0; i < word.length(); i++) {
+//            int idx = word.charAt(i) - 'a';
+//            if (node.child[idx] != null) {
+//                node = node.child[idx];
+//            } else {
+//                return null;
+//            }
+//        }
+//        return node;
+//    }
+//
+//    public boolean search(String word) {
+//        TrieNode node = searchPrefix(word);
+//        return node != null && node.isEnd;
+//    }
+//
+//    public boolean startsWith(String prefix) {
+//        TrieNode node = searchPrefix(prefix);
+//        return node != null;
+//    }
+//}
+
+
 class Trie {
-    // 字典树节点
-    class TrieNode {
-        private TrieNode[] child;
-        private final int SIZE = 26;
-        private boolean isEnd = false;
-
-        public TrieNode() {
-            child = new TrieNode[SIZE];
-        }
-
-        public boolean containsKey(char ch) {
-            return child[ch - 'a'] != null;
-        }
-
-        public TrieNode get(char ch) {
-            return child[ch - 'a'];
-        }
-
-        public void put(char ch, TrieNode node) {
-            child[ch - 'a'] = node;
-        }
-
-        public void setEnd() {
-            isEnd = true;
-        }
-
-        public boolean isEnd() {
-            return isEnd;
+    class TrieNode{
+        TrieNode[] child;
+        boolean isEnd;
+        TrieNode(){
+            child = new TrieNode[26];
+            isEnd = false;
         }
     }
-
     private TrieNode root;
-
-    /**
-     * Initialize your data structure here.
-     */
-    public Trie() {
+    Trie(){
         root = new TrieNode();
     }
 
-    /**
-     * Inserts a word into the trie.
-     */
-    public void insert(String word) {
+    public void insert(String word){
         TrieNode node = root;
-        for (int i = 0; i < word.length(); i++) {
-            char currChar = word.charAt(i);
-            if (!node.containsKey(currChar)) {
-                node.put(currChar, new TrieNode());
+        for(int i=0; i<word.length(); i++){
+            int idx = word.charAt(i) - 'a';
+            if(node.child[idx] == null){
+                node.child[idx] = new TrieNode();
             }
-            node = node.get(currChar);
+            node = node.child[idx];
         }
-        node.setEnd();
+        node.isEnd = true;
     }
 
-    /**
-     * return TrieNode of prefix of word or whole word
-     */
-    private TrieNode searchPrefix(String word){
+    public TrieNode startsPre(String word){
         TrieNode node = root;
-        for(int i=0;i<word.length();i++){
-            char currChar = word.charAt(i);
-            if(node.containsKey(currChar)){
-                node = node.get(currChar);
+        for(int i=0; i<word.length(); i++){
+            int idx = word.charAt(i) - 'a';
+            if(node.child[idx] != null){
+                node = node.child[idx];
             }else{
                 return null;
             }
@@ -72,20 +91,14 @@ class Trie {
         return node;
     }
 
-    /**
-     * Returns if the word is in the trie.
-     */
-    public boolean search(String word) {
-        TrieNode node = searchPrefix(word);
-        return node != null && node.isEnd();
+    public boolean startsWith(String word){
+        TrieNode node = startsPre(word);
+        return node != null;
     }
 
-    /**
-     * Returns if there is any word in the trie that starts with the given prefix.
-     */
-    public boolean startsWith(String prefix) {
-        TrieNode node = searchPrefix(prefix);
-        return node != null;
+    public boolean search(String word){
+        TrieNode node = startsPre(word);
+        return node != null && node.isEnd;
     }
 }
 

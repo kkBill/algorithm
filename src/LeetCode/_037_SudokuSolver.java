@@ -1,6 +1,6 @@
 package LeetCode;
 
-public class _37_SudokuSolver {
+public class _037_SudokuSolver {
     private boolean[][] rowUsed = new boolean[9][10];
     private boolean[][] colUsed = new boolean[9][10];
     private boolean[][] blockUsed = new boolean[9][10];
@@ -67,7 +67,7 @@ public class _37_SudokuSolver {
     }
 
     public static void main(String[] args) {
-        _37_SudokuSolver obj = new _37_SudokuSolver();
+        _037_SudokuSolver obj = new _037_SudokuSolver();
         char[][] board = {
                 {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
                 {'6', '.', '.', '1', '9', '5', '.', '.', '.'},

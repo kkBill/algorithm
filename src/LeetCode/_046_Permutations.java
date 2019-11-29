@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _46_Permutations {
+public class _046_Permutations {
 
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -32,7 +32,7 @@ public class _46_Permutations {
     }
 
     public static void main(String[] args) {
-        _46_Permutations obj = new _46_Permutations();
+        _046_Permutations obj = new _046_Permutations();
         int[] nums = {1, 2, 3};
         System.out.println(obj.permute(nums));
     }

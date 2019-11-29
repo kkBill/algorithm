@@ -1,6 +1,6 @@
 package LeetCode;
 
-public class _79_WordSearch {
+public class _079_WordSearch {
     private int[] X = {0, 0, -1, 1};
     private int[] Y = {1, -1, 0, 0};
     private int ROW_SIZE;
@@ -30,7 +30,6 @@ public class _79_WordSearch {
 
         if (board[row][col] == word.charAt(0)) {
             visited[row][col] = true;
-
             for (int i = 0; i < 4; i++) {
                 int nextRow = row + Y[i];
                 int nextCol = col + X[i];
@@ -41,14 +40,13 @@ public class _79_WordSearch {
                     }
                 }
             }
-
             visited[row][col] = false;
         }
         return false;
     }
 
     public static void main(String[] args) {
-        _79_WordSearch obj = new _79_WordSearch();
+        _079_WordSearch obj = new _079_WordSearch();
 
         char[][] board = {{'C', 'A', 'A'},
                 {'A', 'A', 'A'},

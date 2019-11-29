@@ -2,7 +2,7 @@ package LeetCode;
 
 import java.util.*;
 
-public class _90_Subsets2 {
+public class _090_Subsets2 {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<Integer> path = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
@@ -23,7 +23,7 @@ public class _90_Subsets2 {
     }
 
     public static void main(String[] args) {
-        _90_Subsets2 obj = new _90_Subsets2();
+        _090_Subsets2 obj = new _090_Subsets2();
         System.out.println(obj.subsetsWithDup(new int[]{1, 2, 2}));
     }
 }

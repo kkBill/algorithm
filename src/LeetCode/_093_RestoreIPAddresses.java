@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _93_RestoreIPAddresses {
+public class _093_RestoreIPAddresses {
     /*
     // 暴力法
     public List<String> restoreIpAddresses(String s) {
@@ -72,7 +72,7 @@ public class _93_RestoreIPAddresses {
     }
 
     public static void main(String[] args) {
-        _93_RestoreIPAddresses obj = new _93_RestoreIPAddresses();
+        _093_RestoreIPAddresses obj = new _093_RestoreIPAddresses();
         String ip = "1111111111111111111111111111111";
         System.out.println(obj.restoreIpAddresses(ip));
     }

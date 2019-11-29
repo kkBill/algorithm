@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _51_N_Queen {
+public class _051_N_Queen {
     private static int N;
     private List<List<String>> result = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class _51_N_Queen {
     }
 
     public static void main(String[] args) {
-        _51_N_Queen a = new _51_N_Queen();
+        _051_N_Queen a = new _051_N_Queen();
         System.out.println(a.solveNQueens(4));
     }
 }

@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _78_Subsets {
+public class _078_Subsets {
     public List<List<Integer>> subsets(int[] nums) {
         List<Integer> path = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
@@ -24,7 +24,7 @@ public class _78_Subsets {
     }
 
     public static void main(String[] args) {
-        _78_Subsets obj = new _78_Subsets();
+        _078_Subsets obj = new _078_Subsets();
         System.out.println(obj.subsets(new int[]{1, 2, 3}));
     }
 }

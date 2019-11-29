@@ -3,7 +3,7 @@ package LeetCode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _89_GrayCode {
+public class _089_GrayCode {
     public List<Integer> grayCode(int n) {
         List<Integer> result = new ArrayList<>();
         if (n < 0) return result;
@@ -18,7 +18,7 @@ public class _89_GrayCode {
     }
 
     public static void main(String[] args) {
-        _89_GrayCode obj = new _89_GrayCode();
+        _089_GrayCode obj = new _089_GrayCode();
         System.out.println(obj.grayCode(3));
     }
 }

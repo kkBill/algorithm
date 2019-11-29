@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class _47_Permutations2 {
+public class _047_Permutations2 {
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         boolean[] used = new boolean[nums.length];
@@ -33,7 +33,7 @@ public class _47_Permutations2 {
     }
 
     public static void main(String[] args) {
-        _47_Permutations2 obj = new _47_Permutations2();
+        _047_Permutations2 obj = new _047_Permutations2();
         System.out.println(obj.permuteUnique(new int[]{1, 1, 2}));
     }
 }

@@ -1,6 +1,6 @@
 package LeetCode;
 
-public class _52_N_Queen2 {
+public class _052_N_Queen2 {
     private static int N;
     private int total = 0;
 
@@ -39,7 +39,7 @@ public class _52_N_Queen2 {
     }
 
     public static void main(String[] args) {
-        _52_N_Queen2 a = new _52_N_Queen2();
+        _052_N_Queen2 a = new _052_N_Queen2();
         System.out.println(a.totalNQueens(4));
     }
 }
