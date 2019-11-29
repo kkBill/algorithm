@@ -263,6 +263,62 @@ class Solution {
 }
 ```
 
+
+
+#### 216. Combination Sum III
+
+Find all possible combinations of **k** numbers that add up to a number **n,** given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.
+
+Note:
+
+* All numbers will be positive integers.
+* The solution set must not contain duplicate combinations.
+
+Example 1:
+
+```
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+```
+
+Example 2:
+
+```
+Input: k = 3, n = 9
+Output: [[1,2,6], [1,3,5], [2,3,4]]
+```
+
+思路：
+
+题解：
+
+```java
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<Integer> path = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        dfs(k,n,1,path,result);
+        return result;
+    }
+    private void dfs(int k, int target, int start, 
+                     List<Integer> path, List<List<Integer>> result) {
+        if (target == 0) {
+            if (k == 0) {
+                result.add(new ArrayList<>(path));
+            }
+            return;
+        }
+        for (int i = start; i <= 9 && target - i >= 0; i++) {
+            path.add(i);
+            dfs(k - 1, target - i, i + 1, path, result);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+```
+
+
+
 #### 46. Permutations
 
 Given a collection of **distinct** integers, return all possible permutations.
@@ -787,7 +843,7 @@ Given word = "SEE", return true.
 Given word = "ABCB", return false.
 ```
 
-思路：
+思路：本题是典型的回溯case 1的情况。
 
 题解：
 
@@ -842,7 +898,33 @@ class Solution {
 }
 ```
 
+#### 212. Word Search II
 
+Given a 2D board and a list of words from the dictionary, find all words in the board.
+
+Each word must be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
+
+Example:
+
+```
+Input: 
+board = [
+  ['o','a','a','n'],
+  ['e','t','a','e'],
+  ['i','h','k','r'],
+  ['i','f','l','v']
+]
+words = ["oath","pea","eat","rain"]
+Output: ["eat","oath"]
+```
+
+最详细的参考：[题解](https://leetcode.com/problems/word-search-ii/discuss/59780/Java-15ms-Easiest-Solution-(100.00))
+
+题解：
+
+```java
+
+```
 
 
 
@@ -1467,4 +1549,38 @@ class Solution {
 #### 五、动态规划（Dynamic Programming）
 
 
+
+#### 其他
+
+##### 208. Implement Trie (Prefix Tree)
+
+Implement a trie with `insert`, `search`, and `startsWith` methods.
+
+**Example:**
+
+```
+Trie trie = new Trie();
+
+trie.insert("apple");
+trie.search("apple");   // returns true
+trie.search("app");     // returns false
+trie.startsWith("app"); // returns true
+trie.insert("app");   
+trie.search("app");     // returns true
+```
+
+Note:
+
+* You may assume that all inputs are consist of lowercase letters a-z.
+
+
+* All inputs are guaranteed to be non-empty strings.
+
+分析：实现一个字典树（也叫前缀树）
+
+题解：
+
+```
+
+```
 
