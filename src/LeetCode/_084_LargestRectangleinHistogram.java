@@ -37,6 +37,7 @@ public class _084_LargestRectangleinHistogram {
      *
      * 耗时约 681 ms，可通过
      */
+    /*
     public int largestRectangleArea(int[] heights) {
         int maxArea = 0;
         for (int begin = 0; begin < heights.length; begin++) {
@@ -45,6 +46,47 @@ public class _084_LargestRectangleinHistogram {
                 minHeight = Math.min(minHeight, heights[end]);
                 maxArea = Math.max(maxArea, minHeight*(end-begin+1));
             }
+        }
+        return maxArea;
+    }
+    */
+
+    /**
+     * 精妙无比！
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(n)
+     *
+     * 耗时约 4 ms，性能提升巨大！
+     */
+    public int largestRectangleArea(int[] heights) {
+        if (heights.length == 0) return 0;
+
+        int[] leftLessMin = new int[heights.length];
+        leftLessMin[0] = -1;
+        for (int i = 1; i < heights.length; i++) {
+            int left = i - 1;
+            while (left >= 0 && heights[left] >= heights[i]) {
+                //left--;
+                left = leftLessMin[left];
+            }
+            leftLessMin[i] = left;
+        }
+
+        int[] rightLessMin = new int[heights.length];
+        rightLessMin[heights.length - 1] = heights.length;
+        for (int i = heights.length - 2; i >= 0; i--) {
+            int right = i + 1;
+            while (right < heights.length && heights[right] >= heights[i]) {
+                //right++;
+                right = rightLessMin[right];
+            }
+            rightLessMin[i] = right;
+        }
+
+        // 计算面积
+        int maxArea = 0;
+        for (int i = 0; i < heights.length; i++) {
+            maxArea = Math.max(maxArea, (rightLessMin[i] - leftLessMin[i] - 1) * heights[i]);
         }
         return maxArea;
     }
