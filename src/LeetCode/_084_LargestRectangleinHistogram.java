@@ -1,5 +1,7 @@
 package LeetCode;
 
+import java.util.Stack;
+
 public class _084_LargestRectangleinHistogram {
     /**
      * 暴力法
@@ -35,7 +37,7 @@ public class _084_LargestRectangleinHistogram {
      * 时间复杂度：O(n^2)
      * 空间复杂度：O(1)
      *
-     * 耗时约 681 ms，可通过
+     * 耗时 600+ ms，可通过
      */
     /*
     public int largestRectangleArea(int[] heights) {
@@ -53,11 +55,13 @@ public class _084_LargestRectangleinHistogram {
 
     /**
      * 精妙无比！
+     * 参考：（https://leetcode-cn.com/problems/largest-rectangle-in-histogram/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-1-7/）
      * 时间复杂度：O(n)
      * 空间复杂度：O(n)
      *
      * 耗时约 4 ms，性能提升巨大！
      */
+    /*
     public int largestRectangleArea(int[] heights) {
         if (heights.length == 0) return 0;
 
@@ -90,7 +94,40 @@ public class _084_LargestRectangleinHistogram {
         }
         return maxArea;
     }
+    */
 
+    /**
+     * 借助栈的方法~ 也是精妙无比！
+     * 算法思想同上一个方法并无本质差别，只不过这里借助了"栈"这个数据结构实现，值得借鉴学习
+     * 时间复杂度：O(n) 只遍历一次heights[] 数组，每个元素只入栈/出栈一次
+     * 空间复杂度：O(n) 栈空间
+     */
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> s = new Stack<>();
+        int maxArea = 0;
+        int curr = 0;
+        while (curr < heights.length){
+            // 如果此时栈为空，或者当前 curr 的柱高大于栈顶元素对应的柱高，则入栈
+            if(s.isEmpty() || heights[curr] >= heights[s.peek()]){
+                s.push(curr);
+                curr++;
+            }
+            // 否则将栈顶元素出栈，并计算以栈顶元素对应的柱体的面积
+            else{
+                int p = s.pop();
+                int left = s.isEmpty() ? -1 : s.peek();
+                maxArea = Math.max(maxArea, (curr-left-1)*heights[p]);
+            }
+        }
+        // 最后出现逐层递增(不再下降)的情况
+        // 此时 curr 停留在 heights.length
+        while (!s.isEmpty()){
+            int p = s.pop();
+            int left = s.isEmpty() ? -1 : s.peek();
+            maxArea = Math.max(maxArea, (curr-left-1)*heights[p]);
+        }
+        return maxArea;
+    }
 
     public static void main(String[] args) {
         _084_LargestRectangleinHistogram obj = new _084_LargestRectangleinHistogram();
