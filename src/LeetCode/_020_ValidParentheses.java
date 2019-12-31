@@ -8,6 +8,7 @@ public class _020_ValidParentheses {
      * 时间复杂度：O(n) 一次遍历
      * 空间复杂度：O(n) 栈空间
      */
+    /*
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();
         boolean flag = true;
@@ -34,6 +35,31 @@ public class _020_ValidParentheses {
             }
         }
         return flag && stack.empty();
+    }*/
+
+    /**
+     * 参考版本~
+     * 还不理解~~
+     */
+    public boolean isValid(String s) {
+        if (s.isEmpty())
+            return true;
+        if (s.length() % 2 == 1) // 长度为奇数时必不可能成对
+            return false;
+
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(')
+                stack.push(')');
+            else if (c == '{')
+                stack.push('}');
+            else if (c == '[')
+                stack.push(']');
+            else if (stack.empty() || c != stack.pop())
+                return false;
+        }
+
+        return stack.empty();
     }
 
     public static void main(String[] args) {
