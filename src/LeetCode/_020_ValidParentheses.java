@@ -34,17 +34,17 @@ public class _020_ValidParentheses {
                 }
             }
         }
-        return flag && stack.empty();
+        return stack.empty();
     }*/
 
     /**
-     * 参考版本~
-     * 还不理解~~
+     * 来自讨论区的参考版本~
+     *
      */
     public boolean isValid(String s) {
         if (s.isEmpty())
             return true;
-        if (s.length() % 2 == 1) // 长度为奇数时必不可能成对
+        if (s.length() % 2 == 1) // 长度为奇数时必不可能成对，因此直接返回false
             return false;
 
         Stack<Character> stack = new Stack<>();
