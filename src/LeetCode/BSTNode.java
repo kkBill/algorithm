@@ -108,8 +108,35 @@ public class BSTNode {
         return root;
     }
 
+    // 删除（写法2：参考《算法》第4版）
+    public static BSTNode delete2(BSTNode root, int x) {
+        if(root == null) return null;
+
+        if(x < root.val) root.left = delete2(root.left,x);
+        else if(x > root.val) root.right = delete2(root.right,x);
+        else { // 当前root节点为待删除的节点
+            //如果当前节点只有一个孩子节点，则直接将其孩子节点提升为新的根节点
+            if(root.left == null) return root.right;
+            if(root.right == null) return root.left;
+
+            //如果当前节点有两个孩子节点
+            BSTNode successor = findMin(root.right);
+            successor.right = deleteMin(root.right);
+            successor.left = root.left;
+            return successor;
+        }
+        return root;
+    }
+
+    private static BSTNode deleteMin(BSTNode root) {
+        if(root.left == null)
+            return root.right;
+        root.left = deleteMin(root.left);
+        return root;
+    }
+
     public static void main(String[] args) {
-        int[] vals = {5, 3, 8, 1, 6, 9};
+        int[] vals = {5, 3, 8, 1, 6, 9, 7};
         BSTNode root = makeBST(vals);
         inorderTraversal(root);
         System.out.println();
@@ -121,7 +148,7 @@ public class BSTNode {
             System.out.println("can't find node 6");
         }
 
-        root = delete(root,6);
+        root = delete2(root,6);
         inorderTraversal(root);
     }
 }

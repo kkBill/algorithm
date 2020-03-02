@@ -1,7 +1,5 @@
 package LeetCode;
 
-import sun.nio.cs.FastCharsetProvider;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +56,6 @@ public class _139_WordBreak {
         memo[start] = false;
         return false;
     }
-
     */
 
     /**

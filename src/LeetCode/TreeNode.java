@@ -1,5 +1,7 @@
 package LeetCode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class TreeNode {
@@ -7,20 +9,26 @@ public class TreeNode {
     TreeNode left = null;
     TreeNode right = null;
 
+    public TreeNode() {
+
+    }
+
     public TreeNode(int val) {
         this.val = val;
     }
 
     public static TreeNode makeTree() {
-        TreeNode root = new TreeNode(4);
-        root.left = new TreeNode(6);
-        root.right = new TreeNode(2);
+        TreeNode root = new TreeNode(7);
+        root.left = new TreeNode(3);
+        root.right = new TreeNode(15);
 
-        root.left.left = new TreeNode(3);
-        root.left.right = new TreeNode(1);
+        //root.left.left = new TreeNode(3);
+        //root.left.right = new TreeNode(1);
 
-        root.right.left = new TreeNode(5);
-        root.right.right = new TreeNode(7);
+        root.right.left = new TreeNode(9);
+        root.right.right = new TreeNode(20);
+        //root.right.right.right = new TreeNode(177);
+
         return root;
     }
 
@@ -116,6 +124,30 @@ public class TreeNode {
             postOrderTraversalWithRecursion(root.right);
             System.out.print(root.val + " ");
         }
+    }
+
+
+    // 用于打印树的结构信息，方便debug
+    public static String serialize(TreeNode root) {
+        if(root == null) return "";
+
+        StringBuilder sb = new StringBuilder();
+        String lastVal = "";
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.remove(0);
+            if(node != null) {
+                sb.append(node.val);
+                lastVal = String.valueOf(node.val);
+                sb.append(",");
+                queue.add(node.left);
+                queue.add(node.right);
+            }else{
+                sb.append("null,");
+            }
+        }
+        return sb.toString().substring(0, sb.toString().lastIndexOf(lastVal)+lastVal.length());
     }
 
 
