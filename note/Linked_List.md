@@ -1,6 +1,17 @@
-### 链表相关问题
+### 链表问题汇总
 
-1. 两数相加（[2. Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers/) ）
+题目列表：
+
+1. [2. Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers/) [一星]
+2. [445. Add Two Numbers II](https://leetcode-cn.com/problems/add-two-numbers-ii/) [五星]
+3. [19. Remove Nth Node From End of List](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/) [三星]
+4. [21. Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists/) [二星]
+5. [23. Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists/) [五星]
+6. [24. Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/) [五星+]
+
+
+
+##### [2. Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers/) 
 
 用链表表示两个非负整数（**逆序存放**：2 -> 4 -> 3表示数字342），并且保证给定的数字不会出现前置零（leading zero）。求两数之和对应的链表。
 
@@ -8,44 +19,43 @@
 
 第一个想法是读取两个链表的数字，将数字相加，再将和转换成链表。事实上，一旦这么想就跳入了本题的陷阱之中，因为用链表存储数值意味着可以不限位数，而int或long类型数值可表示的数值终究是有限的，不能表示“大数”，因此这种方法会造成溢出。
 
-由于本题已经说明数字在链表中是逆序存放的，事实上降低了本题的难度。我们可以直接从前往后对链表的各个位数相加。当相同位置上的数相加之和大于等于10时，要向高位进1，因此需要定义一个进位值carry，初始化为0，这是本题处理的关键。而针对789+211=1000这种特殊情况，和的位数增大了一位，需要在遍历完链表之和再判断一下carry是否为1。
-
-代码：
+由于本题已经说明数字在链表中是**逆序**存放的，事实上降低了本题的难度。我们可以直接从前往后对链表的各个位数相加。当相同位置上的数相加之和大于等于10时，要向高位进1，因此需要定义一个进位值carry，初始化为0，这是本题处理的关键。而针对789+211=1000这种特殊情况，和的位数增大了一位，需要在遍历完链表之和再判断一下carry是否为1。
 
 ```java
-// 时间复杂度：O(max(m,n)), 空间复杂度：O(max(m,n)) （m,n分别是链表的长度）
-public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-    int carry = 0; // 进位
-    int sum = 0, digit = 0;
-    ListNode head = null, curr = null;
-    while(l1 != null || l2 != null) {
-        int x = (l1 != null) ? l1.val : 0;
-        int y = (l2 != null) ? l2.val : 0;
-        sum = carry + x + y; // 记得加上进位 carry
-        carry = sum / 10;
-        digit = sum % 10;
-        ListNode node = new ListNode(digit);
-        if(head == null) {
-            head = node;
-            curr = head;
-        }else {
-            curr.next = node;
-            curr = curr.next;
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int carry = 0; // 进位
+        ListNode head = null, curr = null;
+        
+        while(l1 != null || l2 != null) {
+            int x1 = l1 != null ? l1.val : 0;
+            int x2 = l2 != null ? l2.val : 0;
+            int sum = x1 + x2 + carry;
+            carry = sum / 10;
+            sum %= 10;
+            ListNode node = new ListNode(sum);
+            if(head == null) {
+                head = node;
+                curr = node;
+            }else {
+                curr.next = node;
+                curr = node;
+            }
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
         }
-        if(l1 != null) l1 = l1.next;
-        if(l2 != null) l2 = l2.next;
+        // 考虑carry不为0的情况，比如 999 + 1 = 1000
+        if(carry != 0) {
+            curr.next = new ListNode(carry);
+        }
+        return head;
     }
-	// 关键，处理 789+211=1000 这种情况
-    if(carry == 1) {
-        curr.next = new ListNode(carry);
-    }
-    return head;
 }
 ```
 
-扩展：如果数字不是逆序存放，该如何处理呢？比如(3→4→2)+(4→6→5)=8→0→7
+扩展：如果数字不是逆序存放，该如何处理呢？这就是第445题。比如(3→4→2)+(4→6→5)=8→0→7
 
-思路：借助栈来处理，先把两个链表的节点逐一压入两个栈中，再和前一题类似处理。此外，再构建链表的时候应该适用头插法，而不是前一题的尾插法。
+思路：借助栈来处理，先把两个链表的节点逐一压入两个栈中，再和前一题类似处理。此外，再构建链表的时候应该使用**头插法**，而不是前一题的尾插法。还有一种方法是递归实现。
 
 ```java
 public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
@@ -89,161 +99,178 @@ public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
 
 
 
-2. 删除链表倒数第n个节点（[19. Remove Nth Node From End of List](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)）
+##### [445. Add Two Numbers II](https://leetcode-cn.com/problems/add-two-numbers-ii/)
 
-双指针法，初始化指针p1和p2指向第一个节点，然后，p2率先移动(n-1)个节点，然后，p1、p2同时移动，当p2到达末节点时，p1指向的恰为倒数第n个节点（由于题目中说明了这里给出的n总是有效的，因此不必额外考虑）。由于要删除p1指向的节点，因此需要一个pre指针指向p1的前一个节点，pre初始化为null，在更新p1的时候更新pre。**进行删除操作时，若p1指向第一个节点，需特殊处理**。
+本题是上一题的follow-up，重点关注**递归法**实现。
+
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int n1 = len(l1);
+        int n2 = len(l2);
+        ListNode head = (n1 > n2) ? helper(l1, l2, n1 - n2) : helper(l2, l1, n2 - n1);
+        if (head != null && head.val > 9) {
+            head.val %= 10;
+            ListNode pre = new ListNode(1);
+            pre.next = head;
+            head = pre;
+        }
+        return head;
+    }
+
+    // l1 的长度总是比 l2 的长度长，diff 为两者的长度差值
+    private ListNode helper(ListNode l1, ListNode l2, int diff) {
+        if (l1 == null) return null;
+        ListNode curr = (diff == 0) ? new ListNode(l1.val + l2.val) : new ListNode(l1.val);
+        ListNode post = (diff == 0) ? helper(l1.next, l2.next, 0) : helper(l1.next, l2, diff-1);
+        // 产生进位
+        if (post != null && post.val > 9) {
+            post.val %= 10;
+            curr.val++;
+        }
+        curr.next = post;
+        return curr;
+    }
+
+    private int len(ListNode head) {
+        if (head == null) return 0;
+        return 1 + len(head.next);
+    }
+}
+```
+
+
+
+##### [19. Remove Nth Node From End of List](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
+
+删除链表的倒数第 n 个节点。
+
+分析：双指针法，初始化指针 curr 和 post 指向第一个节点，然后，post 率先移动 n 个节点，然后 curr、post 同时移动，当 post 到达 null 时，curr 指向的恰为倒数第 n 个节点。由于链表的首节点可能被删除，增加一个 dummy 节点，方便统一处理。
 
 ```java
 // 时间复杂度：O(n) 一趟遍历
 // 空间复杂度：O(1)
-public ListNode removeNthFromEnd(ListNode head, int n) {
-    ListNode p1 = head, p2 = head, pre = null;
-    int cnt = 1;
-    while (cnt < n) {
-        p2 = p2.next;
-        cnt++;
-    }
-    while (p2.next != null) {
-        pre = p1;
-        p1 = p1.next;
-        p2 = p2.next;
-    }
-    // 删除p1指向的节点，当p1指向第一个节点时，需特殊处理
-    if(pre == null) head = head.next;
-    else pre.next = p1.next;
-  
-    return head;
-}
-```
-
-
-
-3. 合并两个有序链表（[21. Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists/)）
-
-不能使用额外的空间。注意一个为空链表，另一个为非空链表的特殊情况。自己写的代码如下，比较冗杂。
-
-```java
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    // p1、p2为工作指针，head、tail为新构建链表的头指针和尾指针
-    ListNode p1 = l1, p2 = l2, head = null, tail = null;
-    while (p1 != null && p2 != null) {
-        if (p1.val <= p2.val) {
-            if (head == null) {
-                head = p1;
-                tail = head;
-            } else {
-                tail.next = p1;
-                tail = tail.next;
-            }
-            p1 = p1.next;
-        } else {
-            if (head == null) {
-                head = p2;
-                tail = head;
-            } else {
-                tail.next = p2;
-                tail = tail.next;
-            }
-            p2 = p2.next;
+class Solution {
+    // 假定 n 总是有效的（1 ≤ n ≤ length）
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, curr = head, post = head;
+        while (n > 0){
+            post = post.next;
+            n--;
         }
+        // 当跳出循环时，curr 指向倒数第 n 个节点
+        while (post != null) {
+            prev = prev.next;
+            curr = curr.next;
+            post = post.next;
+        }
+        // remove operation
+        prev.next = curr.next;
+        return dummy.next;
     }
-
-    if (p1 != null) {
-        if(tail == null) head = p1; //处理特殊情况，即一个为空链表另一个为非空链表的情况~
-        else tail.next = p1;
-    }
-    if (p2 != null) {
-        if(tail == null) head = p2;
-        else tail.next = p2;
-    }
-    return head;
 }
 ```
 
-下面的实现参考[这里](https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/he-bing-liang-ge-you-xu-lian-biao-by-leetcode/)，这种解法先创建一个冗余节点dummyHead，为了便于处理pre节点，十分精妙。
+
+
+##### [21. Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
+
+合并两个有序链表。要求不能使用额外的空间。
+
+分析：巧用dummy节点，让代码更简洁。
 
 ```java
 // 时间复杂度：O(m+n)
 // 空间复杂度：O(1)
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    ListNode dummyHead = new ListNode(-1);
-    ListNode pre = dummyHead;
-    while (l1 != null && l2 != null) {
-        if(l1.val <= l2.val){
-            pre.next = l1;
-            l1 = l1.next;
-        }else{
-            pre.next = l2;
-            l2 = l2.next;
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        while (l1 != null && l2 != null) {
+            if(l1.val < l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            }else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
         }
-        pre = pre.next;// 这里别忘了~
+        if(l1 == null) curr.next = l2;
+        else curr.next = l1;
+        
+        return dummy.next;
     }
-    pre.next = l1 != null ? l1 : l2;
-    return dummyHead.next;
 }
 ```
 
-4. **合并k个有序链表（[23. Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists/)）（题目还不错~）**
 
 
-本题在前一题的基础上加大了难度，需要合并任意k个有序链表。
+##### [23. Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists/)
 
-思路：每次遍历比较k个链表的首节点，把最小的那个节点连接到pre节点之后。
+本题在前一题的基础上加大了难度，需要合并任意 k 个有序链表。
 
-在本题中，假设有k个链表，那么每次获取最小值节点的时间复杂度是O(logk)；假设所有链表共有n个节点，那么总的时间复杂度是O(nlogk)，因为外层的循环要把每个节点都放进队列一遍。
+思路：每次遍历比较 k 个链表的首节点，把最小的那个节点连接到 curr 节点之后。
+
+在本题中，假设有 k 个链表，那么每次获取最小值节点的时间复杂度是 O(logk)；假设所有链表共有 n 个节点，那么总的时间复杂度是 O(n*logk)，因为外层的循环要把每个节点都放进队列一遍。
 
 ```java
 // 时间复杂度：O(nlog(k)) // n是所有链表的节点个数，k是链表个数
 // 空间复杂度：O(1)   
-public ListNode mergeKLists(ListNode[] lists) {
-    if(lists.length == 0) return null;
-    if(lists.length == 1) return lists[0];
-
-    // 优先队列，较小值排在前面
-    // lambda表达式的写法
-    PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.length, (o1, o2) -> {
-        // o1是已经排在队列中的节点，o2是待排入的节点，如果o2的值小于o1的值，返回1
-      	// 表示让o2排在o1之前，也就是小顶堆
-      	if(o2.val < o1.val) return 1;
-        else if(o2.val > o1.val) return -1;
-        else return 0;
-    });
-    // 初始化优先队列
-    for(ListNode node : lists){
-        if(node != null) queue.add(node);
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0) return null;
+        if(lists.length == 1) return lists[0];
+        // 较小值排前面
+        PriorityQueue<ListNode> queue = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        // 把每个链表的头节点放入优先队列中
+        for(ListNode node : lists) {
+            if(node != null) queue.add(node);
+        }
+        while (!queue.isEmpty()) {
+            ListNode node = queue.poll();
+            if(node.next != null) {
+                queue.add(node.next);
+            }
+            curr.next = node;
+            curr = node;
+        }
+        return dummy.next;
     }
-    ListNode dummyHead = new ListNode(-1);
-    ListNode pre = dummyHead;
-    // 核心部分只有这么几行，非常优雅
-    while (!queue.isEmpty()) { // O(n)
-        pre.next = queue.poll(); // O(logk)
-        pre = pre.next;
-        if(pre.next != null) queue.add(pre.next);
-    }
-    return dummyHead.next;
 }
 ```
 
 感悟：每次遍历获取最小值节点这一操作可以使用**优先队列**，而不是傻乎乎的for循环遍历一遍，因为使用优先队列（其本质是最大/小堆）可以把时间复杂度从O(n)降到O(logn)。对于优先队列这一数据结构的使用还不够敏感，导致自己写的代码不够优雅，需引起注意！通过本题，应该对优先队列有一定的敏感性，并且掌握Java中优先队列自定义对象比较的写法。
 
-
-
-5. **两两交换链表中的节点（[24. Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)）（有点意思~）**
+##### [24. Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/) [五星+]
 
 思路：这一题又是巧用dummy节点的典型，利用了dummy节点之后，就可以使用pre节点进行删除了。
 
 ```java
-public ListNode swapPairs(ListNode head) {
-    ListNode dummy = new ListNode(-1), pre = dummy;
-    pre.next = head;
-    while (pre.next != null && pre.next.next != null) {
-        ListNode t = pre.next.next;
-        pre.next.next = t.next;
-        t.next = pre.next;
-        pre.next = t;
-        pre = t.next;
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        // 边界情况：链表为空，或只有一个节点
+        // if(head == null || head.next == null) return head;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, curr = head;
+        // 确保至少有两个节点不为空，否则不需要发生交换
+        while (curr != null && curr.next != null) {
+            // swap node
+            ListNode post = curr.next;
+            prev.next = post;
+            curr.next = post.next;
+            post.next = curr;
+            // update
+            prev = curr;
+            curr = curr.next;
+        }
+        return dummy.next;
     }
-    return dummy.next;
 }
 ```
 
