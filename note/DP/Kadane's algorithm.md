@@ -8,7 +8,7 @@ Kadane's algorithm用于处理最大子序列问题（maximum subarray problem�
 
 之前我们在解决这个问题的时候，使用了动态规划的思想。在这里，介绍Kadane's algorithm。其算法为：
 
-```
+```java
 int maxSubarray(int[] nums){
 	int maxSoFar = 0, maxCurr = 0;
 	for(int num : nums){
