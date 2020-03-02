@@ -4,53 +4,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class _023_MergekSortedLists {
-    /**
-     * 注意边界情况：
-     * case 1: [[1,2,3]] // 只有一个链表
-     * case 2: [[], []] // 有多个链表，但都是空链表
-     * case 3: [[], [1,2,3]] // 有多个链表，同时包含空链表和非空链表
-     *
-     * 时间复杂度：O()
-     */
-    /*
-    public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0) return null;
-        if (lists.length == 1) return lists[0];
-
-        ListNode dummyHead = new ListNode(-1);
-        ListNode pre = dummyHead;
-
-        int[] isEnd = new int[lists.length];
-        int nullNodeCount = 0;
-
-        while (nullNodeCount < lists.length - 1) {
-            ListNode minNode = null;
-            int minIdx = 0;
-            int minVal = Integer.MAX_VALUE;
-
-            for (int i = 0; i < lists.length; i++) {
-                if (isEnd[i] == 0 && lists[i] == null) {
-                    nullNodeCount++;
-                    isEnd[i] = 1;
-                }
-                if (lists[i] != null && lists[i].val <= minVal) {
-                    minVal = lists[i].val;
-                    minNode = lists[i];
-                    minIdx = i;
-                }
-            }
-            if(pre != null) {
-                pre.next = minNode;
-                pre = pre.next;
-            }
-
-            if(lists[minIdx] != null)
-                lists[minIdx] = lists[minIdx].next;
-        }
-
-        return dummyHead.next;
-    }
-    */
 
     /**
      * 每次遍历求最小值可以使用优先队列来进行优化
@@ -60,11 +13,14 @@ public class _023_MergekSortedLists {
         if(lists.length == 1) return lists[0];
 
         // 优先队列，较小值排在前面
-        PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.length, (o1, o2) -> {
-            if(o2.val < o1.val) return 1;
-            else if(o2.val > o1.val) return -1;
-            else return 0;
-        });
+//        PriorityQueue<ListNode> queue = new PriorityQueue<>((o1, o2) -> {
+//            if(o2.val < o1.val) return 1;
+//            else if(o2.val > o1.val) return -1;
+//            else return 0;
+//        });
+
+        PriorityQueue<ListNode> queue = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
+
         // 初始化优先队列
         for(ListNode node : lists){
             if(node != null) queue.add(node);
