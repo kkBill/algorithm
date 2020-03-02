@@ -3,7 +3,7 @@
 | #    | title                                    | solution                                 | note                                   | frequency |
 | ---- | ---------------------------------------- | ---------------------------------------- | -------------------------------------- | --------- |
 | 1    | [Two Sum](https://leetcode-cn.com/problems/two-sum) |                                          |                                        |           |
-| 2    | [Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_002_AddTwoNumbers.java) | 链表，非常简单。follow-up在第445题                |           |
+| 2    | [Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_002_AddTwoNumbers.java) | 链表，非常简单。follow-up在第445题                |           |
 | 3    | [Longest Substring Without Repeating Characters](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters) |                                          |                                        |           |
 | 4    | [Median of Two Sorted Arrays](https://leetcode-cn.com/problems/median-of-two-sorted-arrays) |                                          |                                        |           |
 | 5    | [Longest Palindromic Substring](https://leetcode-cn.com/problems/longest-palindromic-substring) |                                          |                                        |           |
@@ -20,12 +20,12 @@
 | 16   | [3Sum Closest](https://leetcode-cn.com/problems/3sum-closest) |                                          |                                        |           |
 | 17   | [Letter Combinations of a Phone Number](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number) |                                          |                                        |           |
 | 18   | [4Sum](https://leetcode-cn.com/problems/4sum) |                                          |                                        |           |
-| 19   | [Remove Nth Node From End of List](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_019_RemoveNthNodeFromEndofList.java) | 通过双指针法找到倒数第n个节点。巧用dummy方便统一处理          |           |
+| 19   | [Remove Nth Node From End of List](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_019_RemoveNthNodeFromEndofList.java) | 通过双指针法找到倒数第n个节点。巧用dummy方便统一处理          |           |
 | 20   | [Valid Parentheses](https://leetcode-cn.com/problems/valid-parentheses) |                                          |                                        |           |
-| 21   | [Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_021_MergeTwoSortedLists.java) | 巧用dummy可以简化代码                          |           |
+| 21   | [Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_021_MergeTwoSortedLists.java) | 巧用dummy可以简化代码                          |           |
 | 22   | [Generate Parentheses](https://leetcode-cn.com/problems/generate-parentheses) |                                          |                                        |           |
-| 23   | [Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_023_MergekSortedLists.java) | 结合**优先队列**，自定义排序规则                     |           |
-| 24   | [Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_024_SwapNodesinPairs.java) | 巧用dummy，有一定难度                          |           |
+| 23   | [Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_023_MergekSortedLists.java) | 结合**优先队列**，自定义排序规则                     |           |
+| 24   | [Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_024_SwapNodesinPairs.java) | 巧用dummy，有一定难度                          |           |
 | 25   | [Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group) |                                          |                                        |           |
 | 26   | [Remove Duplicates from Sorted Array](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array) |                                          |                                        |           |
 | 27   | [Remove Element](https://leetcode-cn.com/problems/remove-element) |                                          |                                        |           |
@@ -445,7 +445,7 @@
 | 442  | [Find All Duplicates in an Array](https://leetcode-cn.com/problems/find-all-duplicates-in-an-array) |                                          |                                        |           |
 | 443  | [String Compression](https://leetcode-cn.com/problems/string-compression) |                                          |                                        |           |
 | 444  | [Sequence Reconstruction](https://leetcode-cn.com/problems/sequence-reconstruction) |                                          |                                        |           |
-| 445  | [Add Two Numbers II](https://leetcode-cn.com/problems/add-two-numbers-ii) | [Java]( <https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_445_AddTwoNumbers2.java) | 属于第2题的follow-up。双栈+头插法比较直观；**递归**实现有难度 |           |
+| 445  | [Add Two Numbers II](https://leetcode-cn.com/problems/add-two-numbers-ii) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_445_AddTwoNumbers2.java) | 属于第2题的follow-up。双栈+头插法比较直观；**递归**实现有难度 |           |
 | 446  | [Arithmetic Slices II - Subsequence](https://leetcode-cn.com/problems/arithmetic-slices-ii-subsequence) |                                          |                                        |           |
 | 447  | [Number of Boomerangs](https://leetcode-cn.com/problems/number-of-boomerangs) |                                          |                                        |           |
 | 448  | [Find All Numbers Disappeared in an Array](https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array) |                                          |                                        |           |
