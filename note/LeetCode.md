@@ -83,11 +83,11 @@
 | 79   | [Word Search](https://leetcode-cn.com/problems/word-search) |                                          |                                        |           |
 | 80   | [Remove Duplicates from Sorted Array II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii) |                                          |                                        |           |
 | 81   | [Search in Rotated Sorted Array II](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii) |                                          |                                        |           |
-| 82   | [Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii) |                                          |                                        |           |
-| 83   | [Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list) |                                          |                                        |           |
+| 82   | [Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_082_RemoveDuplicatesfromSortedList2.java) | 本题有两种思路，值得学习                           |           |
+| 83   | [Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_083_RemoveDuplicatesfromSortedList.java) | 好题。对每一个重复的节点，设法保留第一次出现的那个。             |           |
 | 84   | [Largest Rectangle in Histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram) |                                          |                                        |           |
 | 85   | [Maximal Rectangle](https://leetcode-cn.com/problems/maximal-rectangle) |                                          |                                        |           |
-| 86   | [Partition List](https://leetcode-cn.com/problems/partition-list) |                                          |                                        |           |
+| 86   | [Partition List](https://leetcode-cn.com/problems/partition-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_086_PartitionList.java) | 分别建立dummy1, dummy2来对原链表进行划分            | *         |
 | 87   | [Scramble String](https://leetcode-cn.com/problems/scramble-string) |                                          |                                        |           |
 | 88   | [Merge Sorted Array](https://leetcode-cn.com/problems/merge-sorted-array) |                                          |                                        |           |
 | 89   | [Gray Code](https://leetcode-cn.com/problems/gray-code) |                                          |                                        |           |

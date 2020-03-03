@@ -8,6 +8,10 @@
 4. [21. Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists/) [二星]
 5. [23. Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists/) [五星]
 6. [24. Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/) [五星+]
+7. ​
+8. [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) [五星]
+9. [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) [四星]
+10. [86. Partition List](https://leetcode-cn.com/problems/partition-list/) [三星]
 
 
 
@@ -401,90 +405,123 @@ public ListNode rotateRight(ListNode head, int k) {
 
 
 
-8. 删除**有序**链表中的重复元素
 
-9. ​
 
-   [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) 
+##### [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) [五星]
 
-   [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) （有点意思！）
-
-第83题要求：Input: 1->1->2->3->3；Output: 1->2->3
+Input: 1->1->2->3->3；Output: 1->2->3。对于重复节点，删除并保留一个。
 
 ```java
-public ListNode deleteDuplicates(ListNode head) {
-    ListNode curr = head;
-    while (curr != null && curr.next != null) {
-        if(curr.val == curr.next.val) {
-            curr.next = curr.next.next;
-        }else{
-            curr = curr.next;
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode curr = head;
+        while (curr != null && curr.next != null) {
+            if(curr.val == curr.next.val) {
+                curr.next = curr.next.next; // delete operation
+            }else {
+                curr = curr.next; 
+            }
         }
+        return head;
     }
-    return head;
 }
 ```
 
 
 
-第82题要求：Input: 1->2->3->3->4->4->5；Output: 1->2->5
+##### [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) [四星]
 
-本题很巧妙~
+Input: 1->2->3->3->4->4->5；Output: 1->2->5。
+
+方法1：整体的思路同上，当出现重复节点时，记录节点的值为`duplicate`，然后向后移动直到`curr`节点不再等于`duplicate`，此时进行删除操作。
 
 ```java
-public ListNode deleteDuplicates(ListNode head) {
-    ListNode dummy = new ListNode(-1);
-    dummy.next = head;
-    ListNode prev = dummy;
-    while (prev.next != null) {
-        ListNode curr = prev.next;
-        while (curr.next != null && curr.next.val == curr.val){
-            curr = curr.next;
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, curr = head;
+        while (curr != null && curr.next != null) {
+            if(curr.val == curr.next.val) {
+                int duplicate = curr.val;
+                while (curr != null && curr.val == duplicate) {
+                    curr = curr.next;
+                }
+                prev.next = curr;
+            } else {
+                prev = curr;
+                curr = curr.next;
+            }
         }
-        if(curr != prev.next) {
-            prev.next = curr.next;
-        }else {
-            prev = prev.next;
-        }
+        return dummy.next;
     }
-    return dummy.next;
+}
+```
+
+方法2： 可以通过如下事实来判断是否出现重复值。
+
+假设当前节点为`curr`，前一个节点为`prev`， 通过`curr`与`curr.next` 判断两个节点的值是否相等。
+
+* 有重复值，则`curr`向后移动直至`curr`和`curr.next`两个节点的值不再相等，由于`prev`节点停留在原位置没有更新过，因此可以通过 `prev.next == curr` 这一条件来判断是否出现重复值。
+
+
+* 无重复值，也就是`curr`节点不用移动，此时`prev`的下一个节点必然还是`curr`（即 `prev.next == curr` 成立）
+
+这一思路不需要记录重复节点的值`duplicate`，而是根据`prev`和`curr`节点的相对位置来进行判断。思路非常巧妙。
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, curr = head;
+        while (curr != null) {
+            while (curr.next != null && curr.next.val == curr.val) {
+                curr = curr.next;
+            }
+            if(prev.next == curr) { // 无重复值
+                prev = curr;
+                curr = curr.next;
+            }else {                 // 出现重复值
+                prev.next = curr.next;
+                curr = prev.next;
+            }
+        }
+        return dummy.next;
+    }
 }
 ```
 
 
 
-10. 分隔链表（[86. Partition List](https://leetcode-cn.com/problems/partition-list/)）
+##### [86. Partition List](https://leetcode-cn.com/problems/partition-list/) [三星]
 
-给定一个链表和一个值x，调整链表，要求比x小的值排在前面，比x大的值排在后面，且不能改变原链表各个节点的相对位置。比如，Input: head = 1->4->3->2->5->2, x = 3；Output: 1->2->2->4->3->5
+给定一个链表和一个值x，调整链表，要求比x小的值排在前面，大于等于x的值排在后面，且不能改变原链表各个节点的相对位置。比如，Input: head = 1->4->3->2->5->2, x = 3；Output: 1->2->2->4->3->5
 
-思路：将所有小于给定值的节点取出组成一个新的链表，此时原链表中剩余的节点的值都大于或等于给定值，只要将原链表直接接在新链表后即可。
+思路：将所有小于给定值的节点取出组成一个新的链表1，将所有大于等于给定值的节点取出组成一个新的链表2，然后将两个链表连接起来即可。由于只额外申请了两个辅助节点，空间复杂度为O(1)；时间复杂度为O(n)，一趟遍历链表。
 
 本题又是巧用dummy节点的典型例题，在原链表和新链表中都运用了这一技巧，可以有效简化代码。
 
 ```java
-public ListNode partition(ListNode head, int x) {
-    if (head == null) return null;
-    ListNode dummy = new ListNode(-1);
-    ListNode pre = dummy, cur = head;
-    pre.next = head;
-    ListNode newDummy = new ListNode(-1);
-    ListNode newCur = newDummy;
-    while (cur != null) {
-        if (cur.val < x) {
-            pre.next = cur.next;
-            cur.next = null;
-
-            newCur.next = cur;
-            newCur = newCur.next;
-
-            cur = pre.next;
-        } else {
-            pre = cur;
-            cur = cur.next;
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode dummy1 = new ListNode(-1), dummy2 = new ListNode(-1);
+        ListNode curr1 = dummy1, curr2 = dummy2;
+        while(head != null) {
+            ListNode node = head;
+            head = head.next;
+            node.next = null;
+            if(node.val < x) {
+                curr1.next = node;
+                curr1 = curr1.next;
+            }else {
+                curr2.next = node;
+                curr2 = curr2.next;
+            }
         }
+        curr1.next = dummy2.next;
+        return dummy1.next;
     }
-    newCur.next = dummy.next;
-    return newDummy.next;
 }
 ```
 
