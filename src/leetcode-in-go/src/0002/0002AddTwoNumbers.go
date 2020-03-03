@@ -1,6 +1,8 @@
 package main
 
-import ""
+import "utils"
+
+type ListNode = utils.ListNode
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	carry := 0
@@ -27,8 +29,8 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 }
 
 func main() {
-	l1 := MakeList([]int{9,9,9})
-	l2 := MakeList([]int{1})
+	l1 := utils.MakeList([]int{9,9,9})
+	l2 := utils.MakeList([]int{1})
 	res := addTwoNumbers(l1, l2)
-	PrintList(res)
+	utils.PrintList(res)
 }
