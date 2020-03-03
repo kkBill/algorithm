@@ -1,6 +1,30 @@
 package LeetCode;
 
 public class _082_RemoveDuplicatesfromSortedList2 {
+    /*
+    // 思路1
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, curr = head;
+        while (curr != null && curr.next != null) {
+            if(curr.val == curr.next.val) {
+                int duplicate = curr.val;
+                while (curr != null && curr.val == duplicate) {
+                    curr = curr.next;
+                }
+                prev.next = curr;
+            } else {
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+        return dummy.next;
+    }
+
+     */
+
+    // 思路2: 巧妙，参考来的
     public ListNode deleteDuplicates(ListNode head) {
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
