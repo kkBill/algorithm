@@ -2,30 +2,28 @@ package LeetCode;
 
 public class _061_RotateList {
     public ListNode rotateRight(ListNode head, int k) {
-        // 当链表为空，或只有一个节点
-        if (head == null || head.next == null|| k <= 0) return head;
+        if(head == null) return head;
         int n = 0; // 链表长度
         ListNode curr = head, tail = null;
         while (curr != null) {
-            if(curr.next == null) {
-                tail = curr;
-            }
+            if(curr.next == null) tail = curr; // 记录尾节点
             curr = curr.next;
             n++;
         }
+        k %= n;
+        if(k == 0) return head;
 
-        k = k % n;
-
-        ListNode dummy = new ListNode(-1), pre = dummy;
-        pre.next = head;
-        ListNode newTail = pre;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode newTail = dummy;
         int i = 0;
         while (i < n-k) {
             newTail = newTail.next;
             i++;
         }
-        tail.next = pre.next;
-        pre.next = newTail.next;
+        // 这里的顺序不要搞错
+        tail.next = dummy.next;
+        dummy.next = newTail.next;
         newTail.next = null;
 
         return dummy.next;

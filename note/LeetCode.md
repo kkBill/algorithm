@@ -25,8 +25,8 @@
 | 21   | [Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_021_MergeTwoSortedLists.java) | 巧用dummy可以简化代码                          |           |
 | 22   | [Generate Parentheses](https://leetcode-cn.com/problems/generate-parentheses) |                                          |                                        |           |
 | 23   | [Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_023_MergekSortedLists.java) | 结合**优先队列**，自定义排序规则                     |           |
-| 24   | [Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_024_SwapNodesinPairs.java) | 巧用dummy，有一定难度                          |           |
-| 25   | [Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group) |                                          |                                        |           |
+| 24   | [Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_024_SwapNodesinPairs.java) | 巧用dummy，有一定难度。follow-up就是第25题。         | ⭐         |
+| 25   | [Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_025_ReverseNodesinkGroup.java) | ①每k个节点一组进行翻转(?)<br />②翻转后怎么进行连接(?)     | ⭐         |
 | 26   | [Remove Duplicates from Sorted Array](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array) |                                          |                                        |           |
 | 27   | [Remove Element](https://leetcode-cn.com/problems/remove-element) |                                          |                                        |           |
 | 28   | [Implement strStr()](https://leetcode-cn.com/problems/implement-strstr) |                                          |                                        |           |
@@ -62,7 +62,7 @@
 | 58   | [Length of Last Word](https://leetcode-cn.com/problems/length-of-last-word) |                                          |                                        |           |
 | 59   | [Spiral Matrix II](https://leetcode-cn.com/problems/spiral-matrix-ii) |                                          |                                        |           |
 | 60   | [Permutation Sequence](https://leetcode-cn.com/problems/permutation-sequence) |                                          |                                        |           |
-| 61   | [Rotate List](https://leetcode-cn.com/problems/rotate-list) |                                          |                                        |           |
+| 61   | [Rotate List](https://leetcode-cn.com/problems/rotate-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_061_RotateList.java) | 常规题，注意边界                               |           |
 | 62   | [Unique Paths](https://leetcode-cn.com/problems/unique-paths) |                                          |                                        |           |
 | 63   | [Unique Paths II](https://leetcode-cn.com/problems/unique-paths-ii) |                                          |                                        |           |
 | 64   | [Minimum Path Sum](https://leetcode-cn.com/problems/minimum-path-sum) |                                          |                                        |           |
@@ -83,8 +83,8 @@
 | 79   | [Word Search](https://leetcode-cn.com/problems/word-search) |                                          |                                        |           |
 | 80   | [Remove Duplicates from Sorted Array II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii) |                                          |                                        |           |
 | 81   | [Search in Rotated Sorted Array II](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii) |                                          |                                        |           |
-| 82   | [Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_082_RemoveDuplicatesfromSortedList2.java) | 本题有两种思路，值得学习                           |           |
-| 83   | [Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_083_RemoveDuplicatesfromSortedList.java) | 好题。对每一个重复的节点，设法保留第一次出现的那个。             |           |
+| 82   | [Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_082_RemoveDuplicatesfromSortedList2.java) | 本题有两种思路，值得学习                           | ⭐         |
+| 83   | [Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_083_RemoveDuplicatesfromSortedList.java) | 好题。对每一个重复的节点，设法保留第一次出现的那个。             | ⭐         |
 | 84   | [Largest Rectangle in Histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram) |                                          |                                        |           |
 | 85   | [Maximal Rectangle](https://leetcode-cn.com/problems/maximal-rectangle) |                                          |                                        |           |
 | 86   | [Partition List](https://leetcode-cn.com/problems/partition-list) | [Java](https://github.com/kkBill/algorithm/blob/master/src/LeetCode/_086_PartitionList.java) | 分别建立dummy1, dummy2来对原链表进行划分            | *         |

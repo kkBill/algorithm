@@ -8,11 +8,16 @@
 4. [21. Merge Two Sorted Lists](https://leetcode-cn.com/problems/merge-two-sorted-lists/) [二星]
 5. [23. Merge k Sorted Lists](https://leetcode-cn.com/problems/merge-k-sorted-lists/) [五星]
 6. [24. Swap Nodes in Pairs](https://leetcode-cn.com/problems/swap-nodes-in-pairs/) [五星+]
-7. ​
-8. [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) [五星]
-9. [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) [四星]
-10. [86. Partition List](https://leetcode-cn.com/problems/partition-list/) [三星]
+7. [25. Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)  [五星+++]
+8. [61. Rotate List](https://leetcode-cn.com/problems/rotate-list/) [四星]
+9. [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) [五星]
+10. [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) [四星]
+11. [86. Partition List](https://leetcode-cn.com/problems/partition-list/) [三星]
 
+
+
+
+---
 
 
 ##### [2. Add Two Numbers](https://leetcode-cn.com/problems/add-two-numbers/) 
@@ -280,44 +285,46 @@ class Solution {
 
 
 
-6. 对链表中每k个节点进行翻转（[25. Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)）
+##### [25. Reverse Nodes in k-Group](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)  [五星+++]
 
-思路：本体是是上一题的升级版，总的思路是先划分出k个节点，然后对这部分进行翻转，所以要用两个函数来处理。
+思路：本题是上一题的升级版，总的思路是先划分出k个节点，然后对这部分进行翻转，所以要用两个函数来处理。对于每k个节点进行一次处理，这里用到一个`cnt % k == 0` 的技巧，`cnt`用于表示当前是第几个节点（从1开始计数），当`cnt % k == 0`成立时，表示恰划分好一个group，需要对这部分进行处理。
 
 ```java
-public ListNode reverseKGroup(ListNode head, int k) {
-    if(head == null || k == 1) return head;
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || k == 1) return head;
 
-    ListNode dummy = new ListNode(-1);
-    ListNode prev = dummy, curr = head, tail = head;
-    int cnt = 1;
-    while (curr != null) {
-        if (cnt % k == 0) { // 技巧
-            tail = curr.next;
-            prev.next = reverse(head, tail);
-            curr = tail;
-            prev = head;
-            head = tail;
-        } else {
-            curr = curr.next;
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy, curr = head, tail = head;
+        int cnt = 1;
+        while (curr != null) {
+            if (cnt % k == 0) { // 技巧
+                tail = curr.next;
+                prev.next = reverse(head, tail);
+                curr = tail;
+                prev = head; // ！
+                head = tail;
+            } else {
+                curr = curr.next;
+            }
+            cnt++;
         }
-        cnt++;
+        prev.next = tail; //不能漏了
+        return dummy.next;
     }
-    prev.next = tail; //不能漏了
-    return dummy.next;
-}
 
-// 翻转 [left, right) 区间的链表
-private ListNode reverse(ListNode left, ListNode right) {
-    ListNode prev = null, curr = left, next = left;
-    while (curr != right) {
-        next = curr.next;
-        curr.next = prev;
-        // 更新
-        prev = curr;
-        curr = next;
+    // 翻转 [left, right) 区间的链表
+    private ListNode reverse(ListNode left, ListNode right) {
+        ListNode prev = null, curr = left;
+        while (curr != right) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            // 更新
+            prev = curr;
+            curr = next;
+        }
+        return prev;
     }
-    return prev;
 }
 ```
 
@@ -325,9 +332,9 @@ private ListNode reverse(ListNode left, ListNode right) {
 
 ```java
 ListNode reverseList(ListNode left, ListNode right) {
-    ListNode prev = null, curr = left, next = left;
+    ListNode prev = null, curr = left;
     while (curr != right){
-        next = curr.next;
+        ListNode next = curr.next;
         curr.next = prev;
         // 更新
         prev = curr;
@@ -339,7 +346,7 @@ ListNode reverseList(ListNode left, ListNode right) {
 
 
 
-7.  旋转链表（[61. Rotate List](https://leetcode-cn.com/problems/rotate-list/)）
+##### [61. Rotate List](https://leetcode-cn.com/problems/rotate-list/) [四星]
 
 比如1->2->3->4->5->NULL向右旋转2个节点，就成了4->5->1->2->3->NULL
 
@@ -349,7 +356,7 @@ rotate 1 steps to the right: 5->1->2->3->4->NULL
 rotate 2 steps to the right: 4->5->1->2->3->NULL
 ```
 
-这里首先应该考虑旋转的个数超过链表节点个数的情况，比如下面这种情况：
+这里首先应该考虑**旋转的个数超过链表节点个数**的情况，比如下面这种情况：
 
 ```
 Input: 0->1->2->NULL, k = 4
@@ -363,7 +370,7 @@ rotate 4 steps to the right: 2->0->1->NULL
 
 所以首先应该遍历一遍链表统计节点个数，记为n，那么真正旋转的节点个数为k=k%n（题目中已经说明k为非负数）。然后再采用“快慢指针”的思想，或者就是常规的思路，来改动节点指针。
 
-需要说明的是，当需要改变节点位置时，我们往往记录被切断位置的前一个节点。以例子进行说明：
+需要说明的是，**当需要改变节点位置时，我们往往记录被切断位置的前一个节点。**以例子进行说明：
 
 ```
 1 -> 2 -> 3 -> 4 -> 5
@@ -373,37 +380,36 @@ rotate 4 steps to the right: 2->0->1->NULL
 代码：
 
 ```java
-public ListNode rotateRight(ListNode head, int k) {
-    if (head == null || head.next == null || k <= 0) return head;
-    int n = 0; // 链表长度
-    ListNode curr = head, tail = null;
-    while (curr != null) {
-        if(curr.next == null) {
-            tail = curr;
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null) return head;
+        int n = 0; // 链表长度
+        ListNode curr = head, tail = null;
+        while (curr != null) {
+            if(curr.next == null) tail = curr; // 记录尾节点
+            curr = curr.next;
+            n++;
         }
-        curr = curr.next;
-        n++;
+        k %= n;
+        if(k == 0) return head;
+        
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode newTail = dummy;
+        int i = 0;
+        while (i < n-k) {
+            newTail = newTail.next;
+            i++;
+        }
+        // 这里的顺序不要搞错
+        tail.next = dummy.next;
+        dummy.next = newTail.next;
+        newTail.next = null;
+        
+        return dummy.next;
     }
-
-    k = k % n;
-
-    ListNode dummy = new ListNode(-1), pre = dummy;
-    pre.next = head;
-    ListNode newTail = pre;
-    int i = 0;
-    while (i < n-k) {
-        newTail = newTail.next;
-        i++;
-    }
-    tail.next = pre.next;
-    pre.next = newTail.next;
-    newTail.next = null;
-
-    return dummy.next;
 }
 ```
-
-
 
 
 
