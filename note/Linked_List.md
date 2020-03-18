@@ -13,7 +13,23 @@
 9. [83. Remove Duplicates from Sorted List](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/) [五星]
 10. [82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/) [四星]
 11. [86. Partition List](https://leetcode-cn.com/problems/partition-list/) [三星]
+12. [206. Reverse Linked List](https://leetcode-cn.com/problems/reverse-linked-list/) [3种解法, 递归版不熟]
+13. [92. Reverse Linked List II](https://leetcode-cn.com/problems/reverse-linked-list-ii/) [四星, 头插法的应用]
+14. [109. Convert Sorted List to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/) [五星+, 两种解法]
+15. [138. Copy List with Random Pointer](https://leetcode-cn.com/problems/copy-list-with-random-pointer/) [四星]
+16. [141. Linked List Cycle](https://leetcode-cn.com/problems/linked-list-cycle/) [二星, 基础] 快慢指针发，哈希法
+17. [142. Linked List Cycle II](https://leetcode-cn.com/problems/linked-list-cycle-ii/) [需要给出证明过程]
+18. [143. Reorder List](https://leetcode-cn.com/problems/reorder-list/) [五星, 细节要注意]
+19. [147. Insertion Sort List](https://leetcode-cn.com/problems/insertion-sort-list/) [链表插入排序, 不够熟练]
+20. [148. Sort List](https://leetcode-cn.com/problems/sort-list/) [五星, 链表归并排序, bottom-to-up的解法不够熟练]
+21. [160. Intersection of Two Linked Lists](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/) [四星, 很好的思路]
+22. [203. Remove Linked List Elements](https://leetcode-cn.com/problems/remove-linked-list-elements/) [一星, 链表的删除]
+23. [237. Delete Node in a Linked List](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/) [五星, 链表节点的删除]
+24. [234. Palindrome Linked List](https://leetcode-cn.com/problems/palindrome-linked-list/) [一星, 常规题]
+25. [328. Odd Even Linked List](https://leetcode-cn.com/problems/odd-even-linked-list/) [五星, 第一遍的代码优雅]
 
+
+总结：
 
 
 
@@ -533,185 +549,203 @@ class Solution {
 
 
 
-11. 翻转链表（[206. Reverse Linked List](https://leetcode-cn.com/problems/reverse-linked-list/)）
+##### [206. Reverse Linked List](https://leetcode-cn.com/problems/reverse-linked-list/) [3种解法, 递归版不熟悉]
 
 要求递归实现和非递归实现都熟练掌握，闭着眼睛都会写的那种。
 
-递归版（感觉很绕啊，我还是先不看了...）
-
-非递归版（必须熟练掌握）
+方法1：非递归版（必须熟练掌握）
 
 ```java
-public ListNode reverseList(ListNode head) {
-    ListNode prev = null, curr = head, next = head;
-    while (curr != null){
-        next = curr.next;
-        curr.next = prev;
-        // 更新
-        prev = curr;
-        curr = next;
-    }
-    return prev;
-}
-```
-
-
-
-12. 翻转链表2（[92. Reverse Linked List II](https://leetcode-cn.com/problems/reverse-linked-list-ii/)）（新的思路~）
-
-翻转区间[m,n]之间的链表，要求一趟遍历。比如，Input: 1->2->3->4->5->NULL, m = 2, n = 4；Output: 1->4->3->2->5->NULL ，保证1 ≤ m ≤ n ≤ length
-
-```java
-public ListNode reverseBetween(ListNode head, int m, int n) {
-    if (head == null || m == n) return head;
-    ListNode dummy = new ListNode(-1);
-    dummy.next = head;
-    ListNode prev = dummy;
-    for (int i = 0; i < m - 1; i++) {
-        prev = prev.next;
-    }
-    ListNode curr = prev.next;
-    for (int i = m; i < n; i++) {
-        ListNode t = curr.next;
-        curr.next = t.next;
-        t.next = prev.next;
-        prev.next = t;
-    }
-    return dummy.next;
-}
-```
-
-参考[这里](https://www.cnblogs.com/grandyang/p/4306611.html) 。
-
-
-
-13. 判断链表是否存在环（[141. Linked List Cycle](https://leetcode-cn.com/problems/linked-list-cycle/)）
-
-
-```java
-public boolean hasCycle(ListNode head) {
-    ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null){
-        slow = slow.next;
-        fast = fast.next.next;
-        if(slow == fast) return true;
-    }
-    return false;
-}
-```
-
-
-
-
-14. 找出环形链表的入口节点（[142. Linked List Cycle II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)）
-
-```java
-public ListNode detectCycle(ListNode head) {
-    ListNode slow = head, fast = head;
-    boolean hasCycle = false;
-    // 判断是否有环（快慢指针）
-    while (fast != null && fast.next != null){
-        slow = slow.next;
-        fast = fast.next.next;
-        if(slow == fast) {
-            hasCycle = true;
-            break;
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null, curr = head;
+        while(curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
+        return prev;
     }
-    if(!hasCycle) return null;
-    // 寻找环的入口节点
-    slow = head;
-    while (slow != fast) {
-        slow = slow.next;
-        fast = fast.next;
-    }
-    return slow;
 }
 ```
 
-13、14两题是快慢指针的经典例题，没什么好说的，熟练掌握~
-
-
-
-15. 删除链表中的元素（[203. Remove Linked List Elements](https://leetcode-cn.com/problems/remove-linked-list-elements/)）（常规题）
+方法2：递归版：先考虑只有一个节点、两个节点的情况。
 
 ```java
-public ListNode removeElements(ListNode head, int val) {
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode curr = reverseList(head.next);
+        // 比如一个 1 -> 2 -> 3 -> 4 -> 5-> null 的链表
+        //                        |    | 
+        // 此时：                 head curr  
+        head.next.next = head;
+        head.next = null;
+        return curr;
+    }
+}
+```
+
+方法3：头插法。即新建一个dummy head节点，顺序遍历原链表，并把节点根据**头插法**连接在dummy节点之后，最后返回dummy.next即可。头插法可以实现链表的逆序，这也是一个很好的思路。
+
+```java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        while (head != null) {
+            ListNode curr = head;
+            head = head.next;
+            curr.next = dummy.next;
+            dummy.next = curr;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
+
+##### [92. Reverse Linked List II](https://leetcode-cn.com/problems/reverse-linked-list-ii/) [四星，头插法的应用]
+
+翻转区间[m,n]之间的链表，**要求一趟遍历**。比如，Input: 1->2->3->4->5->NULL, m = 2, n = 4；Output: 1->4->3->2->5->NULL ，保证1 ≤ m ≤ n ≤ length。
+
+方法1：找到区间[m,n]的节点，对这部分进行翻转。虽然也挺快的，但是这种做法并不满足“一趟遍历”的要求。这种做法，第一遍为了确定区间[m,n]，会遍历到第n个节点（O(n)）；第2遍真正处理翻转，需要消耗O(n-m)个时间。**最差情况需要两趟遍历。**
+
+```java
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode left = head, beforeLeft = dummy;
+        for(int i = 1; i < m; i++) {
+            beforeLeft = left;
+            left = left.next;
+        }
+        ListNode right = left;
+        for(int i = m; i <= n; i++) {
+            right = right.next;
+        }
+        beforeLeft.next = reverseList(left, right);
+        left.next = right; // 翻转后，left变为区间[m,n]的尾节点
+        return dummy.next;
+    }
+    // 翻转区间[left, right)的链表，并返回该部分链表翻转后新的头节点
+    public ListNode reverseList(ListNode left, ListNode right) {
+        ListNode prev = null, curr = left;
+        while(curr != right) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+
+
+方法2：第1次做是参考[这里](https://www.cnblogs.com/grandyang/p/4306611.html)的。第2次回顾时，发现这种做法的本质就是头插法。确定第m个节点的前一个节点，记为prev，并记第m个节点为curr，每次都把curr的下一个节点移到prev之后即可。
+
+```java
+// 时间复杂度：O(n) 一趟遍历
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy;
+        for(int i = 1; i < m; i++) {
+            prev = prev.next;
+        }
+        ListNode curr = prev.next;
+        for(int i = m; i < n; i++) {
+            ListNode post = curr.next;
+            curr.next = post.next;
+            post.next = prev.next;
+            prev.next = post;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
+
+##### [109. Convert Sorted List to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/) [五星+]
+
+这一题与[108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) 思路完全一致。区别在于有序数组可以直接计算出中间节点的位置，而链表只能采用快慢指针的思路获取中间节点。
+
+方法1：每一趟找到链表的中间节点mid，根据mid节点的值创建二叉树的根节点root，然后再递归的处理前半部分链表[head, mid) 和后半部分链表[mid.next, null]，分别作为root的左右孩子节点。
+
+```java
+// 时间复杂度：O(N*logN)
+// 空间复杂度：O(logN)
+public TreeNode sortedListToBST(ListNode head) {
     if(head == null) return null;
-    ListNode dummy = new ListNode(-1);
-    dummy.next = head;
-    ListNode prev = dummy;
-    while (prev.next != null) {
-        if(prev.next.val == val) prev.next = prev.next.next;
-        else prev = prev.next;
+    if(head.next == null) return new TreeNode(head.val);
+  
+  	// 该部分是这一解法比较耗时的地方，可以优化~
+    ListNode slow = head, fast = head, prev = null;
+    while (fast != null && fast.next != null) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
     }
-    return dummy.next;
+    prev.next = null; // 截断前半部分链表
+    fast = slow.next; // 重置后半部分链表的头节点（这里用fast节点代替）
+  
+    TreeNode root = new TreeNode(slow.val);
+    // 递归处理左右子树~
+    root.left = sortedListToBST(head);
+    root.right = sortedListToBST(fast);
+    return root;
 }
 ```
 
-在LeetCode中，还有另外一题也是删除节点的，一开始看了下题目觉得“这是什么弱智题目”，再仔细一想感觉“题目是不是出错了”，最后看了题解才发现是自己的问题。这一题提供了一个很好的处理链表的思路。
+后记：当然，本题也可以先把链表中的值转存至数组中，然后利用第108题的做法做，这样可以把时间缩减至O(n)，只不过空间复杂度变成了O(n)，这是典型的**用空间换时间**的做法。面试的时候也可以把这个思路说给面试官听。
 
-在[237. Delete Node in a Linked List](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/) 题中，要求编写一个函数，使其可以删除某个链表中给定的（**非末尾**）节点，你将只被给定要求被删除的节点。并且给出了以下几个约束条件：
+方法2：参考[这里](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/solution/convert-sorted-list-to-binary-search-tree-di-ding-/) 。这种思路的思想是**模拟二叉树的中序遍历**，因为BST的中序遍历是升序序列，而给定的链表也恰是升序序列，因此，可以在模拟中序遍历的过程中把链表的值填入树的结构中，最后形成BST。由于只需要遍历一趟链表，该做法的时间复杂度为O(n)，空间复杂度为O(log n)（即递归深度）。
 
-- 链表至少包含两个节点。
-- 链表中所有节点的值都是**唯一**的。
-- 给定的节点为**非末尾节点并且一定是链表中的一个有效节点**。
-- 不要从你的函数中返回任何结果。
+但是感觉这种做法还是比较难以理解的，目前理解的还不深刻，没想到递归还可以这么玩儿。先把解法记录于此。
 
 ```java
-public void deleteNode(ListNode node) {
-        
-}
-```
-
-题目只给出了这样一个函数，我们无法获取链表的头节点。一般来说，我们要删除某个节点，就要获取该节点的前一个节点（prev），但是在本题中，只给出了待删除的节点，因此常规的思路行不通。由于该链表保证所有节点的值都是唯一的，且待删除的节点不是尾节点。因此可以这样考虑：（参考[这里](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/solution/shan-chu-lian-biao-zhong-de-jie-dian-by-leetcode/)）
-
-从链表里删除一个节点 node 的最常见方法是修改**之前**节点的 next 指针，使其指向之后的节点。
-
-![img](https://pic.leetcode-cn.com/3579a496897df5321c110bf1301872b6e10c342f5e400ce45d2db0348d00d715-file_1555866623326)
-
-
-
-由于我们无法访问我们想要删除的节点**之前**的节点，我们始终不能修改该节点的 next 指针。相反，我们可以将想要删除的节点的值替换为它后面节点中的值，然后删除它之后的节点（这个时候，已知的这个节点就成了待删除节点的prev节点）。如下图所示，已知给定node 3，且要求删除node 3，可以将node 3的值替换为在它后面的值，也就是4，然后再删除node 4即可。
-
-![img](https://pic.leetcode-cn.com/858fae01d89c2080eb7e45a1f9d9a2b2f76e1a5c87815b324fd946e0bd8da495-file_1555866651920)
-
-![img](https://pic.leetcode-cn.com/902dc5d3f8c44d3cbc0b6e837711cad2eefc021fd2b9de8dfabc6d478bc779b1-file_1555866680932)
-
-![img](https://pic.leetcode-cn.com/2a6409b98dd73d6649fdc6fb984c88690547127467104c3923367be6f8fbc916-file_1555866773685)
-
-因为我们知道要删除的节点不是列表的末尾，所以我们可以保证这种方法是可行的。
-
-```java
-public void deleteNode(ListNode node) {
-    node.val = node.next.val;
-    node.next = node.next.next;
-}
-```
-
-
-
-16. **求两个链表相交节点（[160. Intersection of Two Linked Lists](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)）（很有意思~）**
-
-本题要求时间复杂度O(n)，空间复杂度O(1)，还是有相当难度的。自己没想出来，参考评论区的。
-
-
-
-```java
-public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-    if(headA == null || headB == null) return null;
-    ListNode pA = headA, pB = headB;
-    while(pA != pB) {
-        pA = pA != null ? pA.next : headB;
-        pB = pB != null ? pB.next : headA;
+class Solution {
+    private ListNode gHead; // 全局变量
+    public TreeNode sortedListToBST(ListNode head) {
+        gHead = head;
+        int len = getLength(head);
+        return helper(0, len-1);
     }
-    return pA;
+    
+    private TreeNode helper(int l, int r) {
+        if(l > r) return null;
+        int mid = (r - l) / 2 + l;
+        TreeNode left = helper(l, mid-1);
+        TreeNode root = new TreeNode(gHead.val);
+        gHead = gHead.next;
+        root.left = left;
+        root.right = helper(mid+1, r);
+        return root;
+    }
+    
+    private int getLength(ListNode head) {
+        ListNode curr = head;
+        int len = 0;
+        while (curr != null) {
+            len++;
+            curr = curr.next;
+        }
+        return len;
+    }
 }
 ```
 
 
 
-17. 复制带随机节点的链表（[138. Copy List with Random Pointer](https://leetcode-cn.com/problems/copy-list-with-random-pointer/)）
+##### [138. Copy List with Random Pointer](https://leetcode-cn.com/problems/copy-list-with-random-pointer/) [四星]
 
 节点的定义如下：
 
@@ -727,6 +761,7 @@ class Node {
         this.random = null;
     }
 }
+
 ```
 
 带随机节点的链表如下所示：
@@ -740,12 +775,14 @@ class Node {
 ```
 Old List: A --> B --> C --> D
 New List: A --> A' --> B --> B' --> C --> C' --> D --> D'
-```
-
-2）比如，原链表中节点B的随机指针指向D，那么令节点B' 的随机指针指向节点D'。假设当前知道节点B的指针，也就很容易找到节点D'。
 
 ```
-curr.random = prev.random.next;
+
+2）假设原链表中节点B的随机指针指向D，那么我们要想办法把节点B' 的随机指针指向节点D'。假设当前节点curr为节点B，那么复制节点B'的random指针操作如下：
+
+```
+curr.next.random = curr.random.next;
+// curr为节点B，curr.next则为节点B'，curr.random为D，而curr.random.next则为D'
 ```
 
 这一步是本题的关键。这也是为什么在步骤1中要复制节点构成`A --> A' --> B --> B'` 的形式！
@@ -789,49 +826,134 @@ public Node copyRandomList(Node head) {
 
 
 
-18. 回文链表（[234. Palindrome Linked List](https://leetcode-cn.com/problems/palindrome-linked-list/)）
+##### [141. Linked List Cycle](https://leetcode-cn.com/problems/linked-list-cycle/) [二星, 基础]
 
-判断一个链表是否为回文链表。如果是数组，那么判断回文数非常简单，但是由于单向链表只能顺序遍历，不能从后向前访问，因此会比较麻烦。首先，利用快慢指针法找到链表的中间节点，然后翻转后半部分链表，然后再顺序比较这两部分的节点是否对应相等即可。
+判断链表是否有环。
 
-本题的关键在于翻转后半部分链表，同样的思路在[143. Reorder List](https://leetcode-cn.com/problems/reorder-list/) 也有运用。
+方法1：快慢指针法。
 
 ```java
-// 时间复杂度：O(n)
+// 时间复杂度：
 // 空间复杂度：O(1)
-public boolean isPalindrome(ListNode head) {
-    if(head == null || head.next == null) return true;
-    ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) return true;
+        }
+        return false;
     }
-    // 节点个数为奇数个
-    if(fast != null) slow = slow.next;
-    
-    // 翻转区间[slow, 尾节点]之间的链表
-    ListNode prev = null, curr = slow;
-    while (curr != null) {
-        ListNode next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-    }
-    slow = prev; // 将反转后的链表头节点重新设为slow
+}
+```
 
-    // 重置fast指针
-    fast = head;
-    while (slow != null) {
-        if(slow.val != fast.val) return false;
-        slow = slow.next;
-        fast = fast.next;
+方法2：哈希法。（虽然快慢指针法已经是这道题的标准解法，但是最基础的哈希法也别忘记了）
+
+将节点存储在一个Set中，在遍历的过程中，如果一个节点已经出现在Set中，那么这个链表就是有环的。
+
+```java
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while (curr != null) {
+            if(set.contains(curr)) {
+                return true;
+            }else {
+                set.add(curr);
+            }
+            curr = curr.next;
+        }
+        return false;
     }
-    return true;
 }
 ```
 
 
 
-19. 重排链表（[143. Reorder List](https://leetcode-cn.com/problems/reorder-list/) ）
+##### [142. Linked List Cycle II](https://leetcode-cn.com/problems/linked-list-cycle-ii/) [需要给出证明过程]
+
+方法1：快慢指针法。
+
+证明：（图片来自官方题解）
+
+![image.png](https://pic.leetcode-cn.com/99987d4e679fdfbcfd206a4429d9b076b46ad09bd2670f886703fb35ef130635-image.png)
+
+利用快慢指针法，假设慢指针slow和快指针fast在node h处相遇，此时有：
+
+```
+2×distance(slow) = distance(fast)，即
+2×(F+a) = F+a+n×(b+a) (其中n为正数，表示快指针对慢指针套的圈数)
+化简可得：
+F = (n-1)×(b+a) + b
+由这个式子可以看出：
+1.若快慢指针在相遇时，快指针只多走了1圈，即n=1，那么有F=b，此时重置slow为head，然后让slow和fast每次走一步，当两者再次相遇时，相遇点就是环的入口。
+2.若快慢指针在相遇时，快指针只多走了不止1圈，即n>1，此时不妨令 F = C×(b+a)+b (其中C为常数)
+  和1一样，当slow走了F距离的时候，fast也必然会与其相遇，只不过这种情况下，fast会先绕环C圈，然后再走b距离   与slow相遇
+```
+
+复杂度分析：假设链表没有环，程序会在阶段1就结束，只会遍历n/2个节点，时间复杂度为O(n)
+
+假设链表有环，在第2阶段中，快慢指针需再遍历 F 次，由于 F 必然小于 n(链表长度)，因此这一阶段仍然是O(n)。因此，无论那种情况，总的时间复杂度是O(n)级别的。空间复杂度就是O(1)了。
+
+```java
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        boolean hasCycle = false;
+        ListNode slow = head, fast = head;
+        // 阶段1. 快慢指针法判断链表是否有环
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) {
+                hasCycle = true;
+                break;
+            }
+        }
+        if(!hasCycle) return null;
+        // 阶段2. 寻找入口
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+}
+```
+
+
+
+方法2：哈希法。我们分配一个 Set 去保存所有的列表节点。我们逐一遍历列表，检查当前节点是否出现过，如果节点已经出现过，那么一定形成了环且它是环的入口。从实现的角度讲，这种方法更加简单，和前一题判断链表是否有环一摸一样。
+
+时间复杂度：不管有没有环，都要(也只需要)完整的遍历一遍环，即O(n)
+
+空间复杂度：借助哈希表把所有节点存入其中，即O(n)。
+
+```java
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while (curr != null) {
+            if(set.contains(curr)) {
+                return curr;
+            }else {
+                set.add(curr);
+            }
+            curr = curr.next;
+        }
+        return null;
+    }
+}
+```
+
+
+
+##### [143. Reorder List](https://leetcode-cn.com/problems/reorder-list/) [四星, 细节要注意]
 
 给定一个链表 L 为: L0→L1→…→Ln-1→Ln, 重排链表，将其调整为: L0→Ln→L1→Ln-1→L2→Ln-2→…
 
@@ -848,38 +970,428 @@ public boolean isPalindrome(ListNode head) {
 这种方法的空间复杂度O(1)，时间复杂度O(n)
 
 ```java
-public void reorderList(ListNode head) {
-    if(head == null) return;
-    ListNode p1 = head, p2 = head;
-    while (p2 != null && p2.next != null) {
-        p1 = p1.next;
-        p2 = p2.next.next;
-    }
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null) return; // 注意特殊情况的判断，否则后面第3部分判断 p1.next!=null 就会出错
+        // 1.寻找中间节点
+        ListNode p1 = head, p2 = head;
+        while (p2 != null && p2.next != null) {
+            p1 = p1.next;
+            p2 = p2.next.next;
+        }
 
-    // 翻转后半部分
-    ListNode prev = null, curr = p1;
-    while (curr != null){
-        ListNode next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-    }
-    p1 = prev; // prev此时为翻转后的链表的节点
-    p2 = head;
-
-    while (p1.next != null){
-        ListNode t = p1;
-        p1 = p1.next;
-        t.next = p2.next;
-        p2.next = t;
-        p2 = p2.next.next;
+        // 2.翻转后半部分
+        ListNode prev = null, curr = p1;
+        while (curr != null){
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        p1 = prev; // prev此时为翻转后的链表的头节点
+        p2 = head;
+        // 3.合并
+        while (p1.next != null){
+            ListNode t = p1;
+            p1 = p1.next;
+            t.next = p2.next;
+            p2.next = t;
+            p2 = p2.next.next;
+        }
     }
 }
 ```
 
 
 
-20. 奇偶链表（[328. Odd Even Linked List](https://leetcode-cn.com/problems/odd-even-linked-list/)）
+##### [147. Insertion Sort List](https://leetcode-cn.com/problems/insertion-sort-list/) [链表插入排序, 必须熟练]
+
+思路：排序问题，想要速度快，就要尽量减少比较的次数，这是最核心的观点。
+
+- 需要一个指针始终指向**已排序部分**的最后一个节点，这里记为tail，初始化为头节点
+- 记当前节点为curr，初始化为第2个节点
+- 外层循环即从第2个节点开始到最后一个节点
+- 每一轮比较时，首先比较curr与tail节点的大小，如果curr.val >= tail.val，则直接把curr连接在tail之后即可
+- 否则，需要从首节点开始比较，直到找到合适的插入位置。这里借助dummy的技巧使得代码更简洁。
+
+复杂度分析：理想情况下，即原链表有序，则时间复杂度为O(n)；最差情况，即原链表逆序，则时间复杂度为O(n^2)
+
+```java
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head == null) return null;
+        
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode tail = head, curr = head.next;
+        while (curr != null) {
+            if(curr.val >= tail.val) {
+                tail = curr;
+            }else {
+                ListNode prev = dummy;
+                while (prev.next.val < curr.val) {
+                    prev = prev.next;
+                }
+                // 位置调整
+                tail.next = curr.next;
+                curr.next = prev.next;
+                prev.next = curr;
+            }
+            // next node
+            curr = tail.next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
+
+##### [148. Sort List](https://leetcode-cn.com/problems/sort-list/) [五星, 链表归并排序, bottom-to-up的解法不够熟练]
+
+本题要求在*O*(*n* log *n*) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+
+方法1：对于链表这种数据结构，只能用归并排序了，但是归并排序的需要O(log n)的空间。下面的写法就是根据常规思路写出来的归并排序，严格来说，空间复杂度是不符合要求的。
+
+```java
+// 时间复杂度：O(n*logn)
+// 空间复杂度：O(logn)
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head == null || head.next == null) return head;
+        
+        // 1.快慢指针确定中间节点, 当退出循环时, slow指向后半部分的第一个节点
+        ListNode slow = head, fast = head, prev = null;
+        while(fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        prev.next = null; // 截断前半部分
+        
+        // 2.递归
+        ListNode h1 = sortList(head);
+        ListNode h2 = sortList(slow);
+        
+        // 3.合并两个有序链表
+        return merge(h1, h2);
+    }
+    
+    // 合并两个有序链表，返回合并后链表的首节点
+    public ListNode merge(ListNode h1, ListNode h2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        while (h1 != null && h2 != null) {
+            if(h1.val < h2.val) {
+                prev.next = h1;
+                h1 = h1.next;
+            }else {
+                prev.next = h2;
+                h2 = h2.next;
+            }
+            prev = prev.next;
+        }
+        if(h1 != null) prev.next = h1;
+        else prev.next = h2;
+        return dummy.next;
+    }
+}
+```
+
+
+
+方法2：事实上，确实有空间复杂度为O(1)的归并排序写法，参考[这里](https://leetcode-cn.com/problems/sort-list/solution/sort-list-gui-bing-pai-xu-lian-biao-by-jyd/)。也就是bottom-to-up的写法，或者说是**归并排序的非递归写法**。这种方法一定要熟悉。
+
+```java
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        int length = getLength(head);
+        // O(log n)
+        for (int step = 1; step < length; step <<= 1) {
+            ListNode prev = dummy;
+            ListNode curr = prev.next;
+            // O(n)
+            while (curr != null) {
+                ListNode left = curr;
+                ListNode right = cut(left, step);
+                curr = cut(right, step);
+                prev.next = merge(left, right);
+                // update prev for next iteration
+                while (prev.next != null) {
+                    prev = prev.next;
+                }
+            }
+        }
+        return dummy.next;
+    }
+
+    // 关键函数~
+    // 分割链表: 截断从head节点开始(including head)的第n个节点，并返回截断之后半部分的新链表头
+    // 原链表：2(head)->3->1->4->5->9->null
+    // 调用 cut(head, 2) 后，链表变为：
+    // part 1: 2->3->null
+    // part 2: 1->4->5->9->null （cut(head, 2)方法 返回节点1）
+    public ListNode cut(ListNode head, int n) {
+        if(head == null) return null; // 关键
+
+        ListNode curr = head;
+        for (int i = 1; i < n && curr.next != null; i++) {
+            curr = curr.next;
+        }
+        ListNode right = curr.next;
+        curr.next = null; // 截断前n个节点
+        return right;
+    }
+
+    // 获取链表长度
+    public int getLength(ListNode head) {
+        ListNode curr = head;
+        int length = 0;
+        while (curr != null) {
+            length++;
+            curr = curr.next;
+        }
+        return length;
+    }
+    
+    // 合并两个有序链表，返回合并后链表的首节点
+    public ListNode merge(ListNode h1, ListNode h2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        while (h1 != null && h2 != null) {
+            if (h1.val < h2.val) {
+                prev.next = h1;
+                h1 = h1.next;
+            } else {
+                prev.next = h2;
+                h2 = h2.next;
+            }
+            prev = prev.next;
+        }
+        if (h1 != null) prev.next = h1;
+        else prev.next = h2;
+        return dummy.next;
+    }
+}
+```
+
+
+
+方法3：本题还可以用**快速排序**的思想去写，由于链表无法随机访问，在“主元选取”部分做简单处理了（即挑选链表的首个节点作为pivot element），这样的解法可以通过测试，但效率非常低。
+
+```java
+class Solution {
+    public ListNode sortList(ListNode head) {
+        return qSort(head, null);
+    }
+    
+    private ListNode qSort(ListNode head, ListNode end) {
+        if (head == end || head.next == end) return head;
+
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode pivot = head, prev = dummy;
+        while (prev.next != end) {
+            if (prev.next.val < pivot.val) {
+                ListNode temp = prev.next;
+                prev.next = prev.next.next;
+                temp.next = dummy.next;
+                dummy.next = temp;
+            } else {
+                prev = prev.next;
+            }
+        }
+        
+        // 递归处理
+        dummy.next = qSort(dummy.next, pivot);
+        pivot.next = qSort(pivot.next, end);
+
+        return dummy.next;
+    }
+}
+```
+
+
+
+##### [160. Intersection of Two Linked Lists](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/) [四星, 很好的思路]
+
+求两个链表的相交节点，如果两个链表不相交，则返回null。
+
+本题要求时间复杂度O(n)，空间复杂度O(1)，还是有相当难度的。自己没想出来，参考评论区的。
+
+方法1：哈希法，但是不满足本题的要求。
+
+```java
+public class Solution {
+    // 时间复杂度：O(n) // n为两个链表的所有节点
+    // 空间复杂度：O(n) // 同上
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = headA;
+        while(curr != null) {
+            set.add(curr);
+            curr = curr.next;
+        }
+        curr = headB;
+        while(curr != null) {
+            if(set.contains(curr)){
+                return curr;
+            }
+            curr = curr.next;
+        }
+        return null;
+    }
+}
+```
+
+方法2：最优解
+
+思路如下图所示：
+
+![image.png](https://pic.leetcode-cn.com/e0efdd908a8941e3c53a68a6049d88c437b8299e48540a772ab091b86695d981-image.png)
+
+初始化 pA = headA, pB = headB，开始遍历。
+以上图为例，pA会先到达链表尾，**当pA到达末尾时，重置pA为headB；同样的，当pB到达末尾时，重置pB为headA**。当pA与pB相遇时，必然就是两个链表的交点。
+
+为什么要这样处理？因为这样的一个遍历过程，对pA而言，走过的路程即为`a+c+b`，对pB而言，即为`b+c+a`，显然`a+c+b = b+c+a`，这就是该算法的核心原理。
+
+即使两个链表没有相交点，事实上，仍然可以统一处理，因为这种情况意味着相交点就是null，也就是上图中的公共部分c没有了，从而递推式变成了pA: `a+b`，pB:` b+a`，这同样是成立的。
+
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode pA = headA, pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        return pA;
+    }
+}
+```
+
+
+
+##### [203. Remove Linked List Elements](https://leetcode-cn.com/problems/remove-linked-list-elements/) [一星]
+
+删除链表中等于给定值 **val **的所有节点。
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy;
+        while(prev.next != null) {
+            if(prev.next.val == val) {
+                prev.next = prev.next.next;
+                continue;
+            }
+            prev = prev.next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
+
+##### [237. Delete Node in a Linked List](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/) [五星]
+
+在LeetCode中，还有另外一题（第237题）也是考察删除节点的，一开始觉得“这是什么弱智题目”，再仔细一想感觉“题目是不是出错了”，最后看了题解才发现是自己的问题。这一题提供了一个很好的处理链表的思路。
+
+本题中，要求编写一个函数，使其可以删除某个链表中给定的（**非末尾**）节点，你将只被给定要求被删除的节点。并且给出了以下几个约束条件：
+
+- 链表至少包含两个节点。
+- 链表中所有节点的值都是**唯一**的。
+- 给定的节点为**非末尾节点并且一定是链表中的一个有效节点**。
+- 不要从你的函数中返回任何结果。
+
+```java
+public void deleteNode(ListNode node) {
+        
+}
+```
+
+题目只给出了这样一个函数，我们无法获取链表的头节点。**一般来说，我们要删除某个节点，就要获取该节点的前一个节点（prev）**，但是在本题中，只给出了待删除的节点，因此常规的思路行不通。由于该链表保证所有节点的值都是唯一的，且待删除的节点不是尾节点。因此可以这样考虑，如下所示。（思路参考[这里](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/solution/shan-chu-lian-biao-zhong-de-jie-dian-by-leetcode/)）
+
+从链表里删除一个节点 node 的最常见方法是修改**之前**节点的 next 指针，使其指向之后的节点。
+
+由于我们无法访问我们想要删除的节点**之前**的节点，因此，我们可以**将想要删除的节点的值替换为它后面节点中的值，然后删除它之后的节点（这个时候，已知的这个节点就成了待删除节点的prev节点）**。如下图所示，已知给定node 3，且要求删除node 3，可以将node 3的值替换为在它后面的值，也就是4，然后再删除node 4即可。
+
+![img](https://pic.leetcode-cn.com/3579a496897df5321c110bf1301872b6e10c342f5e400ce45d2db0348d00d715-file_1555866623326)
+
+![img](https://pic.leetcode-cn.com/858fae01d89c2080eb7e45a1f9d9a2b2f76e1a5c87815b324fd946e0bd8da495-file_1555866651920)
+
+![img](https://pic.leetcode-cn.com/902dc5d3f8c44d3cbc0b6e837711cad2eefc021fd2b9de8dfabc6d478bc779b1-file_1555866680932)
+
+![img](https://pic.leetcode-cn.com/2a6409b98dd73d6649fdc6fb984c88690547127467104c3923367be6f8fbc916-file_1555866773685)
+
+因为我们知道要删除的节点不是列表的末尾节点，所以我们可以保证这种方法是可行的。
+
+```java
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+```
+
+
+
+##### [234. Palindrome Linked List](https://leetcode-cn.com/problems/palindrome-linked-list/) [一星, 常规题]
+
+判断一个链表是否为回文链表。如果是数组，那么判断回文数非常简单，但是由于单向链表只能顺序遍历，不能从后向前访问，因此会比较麻烦。首先，利用快慢指针法找到链表的中间节点，然后翻转后半部分链表，然后再顺序比较这两部分的节点是否对应相等即可。
+
+本题的关键在于翻转后半部分链表，同样的思路在[143. Reorder List](https://leetcode-cn.com/problems/reorder-list/) 也有运用。
+
+```java
+class Solution {
+    // 时间复杂度：O(n)
+    // 空间复杂度：O(1)
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null) return true;
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        if(fast != null) { // 节点个数为奇数个
+            slow = slow.next;
+        }
+        
+        slow = reverse(slow); // 将反转后的链表头节点重新设为slow
+        fast = head; // 重置fast指针
+        
+        while (slow != null) {
+            if(slow.val != fast.val) return false;
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return true;
+    }
+    
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null, curr = head;
+        while(curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+}
+```
+
+
+
+##### [328. Odd Even Linked List](https://leetcode-cn.com/problems/odd-even-linked-list/) [五星, 第一遍的代码优雅]
 
 给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。要求时间复杂度为O(n)，空间复杂度为O(1)。
 
@@ -887,178 +1399,51 @@ public void reorderList(ListNode head) {
 
 我觉得做这个题的关键是如何设置while()循环条件，举几个例子（比如3个节点、4个节点这样的链表）试一下即可。自己写的代码就是标准代码了，非常精简~
 
+prev节点处理奇数个节点，curr处理偶数个节点。两者均在原链表上进行操作，比较trick.
+
 ```java
-public ListNode oddEvenList(ListNode head) {
-    if (head == null) return head;
-    ListNode prev = head, curr = head.next, evenHead = head.next;
-    while (curr != null && curr.next != null) {
-        prev.next = curr.next;
-        prev = prev.next;
-        curr.next = (prev != null ? prev.next : null);
-        curr = curr.next;
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null) return head;
+        ListNode prev = head, curr = head.next, evenHead = head.next;
+        while (curr != null && curr.next != null) {
+            prev.next = curr.next;
+            prev = prev.next;
+            curr.next = (prev != null ? prev.next : null);
+            curr = curr.next;
+        }
+        prev.next = evenHead;
+        return head;
     }
-    prev.next = evenHead;
-    return head;
 }
 ```
 
-
-
-21. 对链表进行插入排序（[147. Insertion Sort List](https://leetcode-cn.com/problems/insertion-sort-list/)）
-
-思路：
+时隔一个月后重写，速度更快了，但还不如第一次写的优雅~
+思路：把奇数节点在原链表中操作，偶数节点连接到一个新链表中，最后把新链表连接在原链表的末尾。
+考虑到原链表的个数有奇数个或偶数个，因此组要在语句1中判断一下，以保证最后curr不为空，可确保语句3不会出错。另外，使用这种做法千万不能忘记语句2，这行代码的意思是从原链表中”取出“第偶个数节点，如果不及时切断，那么它的next指针仍然会指向原链表中的节点，当原链表为奇数个节点时，忘记语句2会导致出现”环“，提交时显示超时。
 
 ```java
-// 版本1
-public ListNode insertionSortList(ListNode head) {
-    if(head == null) return null;
-    ListNode dummy = new ListNode(-1);
-    dummy.next = head;
-    ListNode preP1 = head, p1 = head.next; // 外侧遍历
-    while (p1 != null) {
-        ListNode preP2 = dummy, p2 = dummy.next; // 内层遍历
-        while (p2 != p1) {
-            if(p1.val < p2.val) break;
-            preP2 = p2;
-            p2 = p2.next;
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if(head == null) return null;
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy, curr = head;
+        while(curr != null && curr.next != null) {
+            ListNode t = curr.next;
+            curr.next = curr.next.next;
+            if(curr.next != null){ // 语句1
+                curr = curr.next;
+            }
+            // 偶数链表
+            t.next = null; // 语句2（关键）
+            prev.next = t;
+            prev = t;
         }
-        if(p2 == p1){
-            preP1 = p1;
-            p1 = p1.next;
-        }else {
-            preP1.next = p1.next;
-            p1.next = p2;
-            preP2.next = p1;
-            p1 = preP1.next;
-        }
+        curr.next = dummy.next; // 语句3
+        return head;
     }
-    return dummy.next;
-}
-
-// 版本2（优化），速度快了不少~
-public ListNode insertionSortList(ListNode head) {
-    if (head == null) return null;
-    ListNode dummy = new ListNode(-1);
-    dummy.next = head;
-    ListNode preP1 = head, p1 = head.next; // 外侧遍历
-    while (p1 != null) {
-        if (p1.val >= preP1.val) {
-            preP1 = p1;
-            p1 = p1.next;
-            continue;
-        }
-        ListNode preP2 = dummy, p2 = dummy.next; // 内层遍历
-        while (p2 != p1) {
-            if (p1.val < p2.val) break;
-            preP2 = p2;
-            p2 = p2.next;
-        }
-        preP1.next = p1.next;
-        p1.next = p2;
-        preP2.next = p1;
-        p1 = preP1.next;
-    }
-    return dummy.next;
 }
 ```
-
-
-
-22. 排序链表（[148. Sort List](https://leetcode-cn.com/problems/sort-list/)）
-
-本题要求在*O*(*n* log *n*) 时间复杂度和常数级空间复杂度下，对链表进行排序。
-
-对于链表这种数据结构，只能用归并排序了，但是归并排序的需要O(log n)的空间。下面的写法就是根据常规思路写出来的归并排序，严格来说，空间复杂度是不符合要求的。
-
-```java
-// 时间复杂度：O(n*logn)
-// 空间复杂度：O(logn)
-public ListNode sortList(ListNode head) {
-    if (head == null || head.next == null) return head;
-    // 寻找中间节点(快慢指针)
-    ListNode slow = head, fast = head, prev = null;
-    while (fast != null && fast.next != null) {
-        prev = slow;
-        slow = slow.next;
-        fast = fast.next.next;
-    }
-    prev.next = null; // 分割前一部分链表
-
-    // 递归处理左右两部分
-    ListNode p1 = sortList(head);
-    ListNode p2 = sortList(slow);
-    // 归并
-    return mergeTwoSortedList(p1, p2);
-}
-
-private ListNode mergeTwoSortedList(ListNode head1, ListNode head2) {
-    ListNode dummy = new ListNode(-1);
-    ListNode tail = dummy;
-    while (head1 != null && head2 != null) {
-        ListNode t;
-        if (head1.val <= head2.val) {
-            t = head1;
-            head1 = head1.next;
-        } else {
-            t = head2;
-            head2 = head2.next;
-        }
-        t.next = null;
-        tail.next = t;
-        tail = tail.next;
-    }
-    if (head1 == null) tail.next = head2;
-    if (head2 == null) tail.next = head1;
-    return dummy.next;
-}
-```
-
-事实上，确实有空间复杂度为O(1)的归并排序写法，参考[这里](https://leetcode-cn.com/problems/sort-list/solution/sort-list-gui-bing-pai-xu-lian-biao-by-jyd/)。
-
-
-
-
-
-23. **将有序链表转化为二叉搜索树**（[109. Convert Sorted List to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)）**(有点意思!)**
-
-这一题与[108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) 思路完全一致。区别在于有序数组可以直接计算出中间节点的位置，而链表只能采用快慢指针的思路获取中间节点。
-
-解法一：
-
-思路：每一趟找到链表的中间节点mid，根据mid节点的值创建二叉树的根节点root，然后再递归的处理前半部分链表[head, mid) 和后半部分链表[mid.next, null]，分别作为root的左右孩子节点。
-
-```java
-// 时间复杂度：O(N*logN)
-// 空间复杂度：O(logN)
-public TreeNode sortedListToBST(ListNode head) {
-    if(head == null) return null;
-    if(head.next == null) return new TreeNode(head.val);
-  
-  	// 该部分是这一解法比较耗时的地方，可以优化~
-    ListNode slow = head, fast = head, prev = null;
-    while (fast != null && fast.next != null) {
-        prev = slow;
-        slow = slow.next;
-        fast = fast.next.next;
-    }
-    prev.next = null; // 阶段前半部分链表
-    fast = slow.next; // 重置后半部分俩表的头节点（这里用fast节点代替）
-  
-    TreeNode root = new TreeNode(slow.val);
-    // 递归处理左右子树~
-    root.left = sortedListToBST(head);
-    root.right = sortedListToBST(fast);
-    return root;
-}
-```
-
-
-
-解法二：新思路，有点意思~
-
-本题的常规做法就是如上所示，此外还有另外一种自底向上的做法，参考[这里](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/solution/convert-sorted-list-to-binary-search-tree-di-ding-/) 。
-
-
 
 
 
