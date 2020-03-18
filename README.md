@@ -10,8 +10,8 @@
 
 - [Array](https://github.com/kkBill/algorithm/blob/master/note/Array.md)
 - [String](https://github.com/kkBill/algorithm/blob/master/note/String.md)
-- [Linked List](https://github.com/kkBill/algorithm/blob/master/note/Linked_List.md)
-- [Tree](https://github.com/kkBill/algorithm/blob/master/note/Tree.md)（普通二叉树、二叉搜索树、平衡二叉树等）
+- [Linked List](https://github.com/kkBill/algorithm/blob/master/note/Linked_List.md) （25题，✔）
+- [Tree](https://github.com/kkBill/algorithm/blob/master/note/Tree.md)
 - [Heap](https://github.com/kkBill/algorithm/blob/master/note/Heap.md)
 - [Stack](https://github.com/kkBill/algorithm/blob/master/note/Stack.md)
 - [Search](https://github.com/kkBill/algorithm/blob/master/note/Search.md)
