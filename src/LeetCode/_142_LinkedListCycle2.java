@@ -1,6 +1,12 @@
 package LeetCode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class _142_LinkedListCycle2 {
+    /**
+     * 方法1：快慢指针法
+     */
     public ListNode detectCycle(ListNode head) {
         ListNode slow = head, fast = head;
         boolean hasCycle = false;
@@ -21,6 +27,23 @@ public class _142_LinkedListCycle2 {
             fast = fast.next;
         }
         return slow;
+    }
+
+    /**
+     * 方法2：哈希法
+     */
+    public ListNode detectCycle2(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while (curr != null) {
+            if(set.contains(curr)) {
+                return curr;
+            }else {
+                set.add(curr);
+            }
+            curr = curr.next;
+        }
+        return null;
     }
 
     public static void main(String[] args) {

@@ -1,10 +1,11 @@
 package LeetCode;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class _141_LinkedListCycle {
     /**
-     * 判断链表是否是环形链表
-     * 知道了算法原理可就是写不出来...
-     * 太精妙了...
+     * 方法1：快慢指针法
      */
     public boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
@@ -15,6 +16,25 @@ public class _141_LinkedListCycle {
         }
         return false;
     }
+
+    /**
+     * 方法2：哈希表
+     */
+    /*
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while (curr != null) {
+            if(set.contains(curr)) {
+                return true;
+            }else {
+                set.add(curr);
+            }
+            curr = curr.next;
+        }
+        return false;
+    }
+    */
 
     public static void main(String[] args) {
         _141_LinkedListCycle obj = new _141_LinkedListCycle();

@@ -1,5 +1,8 @@
 package LeetCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class _096_UniqueBinarySearchTrees {
     /**
      * 如果知道Catalan数的话，就很快可以找到突破口
@@ -37,5 +40,8 @@ public class _096_UniqueBinarySearchTrees {
     public static void main(String[] args) {
         _096_UniqueBinarySearchTrees obj = new _096_UniqueBinarySearchTrees();
         System.out.println(obj.numTrees(3));
+
+        List<Integer> list = new ArrayList<>();
+
     }
 }
