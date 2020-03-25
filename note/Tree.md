@@ -1,19 +1,34 @@
-## 树相关问题汇总
+### 树相关问题汇总
 
-题目列表：
+题目列表
 
-1. [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/) [关于树的遍历，要熟练掌握迭代写法]
-2. [144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
-3. [145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
-4. [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) [五星]
-5. [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/) [五星++]
-6. [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) [五星, 这题是有关BST一些列题目的模板]
-7. [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/) [五星, 基于98题的模板]
-8. [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) [二星]
-9. ​
-10. [543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/) [五星, 树的最大直径]
-11. [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/) [五星, 树的最大宽度]
-
+|      | 题号                                       | 评注                                       |
+| ---- | ---------------------------------------- | ---------------------------------------- |
+| 1    | [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/) | 树的遍历，要熟练掌握迭代写法                           |
+| 2    | [144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/) |                                          |
+| 3    | [145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/) |                                          |
+|      | [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) | 层序遍历，借助队列实现                              |
+|      | [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) | 巧用链表的头插法实现逆序                             |
+|      | [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) | 同103题                                    |
+|      | [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) | 卡特兰数♥♥                                   |
+|      | [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/) | ♥♥♥                                      |
+|      | [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) |                                          |
+|      | [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/) |                                          |
+|      | [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) |                                          |
+|      | [100. Same Tree](https://leetcode-cn.com/problems/same-tree/) | ♥                                        |
+|      | [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/) | 本题是第100题的变形♥♥                            |
+|      | [112. Path Sum](https://leetcode-cn.com/problems/path-sum/) | ♥♥♥                                      |
+|      | [113. Path Sum II](https://leetcode-cn.com/problems/path-sum-ii/) | ♥♥♥                                      |
+| ✘    | [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) | **[前缀和]( <https://oi-wiki.org/basic/prefix-sum/)**的应用♥♥♥♥♥(第一次见) |
+| ✘    | [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) | 任意节点组成的最大点权和♥♥♥♥♥                        |
+|      | [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/) | ♥♥♥                                      |
+|      | [104. Maximum Depth of Binary Tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/) | 树的最大高度♥                                  |
+|      | [111. Minimum Depth of Binary Tree](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/) | 树的最小高度, 多种方法                             |
+|      | [543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/) | 五星, 树的最大直径♥♥♥                            |
+|      | [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) | 和543题类似，自底向上法♥♥♥                         |
+|      | [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/) | 五星, 树的最大宽度♥♥                             |
+|      |                                          |                                          |
+|      |                                          |                                          |
 
 
 
@@ -124,6 +139,109 @@ class Solution {
             }
         }
         return result;
+    }
+}
+```
+
+
+
+##### [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) [一星]
+
+二叉树的层次遍历
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root == null) return new ArrayList<>();
+        
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> line = new ArrayList<>();
+            for(int i = 0; i < size; i++) {
+                TreeNode node = queue.remove();
+                line.add(node.val);
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
+            result.add(line);
+        }
+        return result;
+    }
+}
+```
+
+
+
+##### [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) [二星]
+
+之字形层次遍历。
+
+分析：巧用链表。还是正常的进行层序遍历，只不过对于奇数行，则采用尾插法，即顺序存储；对于偶数行，则采用头插法，即逆序存储。从而巧妙地实现了之字形遍历。
+
+```java
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if(root == null) return new LinkedList<>();
+        
+        List<List<Integer>> result = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+            // 必须要LinkedList类型
+            // 写成 List<Integer> line = new LinkedList<>(); 就不能调用addFirst()这类api
+            LinkedList<Integer> line = new LinkedList<>();
+            for(int i = 0; i < size; i++) {
+                TreeNode node = queue.remove();
+                if(level % 2 == 1){
+                    line.addLast(node.val); // 尾插法
+                }else {
+                    line.addFirst(node.val); // 头插法
+                }
+                
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
+            result.add(line);
+        }
+        return result;        
+    }
+}
+```
+
+
+
+##### [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) [一星]
+
+层次遍历，要求自底向上逐行输出。
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        if(root == null) return new LinkedList<>();
+        
+        LinkedList<List<Integer>> result = new LinkedList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+            List<Integer> line = new ArrayList<>();
+            for(int i = 0; i < size; i++) {
+                TreeNode node = queue.remove();
+                line.add(node.val);
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
+            result.addFirst(line); // 逆序存储
+        }
+        return result;        
     }
 }
 ```
@@ -457,6 +575,463 @@ class Solution {
 
 
 
+##### [100. Same Tree](https://leetcode-cn.com/problems/same-tree/) [一星]
+
+给定两棵树，判断它们是否相同。两棵树相同要求两个树在结构上相同，并且节点具有相同的值。
+
+分析：其实就是考察二叉树的遍历，只不过这里同时对两个树进行遍历。判断两个树是否相等可以分成以下3类：
+
+* 如果 p 为空，且 q 也为空，则返回true，这是边界情况，应该没什么好解释的
+* 如果 p 非空，且 q 也非空，那么就要判断这两节点的值是否相等
+  * 如果不相等，直接返回false；
+  * 如果相等，则继而递归的判断 p, q 的左子树和 p, q 的右子树；
+* 最后一种情况就是p, q一个为空，一个不为空，这种情况直接返回false。
+
+```java
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q == null){
+            return true;
+        }else if(p != null && q != null) {
+            if(p.val != q.val) return false;
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }else {
+            return false;
+        }
+    }
+}
+```
+
+
+
+##### [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/) [四星]
+
+这是第100题的变形，思路是一样的。
+
+```
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+        return helper(root.left, root.right);
+    }
+    
+    private boolean helper(TreeNode p, TreeNode q) {
+        if(p == null && q == null){
+            return true;
+        }else if(p != null && q != null) {
+            if(p.val != q.val) return false;
+            return helper(p.left, q.right) && helper(p.right, q.left);
+        }else {
+            return false;
+        }
+    }
+}
+```
+
+
+
+##### [112. Path Sum](https://leetcode-cn.com/problems/path-sum/) [五星]
+
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+
+```java
+class Solution {
+       // 第一遍写怎么写成这个鸟样子~ 也太丑了~
+//     public boolean hasPathSum(TreeNode root, int sum) {
+//         if(root == null) return false;
+//         return dfs(root, sum-root.val);
+//     }
+
+//     private boolean dfs(TreeNode root, int curSum) {
+//         if (root.left == null && root.right == null) {
+//             return curSum == 0;
+//         }
+//         if (root.left != null && root.right == null) {
+//             return dfs(root.left, curSum - root.left.val);
+//         } else if (root.left == null && root.right != null) {
+//             return dfs(root.right, curSum - root.right.val);
+//         } else {
+//             return dfs(root.left, curSum - root.left.val) 
+//                       || dfs(root.right, curSum - root.right.val);
+//         }
+//     }
+    
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null) return false;
+        if(root.left == null && root.right == null) return sum == root.val;
+        return hasPathSum(root.left, sum-root.val)
+                || hasPathSum(root.right, sum-root.val);
+    }
+}
+```
+
+
+
+##### [113. Path Sum II](https://leetcode-cn.com/problems/path-sum-ii/) [五星]
+
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的**路径**。
+
+方法1：DFS递归实现。
+
+```java
+// 写法1
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        if(root == null) return result;
+        List<Integer> path = new ArrayList<>();
+        path.add(root.val);
+        dfs(root, sum-root.val, path);
+        return result;
+    }
+    
+    private void dfs(TreeNode root, int curSum, List<Integer> path) {
+        if(root.left == null && root.right == null) {
+            if(curSum == 0) {
+                result.add(new ArrayList<>(path));
+                return;
+            }
+        }
+        if(root.left != null) {
+            path.add(root.left.val);
+            dfs(root.left, curSum-root.left.val, path);
+            path.remove(path.size()-1);
+        }
+        if(root.right != null) {
+            path.add(root.right.val);
+            dfs(root.right, curSum-root.right.val, path);
+            path.remove(path.size()-1);
+        }
+    }
+}
+
+// 写法2，更简洁一点
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        if(root == null) return result;
+        List<Integer> path = new ArrayList<>();
+        dfs(root, sum, path);
+        return result;
+    }
+    
+    private void dfs(TreeNode root, int curSum, List<Integer> path) {
+        path.add(root.val);
+        if(root.left == null && root.right == null) {
+            if(curSum == root.val) {
+                result.add(new ArrayList<>(path));
+                return;
+            }
+        }
+        if(root.left != null) {
+            dfs(root.left, curSum-root.val, path);
+            path.remove(path.size()-1);
+        }
+        if(root.right != null) {
+            dfs(root.right, curSum-root.val, path);
+            path.remove(path.size()-1);
+        }
+    }
+}
+```
+
+方法2：后续遍历的非递归实现。在后序遍历的非递归实现中，当访问到叶节点时，栈中存放的恰好是根节点至叶节点的路径，这是最重要的性质。
+
+```java
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null) return result;
+        
+        List<Integer> path = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode lastVisit = null;
+        TreeNode p = root;
+        while(p != null || !stack.isEmpty()) {
+            if(p != null) {
+                stack.push(p);
+                path.add(p.val);
+                sum -= p.val;
+                p = p.left;
+            }else {
+                p = stack.peek();
+                if(p.right != null && p.right != lastVisit) {
+                    p = p.right;
+                    continue;
+                }
+                p = stack.pop();
+                // 如果访问到叶节点，进行判断
+                if(p.left == null && p.right == null && sum == 0) {
+                    result.add(new ArrayList<>(path));
+                }
+                path.remove(path.size()-1);
+                sum += p.val;
+                
+                lastVisit = p;
+                p = null;
+            }
+        }
+        return result;
+    }
+}
+```
+
+
+
+##### [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) [五星]
+
+给定一个二叉树，它的每个结点都存放着一个整数值。
+
+找出路径和等于给定数值的路径总数。
+
+路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+
+二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。示例：
+
+```
+root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+      10
+     /  \
+    5   -3
+   / \    \
+  3   2   11
+ / \   \
+3  -2   1
+
+返回 3。和等于 8 的路径有:
+1.  5 -> 3
+2.  5 -> 2 -> 1
+3.  -3 -> 11
+```
+
+分析：参考[这里](https://leetcode.com/problems/path-sum-iii/discuss/91878/17-ms-O(n)-java-Prefix-sum-method)。
+
+```
+
+```
+
+
+
+##### [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) [五星]
+
+计算二叉树任意节点之间的路径之和最大值。本题属于二叉树类问题中比较难的一题，难点在于这里的**路径被定义为一条从树中任意节点出发，达到任意节点的序列**；而不是根节点到某一叶子节点。题解参考[这里](https://www.cnblogs.com/grandyang/p/4280120.html) 。
+
+```java
+int maxSum = Integer.MIN_VALUE;
+public int maxPathSum(TreeNode root) {
+    if (root == null) return 0;
+    dfs(root);
+    return maxSum;
+}
+private int dfs(TreeNode root) {
+    if (root == null) return 0;
+    int leftVal = Math.max(dfs(root.left), 0);
+    int rightVal = Math.max(dfs(root.right), 0);
+    maxSum = Math.max(maxSum, leftVal + rightVal + root.val);
+    return Math.max(leftVal, rightVal) + root.val;
+}
+```
+
+题解的关键是理解全局变量 `maxSum` 的含义，以及递归函数返回值的含义。
+
+全局变量`maxSum`存放最终的结果，而递归返回值`dfs(root)`表示的是经过当前节点的路径之和，而由于节点的值可能存在负数，因此递归返回的结果值要与0进行比较，如果返回值小于0，则取0，表示不经过这个节点。
+
+
+
+
+
+##### [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/) 
+
+给定一个二叉树，返回所有从根节点到叶子节点的路径。
+
+```
+输入:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+输出: ["1->2->5", "1->3"]
+解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
+```
+
+分析：
+
+写法1：
+
+```java
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        if(root == null) return res;
+        
+        dfs(root, new ArrayList<>(), res);
+        return res;
+    }
+    
+    private void dfs(TreeNode root, List<Integer> path, List<String> res) {
+        path.add(root.val);
+        if(root.left == null && root.right == null) {
+            StringBuilder sb = new StringBuilder();
+            int size = path.size();
+            for(int i = 0; i < size; i++) {
+                sb.append(path.get(i));
+                if(i < size-1 ) sb.append("->");
+            }
+            res.add(sb.toString());
+            return;
+        }
+        if(root.left != null) {
+            dfs(root.left, path, res);
+            path.remove(path.size()-1);
+        }
+        if(root.right != null) {
+            dfs(root.right, path, res);
+            path.remove(path.size()-1);
+        }
+    }
+}
+```
+
+写法2：不建议这么做，因为直接对String类型进行''+''操作，会产生大量临时的String对象。
+
+```java
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        dfs(root, "", res);
+        return res;
+    }
+    
+    private void dfs(TreeNode root, String path, List<String> res) {
+        if(root == null) return;
+        path += root.val;
+        if(root.left == null && root.right == null) {
+            res.add(path);
+        }else {
+            path += "->";
+            dfs(root.left, path, res);
+            dfs(root.right, path, res);
+        }   
+    }
+}
+```
+
+
+
+##### [104. Maximum Depth of Binary Tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/) [一星]
+
+给定一个二叉树，计算最大深度。深度的定义是根节点到叶子节点的节点个数。
+
+分析：求树的深度/高度，可以使用dfs或bfs。
+
+DFS版
+
+```java
+// 自己的解法
+class Solution {
+    private int maxDepth = 0;
+    public int maxDepth(TreeNode root) {
+        dfs(root, 1);
+        return maxDepth;
+    }
+    
+    private void dfs(TreeNode root, int depth) {
+        if(root == null) return;
+        maxDepth = Math.max(maxDepth, depth);
+        dfs(root.left, depth+1);
+        dfs(root.right, depth+1);
+    }
+}
+
+// 参考的解法（简洁）
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root == null) return 0;
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+}
+```
+
+BFS版：层序遍历
+
+```java
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root == null) return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int maxDepth = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            maxDepth++;
+            for(int i = 0; i < size; i++) {
+                TreeNode front = queue.remove();
+                if(front.left != null) queue.add(front.left);
+                if(front.right != null) queue.add(front.right);
+            }
+        }
+        return maxDepth;
+    }
+}
+```
+
+
+
+##### [111. Minimum Depth of Binary Tree](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)
+
+给定一个二叉树，找出其最小深度。最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+DFS版：这种做法需要遍历树的所有节点，因此复杂度为O(n)
+
+```java
+class Solution {
+    private int minDepth = Integer.MAX_VALUE;
+    public int minDepth(TreeNode root) {
+        if(root == null) return 0;
+        dfs(root, 1);
+        return minDepth;
+    }
+    
+    private void dfs(TreeNode root, int depth) {
+        if(root == null) return;
+        if(root.left == null && root.right == null && depth < minDepth) {
+            minDepth = depth;
+        }
+        dfs(root.left, depth + 1);
+        dfs(root.right, depth + 1);
+    }
+}
+```
+
+BFS版：由于采用层序遍历，逐层检查，第一个遇到的叶节点就是离根节点最近的，一般情况下不需要遍历所有的节点即可返回结果。当给定的树为满二叉树时，对于BFS解法来说就是”最差“的一种情况，因为要遍历到最后一层才能返回，不过这种情况下依然比DFS要好，因为程序在访问到最后一层最左边的那个叶节点之后就立马返回了，依然不需要访问所有节点。根据满二叉树的性质，假设总的节点个数为n，层数为h，则前h-1层的节点个数为n/2，因此时间复杂度还是O(n)级别的，但是一定要分析出和DFS的区别。
+
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root == null) return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int minDepth = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            minDepth++;
+            for(int i = 0; i < size; i++) {
+                TreeNode front = queue.remove();
+                // 如果节点是叶子节点，则直接返回结果
+                if(front.left == null && front.right == null) return minDepth;
+                if(front.left != null) queue.add(front.left);
+                if(front.right != null) queue.add(front.right);
+            }
+        }
+        return minDepth;
+    }
+}
+```
+
 
 
 ##### **[543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/)** [三星]
@@ -508,6 +1083,60 @@ class Solution {
         int left = depthOfTree(root.left);
         int right = depthOfTree(root.right);
         maxDiameter = Math.max(maxDiameter, left + right); // update
+        return Math.max(left, right) + 1;
+    }
+}
+```
+
+
+
+##### [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) [五星]
+
+给定一个二叉树，判断其是否为平衡二叉树。
+
+分析：这一题和第543题很像，这两题我都只能想出暴力法。两个题目一定要一起思考。
+
+**方法1：暴力法**。判断一个二叉树是否为平衡二叉树，需要递归的判断其左右子树是否为平衡二叉树，此外，还要判断以当前节点为根节点的左右子树高度之差是否小于1。
+
+```java
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) return true;
+        return isBalanced(root.left) 
+            && isBalanced(root.right)
+            && Math.abs(height(root.left) - height(root.right)) < 2;
+    }
+    
+    private int height(TreeNode root) {
+        if(root == null) return 0;
+        return Math.max(height(root.left), height(root.right)) + 1;
+    }
+}
+```
+
+这种方法是自顶向下考虑的，比如针对下面这样一棵树，在判断根节点4是否满足时，会计算其左右子树的高度。而在递归的判断其左右子树是否平衡时，又会重复的计算子树高度，从而造成大量不必要的重复计算。
+
+![img](https://pic.leetcode-cn.com/Figures/110/110-unbalanced-wheight-highlighted.png)
+
+复杂度分析：由于需要遍历完所有节点O(n)，并且每遍历一个节点就要计算其左右子树的高度O(log n)，因此时间复杂度是O(nlogn)。空间复杂度即为O(h)，h为树的高度。
+
+**方法2：最优解**。这种方法的核心思想是自底向上，也就是先判断左右子树是否平衡（如果有其一不满足就可以直接返回了），然后再比较左右子树的高度来判断父节点是否平衡。这种方法使得每个节点的高度仅计算一次，在实现的过程中，我们把”计算树的高度“和”判断是否平衡“两个功能点放在同一个方法中实现。在递归求树高的方法`height(TreeNode root)`中，正常情况下返回的值是一个非负整数，因此我们可以令其返回一个负数，以表示以`root`为根节点的子树不满足平衡要求。（务必好好体会这种方法）
+
+```java
+// 时间复杂度：O(n)
+// 空间复杂度：O(h) h为树高
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return height(root) != -1;
+    }
+    
+    private int height(TreeNode root) {
+        if(root == null) return 0;
+        int left = height(root.left);
+        if(left == -1) return -1;
+        int right = height(root.right);
+        if(right == -1) return -1;
+        if(Math.abs(left - right) > 1) return -1;
         return Math.max(left, right) + 1;
     }
 }
@@ -569,7 +1198,7 @@ class Solution {
         int maxWidth = 0;
         while (!queue.isEmpty()) {
             maxWidth = Math.max(maxWidth, 
-                                map.get(queue.getLast()) - map.get(queue.getFirst()) + 1);
+                       map.get(queue.getLast()) - map.get(queue.getFirst()) + 1);
             int size = queue.size();
             for(int i = 0;i < size; i++) {
                 TreeNode front = queue.pollFirst();
@@ -1463,36 +2092,4 @@ public Node connect(Node root) {
 
 
 
-计算二叉树任意节点之间的路径之和最大值[124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)
-
-本题属于二叉树类问题中比较难的一题，难点在于这里的**路径被定义为一条从树中任意节点出发，达到任意节点的序列**；而不是根节点到某一叶子节点。题解参考[这里](https://www.cnblogs.com/grandyang/p/4280120.html) 。
-
-```java
-int maxSum = Integer.MIN_VALUE;
-public int maxPathSum(TreeNode root) {
-    if (root == null) return 0;
-    dfs(root);
-    return maxSum;
-}
-private int dfs(TreeNode root) {
-    if (root == null) return 0;
-    int leftVal = Math.max(dfs(root.left), 0);
-    int rightVal = Math.max(dfs(root.right), 0);
-    maxSum = Math.max(maxSum, leftVal + rightVal + root.val);
-    return Math.max(leftVal, rightVal) + root.val;
-}
-```
-
-题解的关键是理解全局变量 `maxSum` 的含义，以及递归函数返回值的含义。
-
-全局变量`maxSum`存放最终的结果，而递归返回值`dfs(root)`表示的是经过当前节点的路径之和，而由于节点的值可能存在负数，因此递归返回的结果值要与0进行比较，如果返回值小于0，则取0，表示不经过这个节点。
-
-
-
-本题的一个扩展是不仅需要求出最大路径和，还要确定最大路径本身。代码如下：
-
-```java
-// 暂时写不出来~ 2020-01-21
-
-```
 

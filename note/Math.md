@@ -1080,6 +1080,44 @@ public int gcd(int a, int b) {
 
 
 
+##### [470. Implement Rand10() Using Rand7()](https://leetcode-cn.com/problems/implement-rand10-using-rand7/) [五星]
+
+已有方法 `rand7` 可生成 1 到 7 范围内的均匀随机整数，试写一个方法 `rand10` 生成 1 到 10 范围内的均匀随机整数。
+
+分析：参见自己写的[题解](https://leetcode-cn.com/problems/implement-rand10-using-rand7/solution/cong-zui-ji-chu-de-jiang-qi-ru-he-zuo-dao-jun-yun-/)。
+
+```java
+class Solution extends SolBase {
+    // 方法1：
+    // public int rand10() {
+    //     while(true) {
+    //         int num = (rand7() - 1) * 7 + rand7();
+    //         if(num <= 40) return num % 10 + 1;
+    //     }
+    // }
+    
+    // 优化后的版本：
+    public int rand10() {
+        while(true) {
+            int a = rand7();
+            int b = rand7();
+            int num = (a-1)*7 + b; // rand 49
+            if(num <= 40) return num % 10 + 1; // 拒绝采样
+            
+            a = num - 40; // rand 9
+            b = rand7();
+            num = (a-1)*7 + b; // rand 63
+            if(num <= 60) return num % 10 + 1;
+            
+            a = num - 60; // rand 3
+            b = rand7();
+            num = (a-1)*7 + b; // rand 21
+            if(num <= 20) return num % 10 + 1;
+        }
+    }
+}
+```
+
 
 
 

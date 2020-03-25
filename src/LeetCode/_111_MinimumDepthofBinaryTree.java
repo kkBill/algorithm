@@ -26,9 +26,15 @@ public class _111_MinimumDepthofBinaryTree {
 
     */
 
+    public int minDepth(TreeNode root) {
+        if(root == null) return 0;
+        return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+    }
+
     /**
      * 层次遍历，从上至下，首次遇到的叶节点就是对应着树的最低深度
      */
+    /*
     public int minDepth(TreeNode root) {
         if(root == null) return 0;
         List<TreeNode> queue = new ArrayList<>();
@@ -46,6 +52,7 @@ public class _111_MinimumDepthofBinaryTree {
         }
         return level;
     }
+    */
 
     public static void main(String[] args) {
         _111_MinimumDepthofBinaryTree obj = new _111_MinimumDepthofBinaryTree();

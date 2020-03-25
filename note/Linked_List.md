@@ -27,6 +27,7 @@
 23. [237. Delete Node in a Linked List](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/) [五星, 链表节点的删除]
 24. [234. Palindrome Linked List](https://leetcode-cn.com/problems/palindrome-linked-list/) [一星, 常规题]
 25. [328. Odd Even Linked List](https://leetcode-cn.com/problems/odd-even-linked-list/) [五星, 第一遍的代码优雅]
+26. [876. Middle of the Linked List](https://leetcode-cn.com/problems/middle-of-the-linked-list/) [一星]
 
 
 总结：
@@ -1447,4 +1448,20 @@ class Solution {
 
 
 
+##### [876. Middle of the Linked List](https://leetcode-cn.com/problems/middle-of-the-linked-list/) [一星]
+
+求非空链表的中间节点。
+
+```java
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
+```
 

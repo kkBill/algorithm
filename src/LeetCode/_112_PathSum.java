@@ -15,8 +15,16 @@ public class _112_PathSum {
     }
     */
 
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null) return false;
+        if(root.left == null && root.right == null) return sum == root.val;
+        return hasPathSum(root.left, sum-root.val)
+                || hasPathSum(root.right, sum-root.val);
+    }
+
 
     // 迭代
+    /*
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) return false;
 
@@ -52,6 +60,10 @@ public class _112_PathSum {
         }
         return result;
     }
+
+     */
+
+
 
     public static void main(String[] args) {
         TreeNode root = TreeNode.makeTree();
