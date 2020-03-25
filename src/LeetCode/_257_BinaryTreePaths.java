@@ -59,9 +59,5 @@ public class _257_BinaryTreePaths {
         _257_BinaryTreePaths obj = new _257_BinaryTreePaths();
         TreeNode root = TreeNode.makeTree();
         System.out.println(obj.binaryTreePaths(root));
-
-        StringBuilder s = new StringBuilder();
-        s.deleteCharAt();
-        s.delete();
     }
 }
