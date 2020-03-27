@@ -8,30 +8,26 @@ public class _114_FlattenBinaryTreetoLinkedList {
     public void flatten(TreeNode root) {
         TreeNode curr = root;
         while (curr != null) {
-            if(curr.left == null){
-                curr = curr.right;
-            }else {
-                TreeNode pre = curr.left;
-                // 找到左子树中最右边的节点
-                while (pre.right != null) {
-                    pre = pre.right;
+            if (curr.left != null) {
+                TreeNode last = curr.left;
+                while (last.right != null) {
+                    last = last.right;
                 }
-                pre.right = curr.right;
+                last.right = curr.right;
                 curr.right = curr.left;
                 curr.left = null;
-                curr = curr.right;
             }
+            curr = curr.right;
         }
     }
     */
 
     /**
-     * 方法2：递归法
-     * 太精妙了~~~
+     * 方法2：递归法, 太精妙了~~~
      */
     TreeNode pre = null;
     public void flatten(TreeNode root) {
-        if(root == null) return;
+        if (root == null) return;
         flatten(root.right);
         flatten(root.left);
         root.right = pre;

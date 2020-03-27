@@ -1,4 +1,4 @@
-### 树相关问题汇总
+### 树问题
 
 题目列表
 
@@ -19,16 +19,23 @@
 |      | [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/) | 本题是第100题的变形♥♥                            |
 |      | [112. Path Sum](https://leetcode-cn.com/problems/path-sum/) | ♥♥♥                                      |
 |      | [113. Path Sum II](https://leetcode-cn.com/problems/path-sum-ii/) | ♥♥♥                                      |
-| ✘    | [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) | **[前缀和]( <https://oi-wiki.org/basic/prefix-sum/)**的应用♥♥♥♥♥(第一次见) |
-| ✘    | [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) | 任意节点组成的最大点权和♥♥♥♥♥                        |
-|      | [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/) | ♥♥♥                                      |
+|      | [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) | **[前缀和]( <https://oi-wiki.org/basic/prefix-sum/)**的应用♥♥♥♥♥(第一次见) |
+|      | [114. Flatten Binary Tree to Linked List](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/) | ⭐⭐⭐⭐⭐                                    |
+|      | [116. Populating Next Right Pointers in Each Node](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/) | ⭐⭐⭐⭐⭐                                    |
+|      | [117. Populating Next Right Pointers in Each Node II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/) | ⭐⭐⭐⭐⭐极致巧用dummy                           |
+|      | [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/) | 求叉树的右侧节点, 递归法不容易                         |
+|      | [226. Invert Binary Tree](https://leetcode-cn.com/problems/invert-binary-tree/) |                                          |
+|      |                                          |                                          |
+|      | [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) | 任意节点组成的最大点权和♥♥♥♥♥                        |
+|      | [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/) | 树的所有路径♥♥♥                                |
+|      | [129. Sum Root to Leaf Numbers](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/) | 和257题其实是一回事                              |
 |      | [104. Maximum Depth of Binary Tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/) | 树的最大高度♥                                  |
 |      | [111. Minimum Depth of Binary Tree](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/) | 树的最小高度, 多种方法                             |
 |      | [543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/) | 五星, 树的最大直径♥♥♥                            |
 |      | [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) | 和543题类似，自底向上法♥♥♥                         |
 |      | [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/) | 五星, 树的最大宽度♥♥                             |
 |      |                                          |                                          |
-|      |                                          |                                          |
+|      | [617. Merge Two Binary Trees](https://leetcode-cn.com/problems/merge-two-binary-trees/) | 合并两个二叉树, 前序遍历的应用                         |
 
 
 
@@ -780,11 +787,7 @@ class Solution {
 
 ##### [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) [五星]
 
-给定一个二叉树，它的每个结点都存放着一个整数值。
-
-找出路径和等于给定数值的路径总数。
-
-路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+给定一个二叉树，它的每个结点都存放着一个整数值。找出路径和等于给定数值的路径总数。**路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的**（**只能从父节点到子节点**）。
 
 二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。示例：
 
@@ -807,35 +810,463 @@ root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
 分析：参考[这里](https://leetcode.com/problems/path-sum-iii/discuss/91878/17-ms-O(n)-java-Prefix-sum-method)。
 
+```java
+class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        // key: prefix sum till current node
+        // value: the numbers of path which path sum equals key
+        Map<Integer, Integer> map = new HashMap<>();
+        // 初始化<0,1> 是为了保证根节点至叶节点之和恰等于sum的情况
+        map.put(0, 1);
+        return dfs(root, 0, sum, map);
+    }
+
+    private int dfs(TreeNode root, int curSum, int target, Map<Integer, Integer> map) {
+        if (root == null) return 0;
+        curSum += root.val;
+
+        // 以本节点为终点，存在路径和等于target的路径条数
+        int count = map.getOrDefault(curSum - target, 0);
+
+        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+
+        // 以本节点为起点，存在路径和等于target的路径条数
+        // 递归计算其左右子树
+        int lCount = dfs(root.left, curSum, target, map);
+        int rCount = dfs(root.right, curSum, target, map);
+
+        // 回溯
+        map.put(curSum, map.getOrDefault(curSum, 0) - 1);
+
+        return count + lCount + rCount;
+    }
+}
 ```
 
+
+
+##### [114. Flatten Binary Tree to Linked List](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/) [五星++]
+
+题目：将二叉树展开为一个链表，如下所示：
+
 ```
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+   ||
+   \/	
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6   
+
+```
+
+**方法1：迭代法**
+
+展开后的链表就是原二叉树前序遍历的顺序，所以我们可以顺着前序遍历的思路开始思考。根据题意，如果左子树非空，就将左子树置为根节点的右子树，而原来的右子树则跟在左子树前序序列的最后一个节点。其原理示意图如下：
+
+![image.png](https://pic.leetcode-cn.com/a32c919ea2e3a3211696d1f1ea81ad7ed9dc1829d984c412fb523fae84174d3a-image.png)
+
+
+我们举一个具体的例子，看看大概的执行过程：（ps：图画得我好累~）
+
+step 1:
+
+![image.png](https://pic.leetcode-cn.com/69d0c484e893e5c56a0f37eab8fedb15d7d3276046399509b473c11480d3c379-image.png)
+
+step 2:
+
+![image.png](https://pic.leetcode-cn.com/03fc792903ce989659961603ee48f0094cc6f6f91f7e11555c9816d75f0a4853-image.png)
+
+step 3:
+
+![image.png](https://pic.leetcode-cn.com/00751b7ce9d086fc2f6c8b6e8934efccd908a1d6ae3505dbe6de02376e978f38-image.png)
+
+
+step 4: 图略，同step 3一样，只是更新了curr
+
+step 5:
+
+![image.png](https://pic.leetcode-cn.com/c8da81b9401fe14779096df4462a5bff569020ef040803939bf81035a8f3b641-image.png)
+
+
+至此，别的我就不多说了，结合代码好好体会，并且自己也模拟一遍。
+
+代码：
+
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        TreeNode curr = root;
+        while(curr != null) {
+            if(curr.left != null) {
+                // find rightest node of left subtree
+                TreeNode last = curr.left;
+                while(last.right != null) {
+                    last = last.right;
+                }
+                // reconnect
+                last.right = curr.right;
+                curr.right = curr.left;
+                curr.left = null; // don't forget
+            }
+            // update curr
+            curr = curr.right;
+        }
+    }
+}
+```
+
+**方法2：递归法**
+要说迭代法自己还能想想，递归法我是完全想不出来，并且在第二次写的时候仍然没有想到这个方法。答案来自leetcode原站点高票回答。
+
+这种方法的关键思想在于通过递归**自底向上**实现，本质上和后序遍历没有区别，只不过这里稍稍做了一些变形，遍历的顺序为：右子树 -> 左子树 -> 根。
+
+代码：
+
+```java
+class Solution {    
+    TreeNode prev = null;
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+        flatten(root.right);
+        flatten(root.left);
+        root.right = prev;
+        root.left = null;
+        prev = root;
+    }
+}
+```
+过程示意图：(示意图也是直接搬运的...LOL)
+
+        1
+       / \
+      2   5
+     / \   \
+    3   4   6
+    -----------        
+    pre = 5
+    cur = 4
+    
+        1
+       / 
+      2   
+     / \   
+    3   4
+         \
+          5
+           \
+            6
+    -----------        
+    pre = 4
+    cur = 3
+    
+        1
+       / 
+      2   
+     /   
+    3 
+     \
+      4
+       \
+        5
+         \
+          6
+    -----------        
+    cur = 2
+    pre = 3
+    
+        1
+       / 
+      2   
+       \
+        3 
+         \
+          4
+           \
+            5
+             \
+              6
+    -----------        
+    cur = 1
+    pre = 2
+    
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            5
+             \
+              6    
+参考：
+
+1. [https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/37010/Share-my-simple-NON-recursive-solution-O(1)-space-complexity!](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/37010/Share-my-simple-NON-recursive-solution-O(1)-space-complexity!)
+2. [https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/36977/My-short-post-order-traversal-Java-solution-for-share](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/discuss/36977/My-short-post-order-traversal-Java-solution-for-share)
+
+自己在时隔2个月后重写这个题，意识里知道这个题可以用递归来做，但是又想不出上面说的那个精妙的递归解法。根据自己的思路，写出了如下这个杂交版的答案。
+
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        dfs(root);
+    }
+    
+    private TreeNode dfs(TreeNode root) {
+        if(root == null) return null;
+        TreeNode left = dfs(root.left);
+        TreeNode right = dfs(root.right);
+        if(left != null) {
+            TreeNode curr = left;
+            while(curr.right != null) {
+                curr = curr.right;
+            }
+            curr.right = right;
+            root.right = left;
+            root.left = null;
+        }
+        return root;
+    }
+}
+```
+
+
+
+
+
+##### [116. Populating Next Right Pointers in Each Node](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
+
+##### [117. Populating Next Right Pointers in Each Node II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/) [五星++]
+
+这两题要求将二叉树的**每一层**的节点自左向右连接起来，如下图所示（其中116题是完全二叉树，117题是普通的二叉树），并且要求**只使用O(1)的空间复杂度**。![img](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
+
+在本题中，节点的定义为：
+
+```C++
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+**方法1**：如果不考虑空间复杂度的要求，那么借助队列，通过层序遍历，可以比较直观的写出代码。如下所示，这段代码适用于116, 117两题。
+
+```java
+public Node connect(Node root) {
+    if (root == null) return null;
+
+    List<Node> queue = new ArrayList<>();
+    queue.add(root);
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        Node pre = null;
+        for(int i=0; i<size; i++){
+            Node curr = queue.remove(0);
+            if(i > 0) pre.next = curr;
+            pre = curr;
+            if(curr.left != null) queue.add(curr.left);
+            if(curr.right != null) queue.add(curr.right);
+        }
+    }
+    return root;
+}
+```
+
+**方法2**：空间复杂度为O(1)的做法，参考[这里](https://www.cnblogs.com/grandyang/p/4290148.html) 。这种做法实属精妙~
+
+
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        Node dummy = new Node(0, null, null, null);
+        Node origin = root, curr = dummy;
+        while(root != null) {
+            if(root.left != null) {
+                curr.next = root.left;
+                curr = curr.next;
+            }
+            if(root.right != null) {
+                curr.next = root.right;
+                curr = curr.next;
+            }
+            root = root.next;
+            if(root == null) { // 说明当前层遍历完毕，进入下一层
+                root = dummy.next;
+                dummy.next = null;
+                curr = dummy;
+            }
+        }
+        return origin;
+    }
+}
+```
+
+下面是仅适用于116题（也就是满二叉树）的解法。
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        if(root == null) return null;
+        // 固定first为每一层的第一个节点，curr用于遍历节点
+        Node first = root, curr;
+        while(first.left != null) {
+            curr = first;
+            while(curr != null) {
+                curr.left.next = curr.right; // 连接以curr为根节点的左右孩子节点
+                if(curr.next != null) { // 连接跨父节点的孩子节点
+                    curr.right.next = curr.next.left;
+                }
+                curr = curr.next;
+            }
+            first = first.left; // 进入下一层
+        }
+        return root;
+    }
+}
+```
+
+
+
+##### [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/) [递归实现, 五星++]
+
+给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+```
+输入: [1,2,3,null,5,null,4]
+输出: [1, 3, 4]
+解释:
+
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+```
+
+**方法1**：采用层序遍历，每一层取最右边的那个值即可。
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.remove(0);
+                if (i == size - 1) result.add(node.val);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+        }
+        return result;
+    }    
+}
+```
+
+**方法2**：采用深度遍历，递归实现。这种方法不容易想到，参考评论区的，学到了。
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        dfs(root, 0, res);
+        return res;
+    }
+    private void dfs(TreeNode root, int depth, List<Integer> res) {
+        if(root == null) return;
+        if(depth == res.size()) { // 这个边界条件是关键
+            res.add(root.val);
+        }
+        dfs(root.right, depth+1, res); // 先遍历右侧
+        dfs(root.left, depth+1, res);
+    }
+}
+```
+
+
+
+##### [226. Invert Binary Tree](https://leetcode-cn.com/problems/invert-binary-tree/)
+
+翻转二叉树
+
+方法1：后序遍历递归实现（最常用）
+
+```java
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null) return null;
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        // invert opration
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+}
+```
+
+方法2：前序遍历递归实现
+
+方法3：中序遍历递归实现
+
+方法4：层序遍历实现
+
+
 
 
 
 ##### [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) [五星]
 
-计算二叉树任意节点之间的路径之和最大值。本题属于二叉树类问题中比较难的一题，难点在于这里的**路径被定义为一条从树中任意节点出发，达到任意节点的序列**；而不是根节点到某一叶子节点。题解参考[这里](https://www.cnblogs.com/grandyang/p/4280120.html) 。
+计算二叉树任意节点之间的路径之和最大值。本题属于二叉树类问题中比较难的一题，难点在于这里的**路径被定义为一条从树中任意节点出发，达到任意节点的序列**；而不是根节点到某一叶子节点。
+
+分析：题解参考[这里](https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/39775/Accepted-short-solution-in-Java) 。
 
 ```java
-int maxSum = Integer.MIN_VALUE;
-public int maxPathSum(TreeNode root) {
-    if (root == null) return 0;
-    dfs(root);
-    return maxSum;
-}
-private int dfs(TreeNode root) {
-    if (root == null) return 0;
-    int leftVal = Math.max(dfs(root.left), 0);
-    int rightVal = Math.max(dfs(root.right), 0);
-    maxSum = Math.max(maxSum, leftVal + rightVal + root.val);
-    return Math.max(leftVal, rightVal) + root.val;
+class Solution {
+    private int maxSum = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        if(root == null) return 0;
+        dfs(root);
+        return maxSum;
+    }
+    
+    private int dfs(TreeNode root) {
+        if(root == null) return 0;
+        int left = Math.max(dfs(root.left), 0);
+        int right = Math.max(dfs(root.right), 0);
+        maxSum = Math.max(maxSum, root.val + left + right);
+        return Math.max(left, right) + root.val;
+    }
 }
 ```
 
-题解的关键是理解全局变量 `maxSum` 的含义，以及递归函数返回值的含义。
+解释：
 
-全局变量`maxSum`存放最终的结果，而递归返回值`dfs(root)`表示的是经过当前节点的路径之和，而由于节点的值可能存在负数，因此递归返回的结果值要与0进行比较，如果返回值小于0，则取0，表示不经过这个节点。
+```java
+maxSum = Math.max(maxSum, root.val+left+right);
+return Math.max(left, right) + root.val;
+```
+
+maxSum is the value which recording whether this current root is the final root, so we use `left + right + node.val`. But to the upper layer(after return statement), we can only choose one brunches, we cannot choose both left and right brunches, so we need to select the larger one, so we use `max(left, right) + node.val` to prune the lower brunch.
 
 
 
@@ -858,9 +1289,7 @@ private int dfs(TreeNode root) {
 解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
 ```
 
-分析：
-
-写法1：
+**写法1**：
 
 ```java
 class Solution {
@@ -896,7 +1325,7 @@ class Solution {
 }
 ```
 
-写法2：不建议这么做，因为直接对String类型进行''+''操作，会产生大量临时的String对象。
+**写法2**：不建议这么做，因为直接对String类型进行''+''操作，会产生大量临时的String对象。
 
 ```java
 class Solution {
@@ -916,6 +1345,68 @@ class Solution {
             dfs(root.left, path, res);
             dfs(root.right, path, res);
         }   
+    }
+}
+```
+
+
+
+##### [129. Sum Root to Leaf Numbers](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
+
+在第257题中，要求求出所有从根节点到叶节点的路径。而本题中，把从根节点到叶节点组成的路径形成一个数字，然后计算得出所有路径对应的数字之和。比如：
+
+```
+输入: [4,9,0,5,1]
+    4
+   / \
+  9   0
+ / \
+5   1
+输出: 1026
+解释:
+从根到叶子节点路径 4->9->5 代表数字 495.
+从根到叶子节点路径 4->9->1 代表数字 491.
+从根到叶子节点路径 4->0 代表数字 40.
+因此，数字总和 = 495 + 491 + 40 = 1026.
+```
+
+分析：
+
+**写法1**：用了一个全局变量，不够优雅。
+
+```java
+class Solution {
+    private int res = 0;
+    public int sumNumbers(TreeNode root) {
+        dfs(root, 0);
+        return res;
+    }
+    
+    private void dfs(TreeNode root, int sum) {
+        if(root == null) return;
+        sum = sum * 10 + root.val;
+        if(root.left == null && root.right == null)  {
+            res += sum;
+            return;
+        }
+        dfs(root.left, sum);
+        dfs(root.right, sum);
+    }
+}
+```
+
+**写法2**：避免使用全局变量，完全由递归解决。
+
+```java
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        return dfs(root, 0);
+    }
+    private int dfs(TreeNode root, int sum) {
+        if(root == null) return 0;
+        sum = sum * 10 + root.val;
+        if(root.left == null && root.right == null) return sum;
+        return dfs(root.left, sum) + dfs(root.right, sum);
     }
 }
 ```
@@ -1217,6 +1708,34 @@ class Solution {
     }
 }
 ```
+
+
+
+##### [617. Merge Two Binary Trees](https://leetcode-cn.com/problems/merge-two-binary-trees/)
+
+合并两个二叉树。
+
+分析：本题要求从根节点开始，合并两个二叉树。因此必须自顶向下进行处理。一开始以为是用层序遍历，但层序遍历不能确定每一层的结构（即无法得知该节点是父节点的左孩子还是有孩子）。而用前序遍历则刚好可以处理。如果当前两个树的根节点均为非空，则合并（把结果累加在root1上）；然后递归的合并左右子树即可。
+
+```java
+class Solution {
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        if(t1 == null) return t2;
+        if(t2 == null) return t1;
+
+        t1.val += t2.val;
+        TreeNode leftSub = mergeTrees(t1.left, t2.left);
+        TreeNode rightSub = mergeTrees(t1.right, t2.right);
+        t1.left = leftSub;
+        t1.right = rightSub;
+        return t1;
+    }
+}
+```
+
+
+
+
 
 
 
@@ -1881,214 +2400,6 @@ public TreeNode invertTree(TreeNode root) {
 空间复杂度：O(H)（H是树的高度，因为H∈O(n)，所以空间复杂度也是O(n)）
 
 
-
-将二叉树展开为链表[114. Flatten Binary Tree to Linked List](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
-
-题目：将二叉树展开为一个链表，如下所示：
-
-```
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-   ||
-   \/	
-1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6   
-```
-
-分析：题目中提示了，展开后的链表就是原二叉树前序遍历的顺序，所以我们可以顺着前序遍历的思路开始思考。根据题意，如果左子树非空，就将左子树置为根节点的右子树，而原来的右子树则跟在左子树的最后一个节点。具体解析过程参考[这里](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by--26/) 。
-
-过程如下：
-
-```
-    1
-   / \
-  2   5
- / \   \
-3   4   6
-   ||
-   \/
-   1
-    \
-     2
-    / \
-   3   4
-   	    \
-   	     5
-   	      \
-   	       6
-   	 ||
-   	 \/
-   1
-    \
-     2
-    / \
-   3   4
-   	    \
-   	     5
-   	      \
-   	       6
-     ||
-     \/
-1
- \
-  2
-   \
-    3
-     \
-      4
-       \
-        5
-         \
-          6        
-```
-
-对应的代码：
-
-```java
-public void flatten(TreeNode root) {
-    TreeNode curr = root;
-    while (curr != null) {
-        if(curr.left == null){
-            curr = curr.right;
-        }else {
-            TreeNode pre = curr.left;
-            // 找到左子树中最右边的节点
-            while (pre.right != null) {
-                pre = pre.right;
-            }
-            pre.right = curr.right;
-            curr.right = curr.left;
-            curr.left = null;
-            curr = curr.right;
-        }
-    }
-}
-```
-
-递归法：递归法非常的精妙，值得学习借鉴！
-
-我们从前序遍历的角度出发进行思考，但是前序遍历的递归写法会切断右子树，换句话说，自顶向下的思路行不通，于是我们思考如何自底向上，本质上和后序遍历没有区别，只不过这里稍稍做了一些变形，遍历的顺序为：右子树 -> 左子树 -> 根。
-
-代码如下：
-
-```java
-TreeNode pre = null;
-public void flatten(TreeNode root) {
-    if(root == null) return;
-    flatten(root.right);
-    flatten(root.left);
-    root.right = pre;
-    root.left = null;
-    pre = root;
-}
-```
-
-
-
-填充每个节点的下一个右侧节点指针
-
-[116. Populating Next Right Pointers in Each Node](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
-
-[117. Populating Next Right Pointers in Each Node II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/)
-
-这两题要求将二叉树的**每一层**的节点自左向右连接起来（其中116题是完全二叉树，117题是普通的二叉树），如下图所示，并且要求只使用O(1)的空间复杂度。在本题中，节点的定义为：
-
-```
-struct Node {
-  int val;
-  Node *left;
-  Node *right;
-  Node *next;
-}
-```
-
-![img](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
-
-如果不考虑空间复杂度的要求，那么借助队列，和层序遍历一样，可以比较直观的写出代码。如下所示，这段代码适用于116、117两题。
-
-```java
-public Node connect(Node root) {
-    if (root == null) return null;
-
-    List<Node> queue = new ArrayList<>();
-    queue.add(root);
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        Node pre = null;
-        for(int i=0; i<size; i++){
-            Node curr = queue.remove(0);
-            if(i > 0) pre.next = curr;
-            pre = curr;
-            if(curr.left != null) queue.add(curr.left);
-            if(curr.right != null) queue.add(curr.right);
-        }
-    }
-    return root;
-}
-```
-
-
-
-下面是空间复杂度为O(1)的做法，参考[这里](https://www.cnblogs.com/grandyang/p/4290148.html) 。这种做法实属精妙~
-
-```java
-public Node connect(Node root) {
-    Node dummy = new Node(0,null,null,null);
-    Node curr = dummy, head = root;
-    while (root != null) {
-        if(root.left != null) {
-            curr.next = root.left;
-            curr = curr.next;
-        }
-        if(root.right != null) {
-            curr.next = root.right;
-            curr = curr.next;
-        }
-        root = root.next;
-        // 切换至下一层
-        if(root == null) {
-            curr = dummy;
-            root = dummy.next;
-            dummy.next = null;
-        }
-    }
-    return head;
-}
-```
-
-
-
-下面是仅适用于116题（也就是满二叉树）的解法。
-
-```java
-public Node connect(Node root) {
-    if(root == null) return null;
-    // start 指向每一层的第一个节点，curr 用于遍历一层的节点
-    Node start = root, curr = null;
-    while (start.left != null) {
-        curr = start;
-        while (curr != null) {
-            curr.left.next = curr.right;
-            if(curr.next != null) curr.right.next = curr.next.left;
-            curr = curr.next;
-        }
-        start = start.left; // 下一层
-    }
-    return root;
-}
-```
 
 
 

@@ -37,9 +37,8 @@ public class _124_BinaryTreeMaximumPathSum {
     private int dfs(TreeNode root) {
         if (root == null) return 0;
         path.add(root.val);
-        int leftVal = dfs(root.left);
-        int rightVal = dfs(root.right);
-
+        int leftVal = Math.max(dfs(root.left), 0);
+        int rightVal = Math.max(dfs(root.right), 0);
 
         maxSum = Math.max(maxSum, leftVal + rightVal + root.val);
         return Math.max(leftVal, rightVal) + root.val;

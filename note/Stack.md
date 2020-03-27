@@ -11,6 +11,8 @@
 7. [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)
 8. [225. 用队列实现栈](https://leetcode-cn.com/problems/implement-stack-using-queues/)
 9. [232. 用栈实现队列](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
+10. [946. 验证栈序列](https://leetcode-cn.com/problems/validate-stack-sequences/) [三星]
+11. ​
 
 
 
@@ -498,6 +500,33 @@ $$push_1, push_2, \ldots, push_n, pop_1, pop_2 \ldots, pop_n $$
 单次 出队 操作最坏情况下的时间复杂度为 O(n)。考虑到我们要做 n次出队操作，如果我们用最坏情况下的时间复杂度来计算的话，那么所有操作的时间复杂度为 $O(n^2)$。然而，在一系列的操作中，**最坏情况不可能每次都发生**，可能一些操作代价很小，另一些代价很高。因此，如果用传统的最坏情况分析，那么给出的时间复杂度是远远大于实际的复杂度的。例如，在一个动态数组里面只有一些插入操作需要花费线性的时间，而其余的一些插入操作只需花费常量的时间。
 
 在上面的例子中，**出队 操作最多可以执行的次数跟它之前执行过 入队 操作的次数有关**。虽然一次 出队 操作代价可能很大，但是每 n 次 入队 才能产生这么一次代价为 n 的 出队 操作。因此所有操作的总时间复杂度为：n(所有的入队操作产生） + 2 * n(第一次出队操作产生） + n - 1(剩下的出队操作产生）， 所以实际时间复杂度为 O(2*n)。于是我们可以得到每次操作的**平均时间复杂度**为 O(2n/2n)=O(1)。
+
+##### [946. 验证栈序列](https://leetcode-cn.com/problems/validate-stack-sequences/) [三星]
+
+给定一个push序列，一个pop序列，验证pop序列是否是合法的。保证每个序列中的 **值都不重复**，且
+
+* 0 <= pushed.length == popped.length <=1000
+* 0 <= pushed[i], popped[i] < 1000
+* pushed 是 popped 的排列。
+
+分析：这个题在学习栈的时候就是一道经典的习题。最经典的做法就是模拟，按照push序列的顺序将元素进栈，此时若满足条件`栈非空并且栈顶元素等于pop序列的当前元素`，于是就弹出栈顶元素，并更新pop序列的当前元素，直到条件不再满足。当所有push序列的元素都进栈后，如果pop序列是合法的，则栈一定非空；若pop序列不合法，则栈中还剩有元素。
+
+```java
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Stack<Integer> s = new Stack<>();
+        for(int i = 0, j = 0; i < pushed.length; i++) {
+            s.push(pushed[i]);
+            // 满足条件则出栈
+            while(!s.isEmpty() && s.peek() == popped[j]) {
+                j++;
+                s.pop();
+            }
+        }
+        return s.isEmpty();
+    }
+}
+```
 
 
 

@@ -313,10 +313,11 @@ class Solution {
         int[] res = new int[n - k + 1];
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            // 窗口范围是[i-k+1, i], 移除该范围之外的元素
+          	int start = i - k + 1; // 滑动窗口的左边界
+            // 窗口范围是[start, i], 移除该范围之外的元素
             // 这保证了deque内始终维持着至多为k个元素
             // 注意，是至多为k个，而不是始终为k个！
-            if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+            if (!deque.isEmpty() && deque.peekFirst() < start) {
                 deque.pollFirst();
             }
             // 随着窗口向右滑动，如果新加入的元素大于等于当前窗口范围内的其他的元素
@@ -326,8 +327,8 @@ class Solution {
             }
           	// deque存放索引
             deque.add(i);
-            if (i - k + 1 >= 0) {
-                res[i - k + 1] = nums[deque.peekFirst()];
+            if (start >= 0) {
+                res[start] = nums[deque.peekFirst()];
             }
         }
         return res;
