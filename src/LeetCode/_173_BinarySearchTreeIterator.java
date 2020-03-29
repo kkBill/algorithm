@@ -1,36 +1,59 @@
 package LeetCode;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 class BSTIterator {
-    private Stack<TreeNode> stack = new Stack<>();
-    private TreeNode curr;
-
+    /*
+    Stack<TreeNode> stack;
     public BSTIterator(TreeNode root) {
-        curr = root;
-    }
-
-    /** @return the next smallest number */
-    public int next() {
-        int ans = -1;
-        while(curr != null || !stack.empty()) {
-            if(curr != null) {
-                stack.push(curr);
-                curr = curr.left;
-            }else{
-                TreeNode node = stack.pop();
-                curr = node.right;
-                ans = node.val;
-                break;
-            }
+        stack = new Stack<>();
+        TreeNode p = root;
+        while(p != null) {
+            stack.push(p);
+            p = p.left;
         }
-        return ans;
     }
 
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
-        return curr != null || !stack.empty();
+    public int next() {
+        TreeNode t = stack.pop();
+        TreeNode p = t.right;
+        while(p != null) {
+            stack.push(p);
+            p = p.left;
+        }
+        return t.val;
     }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+    */
+
+    LinkedList<TreeNode> stack;
+    public BSTIterator(TreeNode root) {
+        stack = new LinkedList<>();
+        TreeNode p = root;
+        while(p != null) {
+            stack.addLast(p);
+            p = p.left;
+        }
+    }
+
+    public int next() {
+        TreeNode t = stack.pollLast();
+        TreeNode p = t.right;
+        while(p != null) {
+            stack.addLast(p);
+            p = p.left;
+        }
+        return t.val;
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+
 }
 
 public class _173_BinarySearchTreeIterator {
