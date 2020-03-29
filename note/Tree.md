@@ -10,11 +10,11 @@
 |      | [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) | 层序遍历，借助队列实现                              |
 |      | [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) | 巧用链表的头插法实现逆序                             |
 |      | [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) | 同103题                                    |
-|      | [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) | 卡特兰数♥♥                                   |
-|      | [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/) | ♥♥♥                                      |
-|      | [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) |                                          |
-|      | [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/) |                                          |
-|      | [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) |                                          |
+|      |                                          | 卡特兰数♥♥                                   |
+|      |                                          | ♥♥♥                                      |
+|      |                                          |                                          |
+|      |                                          |                                          |
+|      |                                          |                                          |
 |      | [100. Same Tree](https://leetcode-cn.com/problems/same-tree/) | ♥                                        |
 |      | [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/) | 本题是第100题的变形♥♥                            |
 |      | [112. Path Sum](https://leetcode-cn.com/problems/path-sum/) | ♥♥♥                                      |
@@ -36,10 +36,339 @@
 |      | [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/) | 五星, 树的最大宽度♥♥                             |
 |      |                                          |                                          |
 |      | [617. Merge Two Binary Trees](https://leetcode-cn.com/problems/merge-two-binary-trees/) | 合并两个二叉树, 前序遍历的应用                         |
+|      | 二叉搜索树相关：                                 |                                          |
+|      |                                          |                                          |
+|      |                                          |                                          |
+
+普通二叉树：
+
+1. ​
 
 
+
+二叉搜索树：
+
+1. [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
+2. [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/)
+3. [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+4. [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/)
+5. [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
+6. [173. Binary Search Tree Iterator](https://leetcode-cn.com/problems/binary-search-tree-iterator/) 
+7. [230. Kth Smallest Element in a BST](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+8. [450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/)
+
+平衡二叉树：
+
+1. [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) [五星]
+
+完全二叉树：
+
+1. [222. Count Complete Tree Nodes](https://leetcode-cn.com/problems/count-complete-tree-nodes/)
+2. [958. Check Completeness of a Binary Tree](https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/)
 
 ---
+
+#### 普通二叉树
+
+二叉树的前序遍历、中序遍历、后序遍历的递归和迭代写法，以及层次遍历。
+
+二叉树的很多问题均有四种遍历扩展而来，所以要非常熟悉，其中迭代写法由于自己平时写的不多，要尤为注意。一些问题用递归不太直观，用迭代遍历则很好理解。
+
+除了二叉树的遍历，还有通过“前序序列+中序序列”、“后序序列+中序序列”或“层序序列+中序序列”构建二叉树也是必须要掌握的。
+
+树节点的定义
+
+```java
+ public class TreeNode {
+   int val;
+   TreeNode left;
+   TreeNode right;
+   TreeNode(int x) { val = x; }
+ }
+```
+
+（1）前序遍历
+
+递归写法
+
+```java
+public List<Integer> preorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+  	result.add(root.val);
+	helper(root.left, result);
+  	helper(root.right, result);
+}
+```
+
+非递归写法
+
+```java
+public List<Integer> preorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	if(root == null) return result;	
+  
+  	Stack<TreeNode> s = new Stack<>();
+  	TreeNode p = root;
+  	while(p != null || !s.empty()) {
+      	if(p != null) {
+        	result.add(p.val);
+          	s.push(p);
+          	p = p.left;
+        }else {
+          	p = s.pop();
+          	p = p.right;
+        }
+  	}
+  	return result;
+}
+```
+
+
+
+（2）中序遍历
+
+递归写法
+
+```java
+public List<Integer> inorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+	helper(root.left, result);
+  	result.add(root.val);
+  	helper(root.right, result);
+}
+```
+
+非递归写法
+
+```java
+public List<Integer> inorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	Stack<TreeNode> s = new Stack<>();
+  	TreeNode p = root;
+  	while(p != null || !s.empty()){
+    	if(p != null){
+      		s.push(p);
+      		p = p.left;
+    	}else{
+      		p = s.pop();
+      		result.add(p.val);
+      		p = p.right;
+    	}
+  	}
+  	return result;
+}
+```
+
+
+
+（3）后序遍历
+
+递归写法
+
+```java
+public List<Integer> postorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+	helper(root.left, result);
+  	helper(root.right, result);
+  	result.add(root.val);
+}
+```
+
+**非递归写法（重点）**
+
+```java
+public List<Integer> postorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+ 	if(root == null) return result;
+  	
+  	TreeNode p = root;
+  	TreeNode lastVisitNode = null;//标记最后一次被访问的节点
+  	Stack<TreeNode> s = new Stack<>();
+  	while(p != null || !s.empty()) {
+      	if(p != null) {
+        	s.push(p);
+          	p = p.left;
+        }else {
+            TreeNode temp = s.peek();
+          	if(temp.right != null && temp.right != lastVisitNode) {
+            	p = temp.right;
+            }else {
+              	result.add(temp.val);
+              	s.pop();
+              	lastVisitNode = temp;
+            	p = null;
+            }
+        }
+  	}// while
+  	return result;
+}
+```
+
+相关题目：
+
+[94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+
+[144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+
+[145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
+
+
+
+（4）层次遍历
+
+层次遍历二叉树需要借助队列
+
+```java
+/**
+ * 层序遍历二叉树
+ * 关键在于如何确定每一层对应有哪些节点，这里以每一行作为一个遍历单元，
+ * 核心代码在 for{} 处，当前队列中存放的节点就是上一层遍历时存进去的节点
+ */
+public List<List<Integer>> levelOrder(TreeNode root) {
+	List<List<Integer>> result = new ArrayList<>();
+  	if (root == null) return result;
+
+  	List<TreeNode> queue = new ArrayList<>();
+  	queue.add(root);
+  	while (!queue.isEmpty()) {
+    	int size = queue.size();//当前这一层的节点数量
+    	List<Integer> levelNode = new ArrayList<>();
+    	for (int i = 0; i < size; i++) {
+      		TreeNode node = queue.remove(0);
+      		levelNode.add(node.val);
+      		if (node.left != null) {
+        		queue.add(node.left);
+      		}
+      		if (node.right != null) {
+       			queue.add(node.right);
+      		}
+    	}
+   		result.add(levelNode);
+  	}
+  	return result;
+}
+```
+
+相关题目：
+
+[102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+
+
+（5）通过前序序列+中序序列构建二叉树（模板题）
+
+前序序列的首个元素是根节点，在中序序列中找到根节点，划分出左右子区间，然后递归进行处理。
+
+```java
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+	return build(preorder, 0, preorder.length-1, inorder, 0, inorder.length-1);
+}
+private TreeNode build(int[] preorder, int pl, int pr, int[] inorder, int il, int ir) {
+    // 边界条件
+    if (pl > pr || il > ir) return null;
+    // 确定root节点
+    int rootVal = preorder[pl];
+    TreeNode root = new TreeNode(rootVal);
+    int pos = il;
+    while (inorder[pos] != rootVal) pos++; // pos 最终停留在中序序列root节点的位置
+
+    int leftNum = pos - il; // 左子树的节点个数
+    root.left = build(preorder, pl + 1, pl + leftNum, inorder, il, pos - 1);
+    root.right = build(preorder, pl + leftNum + 1, pr, inorder, pos + 1, ir);
+    return root;
+}
+```
+
+相关题目：
+
+[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+（6）通过中序序列+后序序列构建二叉树
+
+原理同上
+
+```java
+public TreeNode buildTree(int[] inorder, int[] postorder) {
+    return build(inorder,0,inorder.length-1,postorder,0,postorder.length-1);
+}
+private TreeNode build(int[] inorder, int il, int ir, int[] postorder, int pl, int pr) {
+	if(il > ir || pl > pr) return null;
+	int rootVal = postorder[pr];
+  	TreeNode root = new TreeNode(rootVal);
+    int pos = il;
+    while (inorder[pos] != rootVal) pos++;
+    
+  	int leftNum = pos - il;
+	root.left = build(inorder,il,pos-1,postorder,pl,pl+leftNum-1);
+  	root.right = build(inorder,pos+1,ir,postorder,pl+leftNum,pr-1);
+	return root;
+}
+```
+
+相关题目：
+
+[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+（7）通过层序序列+中序序列构建二叉树
+
+
+
+（8）通过前序序列+后序序列构建二叉树
+
+仅根据前序序列和后序序列并**不能确定唯一的二叉树**，只需要构建一个符合要求的即可。乍一看觉得没有思路，但思考的切入点还是之前几题一样的。
+
+分析：
+
+```java
+public TreeNode constructFromPrePost(int[] pre, int[] post) {
+    return build(pre, 0, pre.length - 1, post, 0, post.length - 1);
+}
+
+private TreeNode build(int[] pre, int preL, int preR, int[] post, int postL, int postR) {
+    if (preL > preR) return null;
+    if (preL == preR) return new TreeNode(pre[preL]);
+
+    TreeNode root = new TreeNode(pre[preL]);
+    int childIndex = preL + 1;
+    int childVal = pre[childIndex];
+    int pos = postL;
+    while (post[pos] != childVal) pos++;
+
+  	// 以root为根节点的树只含有一个孩子节点（根据题意，我们可以任意指定为左孩子（或右孩子））
+  	if (preR - childIndex == pos - postL) {
+    	root.left = null;
+    	root.right = build(pre, childIndex, preR, post, postL, pos);
+  	} else {
+       	int leftNum = pos - postL + 1;// 以root为根节点的左子树的节点个数
+    	root.left = build(pre, childIndex, childIndex + leftNum - 1, post, postL, pos);
+    	root.right = build(pre, childIndex + leftNum, preR, post, pos + 1, postR - 1);
+  	}
+  	return root;
+}
+```
+
+相关题目：
+
+[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+
+
+
 
 ##### [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/) 
 
@@ -254,331 +583,6 @@ class Solution {
 ```
 
 
-
-##### [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) [五星]
-
-给定一个整数 *n*，求以 1 ... *n* 为节点组成的二叉搜索树有多少种？
-
-```
-输入: 3
-输出: 5
-解释:
-给定 n = 3, 一共有 5 种不同结构的二叉搜索树:
-
-   1         3     3      2      1
-    \       /     /      / \      \
-     3     2     1      1   3      2
-    /     /       \                 \
-   2     1         2                 3
-```
-
-分析：本题第一遍做的时候毫无思路，看过题解才发现其本质上考察的是**卡特兰数**，如果有了这个前置知识，再结合二叉搜索树本身的性质，就不是很难了。
-
-**什么是卡特兰数**(catalan)?
-
-```
-F(n) = F(0)×F(n-1) + F(1)×F(n-2) + ... + F(n-1)×F(0), 其中 F(0)=1, F(1)=1
-```
-
-卡特兰数和斐波那契数列一样，都是常见的数学递推式，并且在算法题中经常出现，因此了解一下是必须的。
-
-**假设n个节点可构成不同形状的二叉搜索树个数为F(n)**，那么：
-
-```
-F(n) = f(1) + f(2) + ... + f(n), (公式1), 其中 f(i) 表示以 i 为根节点所构成的二叉搜索树的个数，且有
-f(i) = F(i-1)×F(n-i)             (公式2)
-```
-
-比如以 3 为根节点，那么根据二叉搜索树的特点，
-
-```
-左子树有(3-1)个节点 ==> 对应有F(3-1)种子树
-右子树有(n-3)个节点 ==> 对应有F(n-3)种子树
-
-结合公式1,2, 即可推出
-F(n) = F(0)×F(n-1) + F(1)×F(n-2) + ... + F(n-1)×F(0)
-```
-
-也就是卡特兰数递推公式，再转化成代码即可.
-
-复杂度分析：时间复杂度为$\sum_{i= 2}^n i = \frac{(2+n)(n-1)}{2}$ ，也就是$O(n^2)$ ，空间复杂度为$O(n)$ 。 
-
-```java
-class Solution {
-    // 卡特兰数
-    public int numTrees(int n) {
-        int[] F = new int[n+1];
-        F[0] = 1;
-        F[1] = 1;
-        for(int i = 2; i <= n; i++) {
-            for(int j = 0; j < i; j++) {
-                F[i] += F[j]*F[i-j-1];
-            }
-        }
-        return F[n];
-    }
-}
-```
-
-
-
-##### [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/) [五星++]
-
-给定一个整数 n，生成所有由 1 ... n 为节点所组成的**二叉搜索树**。
-
-```
-输入: 3
-输出:
-[
-  [1,null,3,2],
-  [3,2,null,1],
-  [3,1,null,null,2],
-  [2,1,3],
-  [1,null,2,null,3]
-]
-解释:
-以上的输出对应以下 5 种不同结构的二叉搜索树：
-
-   1         3     3      2      1
-    \       /     /      / \      \
-     3     2     1      1   3      2
-    /     /       \                 \
-   2     1         2                 3
-```
-
-分析：本题在[96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) 的基础上，要求求出每个二叉搜索树的结构，最终返回每一种树形结构的根节点。
-
-我们从序列 `1..n` 中取出数字 `i`，作为当前树的树根。于是，剩余 `i - 1` 个元素可用于左子树，`n - i` 个元素用于右子树。和上一题分析的一样，这样会产生`F(i-1)`种左子树 和 `F(n-i)` 种右子树，其中 F 是卡特兰数。
-
-![image.png](https://pic.leetcode-cn.com/f709dff506c20ac970d4cd7ace0436aafca7828c67b510cdbaaa60d54f5479b3-image.png)
-
-现在，我们对序列 `1 ... i-1` 重复上述过程，以构建所有的左子树；然后对 `i+1 ... n`重复，以构建所有的右子树。这样，我们就有了树根 i 和可能的左子树、右子树的列表。最后一步，对两个列表循环，将左子树和右子树连接在根上。
-
-```java
-class Solution {
-    public List<TreeNode> generateTrees(int n) {
-        if(n <= 0) return new ArrayList<>(); // corner case
-        return helper(1, n);
-    }
-    
-    private List<TreeNode> helper(int left, int right) {
-        List<TreeNode> result = new ArrayList<>();
-        if(left > right) {
-            result.add(null);
-            return result;
-        }
-        
-        for(int i = left; i <= right; i++) {
-            List<TreeNode> lList = helper(left, i-1); // 左子树列表
-            List<TreeNode> rList = helper(i+1, right);// 右子树列表 
-            for(TreeNode lNode : lList) {
-                for(TreeNode rNode : rList) {
-                    TreeNode root = new TreeNode(i);
-                    root.left = lNode;
-                    root.right = rNode;
-                    result.add(root);
-                }
-            }
-        }
-        return result;
-    }
-}
-```
-
-（ps：这一题第一遍做是完全不会的，第二遍做还是懵懂，显然自己还不是真正的掌握，属于“背题”而已，暂时记录于此，待3刷4刷给彻底整明白...）
-
-
-
-##### [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) [五星]
-
-给定一棵二叉树，验证其是否是二叉搜索树。
-
-分析：涉及二叉搜索树的题，八成是通过“**中序序列是递增序列**”这一性质出发的。本题就是这一性质最基本的应用。
-
-方法1：我们可以通过中序遍历得到给定二叉树的中序序列，然后判断该序列是否为递增序列，如果是，则为二叉搜索树；反之则不是。这是最直接的解法。不过需要O(n)的辅助空间，并且需要2次遍历，一次是遍历二叉树的所有节点产生序列，第二次是遍历序列检查递增性是否满足要求。
-
-方法2：在方法1中，我们把遍历二叉树和检查序列的递增性分解成2步了，但事实上这是没必要的，我们可以**在遍历二叉树的同时进行递增性检查**，这样的话就只需要一趟遍历即可。
-
-我们定义一个全局的`inorder`用于存放中序序列，并采用递归法进行遍历，因此代码骨架差不多是这样的：
-
-```java
-boolean isValid(TreeNode root) {
-  	if(root == null) return true;
-  	if(!isValid(root.left)) return false;
-    // 针对 root 节点的操作
-  	// 如果inorder为空，表示当前访问到的节点是首个节点，于是把它存入inorder内
-    // 如果inorder不为空，那么在把当前访问到的节点值存入之前，
-    //   先比较一下上一次访问的节点值是否比当前节点值大，如果是的，说明在这里就不满足递增性了，
-    //   于是返回false;如果不是，那么继续按正常的步骤进行
-  	return isValid(root.right);
-}
-```
-
-翻译成代码如下：
-
-```java
-class Solution {
-    List<Integer> inorder = new ArrayList<>();
-    public boolean isValidBST(TreeNode root) {
-        return isValid(root);
-    }
-    
-    private boolean isValid(TreeNode root) {
-        if(root == null) return true;
-        if(!isValid(root.left)) return false;
-        // 在这里处理存储中序序列和比较递增性问题
-        if(inorder.isEmpty()) {
-            inorder.add(root.val);
-        }else {
-            if(inorder.get(inorder.size()-1) >= root.val) return false;
-            inorder.add(root.val);
-        }
-        return isValid(root.right);
-    }
-}
-```
-
-方法2改进：在上一个版本中，我们仍然使用了O(n)的辅助空间，但事实上**在比较递增性的时候，我们仅与“上一次访问的节点”进行比较**，也就是说，我们只需要O(1)辅助空间就够了。原理还是一样，我们将中序遍历的上一次访问到的那个节点记为 prev，对其初始化为 null，代码如下：
-
-```java
-// 时间复杂度：O(n)
-// 空间复杂度：O(1)
-class Solution {
-    private TreeNode prev = null;
-    public boolean isValidBST(TreeNode root) {
-        if(root == null) return true;
-        if(!isValidBST(root.left)) return false;
-        if(prev == null) {
-            prev = root;
-        }else {
-            if(prev.val >= root.val) return false;
-            else prev = root;
-        }
-        return isValidBST(root.right);
-    }
-}
-```
-
-
-
-##### [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/) [五星]
-
-已知二叉搜索树中的**两个**节点被错误地交换。在**不改变其结构**的情况下，恢复这棵树。比如：
-
-```
-输入: [3,1,4,null,null,2]
-
-  3
- / \
-1   4
-   /
-  2
-
-输出: [2,1,4,null,null,3]
-
-  2
- / \
-1   4
-   /
-  3
-```
-
-**进阶:**
-
-- 使用 O(*n*) 空间复杂度的解法很容易实现。
-- 你能想出一个只使用常数空间的解决方案吗？
-
-分析：如果深刻理解了[98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) 题，那么这道题其实就是换了个马甲罢了。第98题要我们验证，这一题要我们找出2个乱序的节点，本质都是从“二叉搜索树的中序序列是递增序列”这一性质出发的，完全就是一回事儿。而且在上一题中，空间复杂度已经从O(n)优化到了O(1)，因此，这里就直接采用O(1)的解法了。
-
-对于有两个乱序节点的"二叉搜索树"来说，观察其中序序列，可以发现如下特点。注，题目条件给的例子可能不容易发现这样的特点，需要自己多举几个测试用例加以验证。比如：
-
-```
-    4
-   / \
-  2   3
- /\   /\
-1  6 5  7
-观察可以很容易的知道节点6和节点3的位置错了，对应的中序序列为
-inorder: 1,2,[6],4,5,[3],7
-
-```
-
-当**第一次**出现逆序时，前一个节点就是第1个位置错误的节点；
-
-当**最后一次**出现逆序时，后一个节点就是第2个位置错误的节点；
-
-再比如下面这个例子，
-
-```
-  3
- / \
-1   4
-   /
-  2
-inorder: 1,[3],[2],4
-```
-
-一定注意我这里的描述！我们记录好这两个位置错误的节点，最后把它俩的值交换一下即可。
-
-代码如下，可以看到其整体骨架和前一题毫无区别，就是在前一题的模板上再根据本题的特点进行简单扩充。
-
-```java
-class Solution {
-    private TreeNode first = null;
-    private TreeNode second = null;
-    private TreeNode prev = null;
-    
-    public void recoverTree(TreeNode root) {
-        inOrder(root);
-        int t = first.val;
-        first.val = second.val;
-        second.val = t;
-    }
-    
-    private void inOrder(TreeNode root) {
-        if(root == null) return;
-        inOrder(root.left);
-        if(prev == null) {
-            prev = root;
-        }else {
-            if(first == null && prev.val > root.val) {
-                first = prev;
-            }
-            if(prev.val > root.val) {
-                second = root;
-            }
-            // update prev
-            prev = root;
-        }
-        inOrder(root.right);
-    }
-}
-```
-
-
-
-##### [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) [二星]
-
-将一个按照升序排列的有序数组，转换为一棵**高度平衡二叉搜索树**。
-
-```java
-// 时间复杂度：O(n) 每个节点需要访问一次
-// 空间复杂度：O(log(n)) 递归栈
-class Solution {
-    public TreeNode sortedArrayToBST(int[] nums) {
-        return helper(nums, 0, nums.length-1);
-    }
-    
-    private TreeNode helper(int[] nums, int left, int right) {
-        if(left > right) return null;
-        int mid = (right - left) / 2 + left;
-        TreeNode root = new TreeNode(nums[mid]);
-        root.left = helper(nums, left, mid-1);
-        root.right = helper(nums, mid+1, right);
-        return root;
-    }
-}
-```
 
 
 
@@ -1620,7 +1624,6 @@ class Solution {
     public boolean isBalanced(TreeNode root) {
         return height(root) != -1;
     }
-    
     private int height(TreeNode root) {
         if(root == null) return 0;
         int left = height(root.left);
@@ -1735,672 +1738,786 @@ class Solution {
 
 
 
+----
 
+#### 二叉搜索树（Binary Search Tree）
 
+二叉搜索树的性质：对于任何节点v，其左子树节点的值均＜v的值；其右子树节点的值均＞v的值（根据题意决定是'＜'还是'≤'）。
 
+遍历：根据二叉搜索树的性质，**中序遍历可得到递增序列**。这是BST最重要的性质，几乎涉及BST的题目都是根据这一性质来求解。
 
----
-
-### 普通二叉树
-
-二叉树的前序遍历、中序遍历、后序遍历的递归和迭代写法，以及层次遍历。
-
-二叉树的很多问题均有四种遍历扩展而来，所以要非常熟悉，其中迭代写法由于自己平时写的不多，要尤为注意。一些问题用递归不太直观，用迭代遍历则很好理解。
-
-除了二叉树的遍历，还有通过“前序序列+中序序列”、“后序序列+中序序列”或“层序序列+中序序列”构建二叉树也是必须要掌握的。
-
-树节点的定义
-
-```java
- public class TreeNode {
-   int val;
-   TreeNode left;
-   TreeNode right;
-   TreeNode(int x) { val = x; }
- }
-```
-
-（1）前序遍历
-
-递归写法
-
-```java
-public List<Integer> preorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-  	result.add(root.val);
-	helper(root.left, result);
-  	helper(root.right, result);
-}
-```
-
-非递归写法
-
-```java
-public List<Integer> preorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	if(root == null) return result;	
-  
-  	Stack<TreeNode> s = new Stack<>();
-  	TreeNode p = root;
-  	while(p != null || !s.empty()) {
-      	if(p != null) {
-        	result.add(p.val);
-          	s.push(p);
-          	p = p.left;
-        }else {
-          	p = s.pop();
-          	p = p.right;
-        }
-  	}
-  	return result;
-}
-```
-
-
-
-（2）中序遍历
-
-递归写法
-
-```java
-public List<Integer> inorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-	helper(root.left, result);
-  	result.add(root.val);
-  	helper(root.right, result);
-}
-```
-
-非递归写法
-
-```java
-public List<Integer> inorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	Stack<TreeNode> s = new Stack<>();
-  	TreeNode p = root;
-  	while(p != null || !s.empty()){
-    	if(p != null){
-      		s.push(p);
-      		p = p.left;
-    	}else{
-      		p = s.pop();
-      		result.add(p.val);
-      		p = p.right;
-    	}
-  	}
-  	return result;
-}
-```
-
-
-
-（3）后序遍历
-
-递归写法
-
-```java
-public List<Integer> postorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-	helper(root.left, result);
-  	helper(root.right, result);
-  	result.add(root.val);
-}
-```
-
-**非递归写法（重点）**
-
-```java
-public List<Integer> postorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
- 	if(root == null) return result;
-  	
-  	TreeNode p = root;
-  	TreeNode lastVisitNode = null;//标记最后一次被访问的节点
-  	Stack<TreeNode> s = new Stack<>();
-  	while(p != null || !s.empty()) {
-      	if(p != null) {
-        	s.push(p);
-          	p = p.left;
-        }else {
-            TreeNode temp = s.peek();
-          	if(temp.right != null && temp.right != lastVisitNode) {
-            	p = temp.right;
-            }else {
-              	result.add(temp.val);
-              	s.pop();
-              	lastVisitNode = temp;
-            	p = null;
-            }
-        }
-  	}// while
-  	return result;
-}
-```
-
-相关题目：
-
-[94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
-
-[144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
-
-[145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
-
-
-
-（4）层次遍历
-
-层次遍历二叉树需要借助队列
-
-```java
-/**
- * 层序遍历二叉树
- * 关键在于如何确定每一层对应有哪些节点，这里以每一行作为一个遍历单元，
- * 核心代码在 for{} 处，当前队列中存放的节点就是上一层遍历时存进去的节点
- */
-public List<List<Integer>> levelOrder(TreeNode root) {
-	List<List<Integer>> result = new ArrayList<>();
-  	if (root == null) return result;
-
-  	List<TreeNode> queue = new ArrayList<>();
-  	queue.add(root);
-  	while (!queue.isEmpty()) {
-    	int size = queue.size();//当前这一层的节点数量
-    	List<Integer> levelNode = new ArrayList<>();
-    	for (int i = 0; i < size; i++) {
-      		TreeNode node = queue.remove(0);
-      		levelNode.add(node.val);
-      		if (node.left != null) {
-        		queue.add(node.left);
-      		}
-      		if (node.right != null) {
-       			queue.add(node.right);
-      		}
-    	}
-   		result.add(levelNode);
-  	}
-  	return result;
-}
-```
-
-相关题目：
-
-[102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
-
-
-
-（5）通过前序序列+中序序列构建二叉树（模板题）
-
-前序序列的首个元素是根节点，在中序序列中找到根节点，划分出左右子区间，然后递归进行处理。
-
-```java
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-	return build(preorder, 0, preorder.length-1, inorder, 0, inorder.length-1);
-}
-private TreeNode build(int[] preorder, int pl, int pr, int[] inorder, int il, int ir) {
-    // 边界条件
-    if (pl > pr || il > ir) return null;
-    // 确定root节点
-    int rootVal = preorder[pl];
-    TreeNode root = new TreeNode(rootVal);
-    int pos = il;
-    while (inorder[pos] != rootVal) pos++; // pos 最终停留在中序序列root节点的位置
-
-    int leftNum = pos - il; // 左子树的节点个数
-    root.left = build(preorder, pl + 1, pl + leftNum, inorder, il, pos - 1);
-    root.right = build(preorder, pl + leftNum + 1, pr, inorder, pos + 1, ir);
-    return root;
-}
-```
-
-相关题目：
-
-[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
-
-（6）通过中序序列+后序序列构建二叉树
-
-原理同上
-
-```java
-public TreeNode buildTree(int[] inorder, int[] postorder) {
-    return build(inorder,0,inorder.length-1,postorder,0,postorder.length-1);
-}
-private TreeNode build(int[] inorder, int il, int ir, int[] postorder, int pl, int pr) {
-	if(il > ir || pl > pr) return null;
-	int rootVal = postorder[pr];
-  	TreeNode root = new TreeNode(rootVal);
-    int pos = il;
-    while (inorder[pos] != rootVal) pos++;
-    
-  	int leftNum = pos - il;
-	root.left = build(inorder,il,pos-1,postorder,pl,pl+leftNum-1);
-  	root.right = build(inorder,pos+1,ir,postorder,pl+leftNum,pr-1);
-	return root;
-}
-```
-
-相关题目：
-
-[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
-
-（7）通过层序序列+中序序列构建二叉树
-
-
-
-（8）通过前序序列+后序序列构建二叉树
-
-仅根据前序序列和后序序列并**不能确定唯一的二叉树**，只需要构建一个符合要求的即可。乍一看觉得没有思路，但思考的切入点还是之前几题一样的。
-
-分析：
-
-```java
-public TreeNode constructFromPrePost(int[] pre, int[] post) {
-    return build(pre, 0, pre.length - 1, post, 0, post.length - 1);
-}
-
-private TreeNode build(int[] pre, int preL, int preR, int[] post, int postL, int postR) {
-    if (preL > preR) return null;
-    if (preL == preR) return new TreeNode(pre[preL]);
-
-    TreeNode root = new TreeNode(pre[preL]);
-    int childIndex = preL + 1;
-    int childVal = pre[childIndex];
-    int pos = postL;
-    while (post[pos] != childVal) pos++;
-
-  	// 以root为根节点的树只含有一个孩子节点（根据题意，我们可以任意指定为左孩子（或右孩子））
-  	if (preR - childIndex == pos - postL) {
-    	root.left = null;
-    	root.right = build(pre, childIndex, preR, post, postL, pos);
-  	} else {
-       	int leftNum = pos - postL + 1;// 以root为根节点的左子树的节点个数
-    	root.left = build(pre, childIndex, childIndex + leftNum - 1, post, postL, pos);
-    	root.right = build(pre, childIndex + leftNum, preR, post, pos + 1, postR - 1);
-  	}
-  	return root;
-}
-```
-
-相关题目：
-
-[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
-
-
-
-除此之外，还有以特殊的二叉树，比如二叉搜索树为背景，给出较少的已知条件，需要利用特殊的性质来构建二叉树。比如第[108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)题，根据给定的**递增序列**构建**平衡二叉搜索树**。这一题本质上和5/6/7没有任何区别，由于要保证是平衡二叉树，所以根节点要从中间位置开始，当确定了根节点之后，由于原数组已经是有序的，那么根据二叉搜索树的性质即可划分出左右子树，然后对左右子树递归处理即可。
-
-```java
-public TreeNode sortedArrayToBST(int[] nums) {
-	return build(nums, 0, nums.length - 1);
-}
-
-private TreeNode build(int[] nums, int low, int high) {
-     if (low > high) return null;
-     int mid = (high - low) / 2 + low;
-     TreeNode root = new TreeNode(nums[mid]);
-     root.left = build(nums, low, mid - 1);
-     root.right = build(nums, mid + 1, high);
-     return root;
-}
-```
-
-
-
-
-
-
-
-
-
-### 二叉搜索树（BST，Binary Search Tree）
-
-二叉搜索树的性质：对于任何节点v，其左子树节点的值均小于（或等于）v的值；其右子树节点的值均大于（或等于）v的值。
-
-遍历：根据二叉搜索树的性质，中序遍历可得到递增序列。
-
-查找：查找给定的关键字、最大值、最小值
+查找：查找BST的最大值、最小值，以及第k个小的值等
 
 插入：插入一个新的值，要求插入后维持二叉搜索树的性质
 
 删除：删除指定节点，要求删除后维持二叉搜索树的性质
 
-简单实现如下：（另外还可以参考[这里](https://github.com/kkBill/algorithm/tree/master/src/Other/BinarySearchTree)）
+二叉搜索树相关的题目，主要有两类。一类是根据二叉搜索树的性质来求解的，另一类则纯粹是考察对这一数据结构是否熟悉，比如手撕BST，实现插入/删除/查询等操作。
+
+下面是一个简单的二叉搜索树实现，参考《算法》第4版。主要实现以下几个public接口：
+
+* public void insert(int key)：向BST中插入一个值
+* public TreeNode search(int key)：查询是否存在值为key的节点，若存在返回对应节点；若不存在返回null
+* public void deleteNode(int key)：删除值为key的节点（简单起见，保证key总是有效的，即第450题）
+* public int select(int k)：返回BST中第k小的元素（简单期间，保证k总是有效的，即第230题）
+* public int size()：返回BST的节点个数
+
+由于在每个节点中维护一个`size`域，表示以该节点为根节点的子树的节点个数。因此，在插入和删除操作时要及时更新这一值。另外，比较容易出错的是删除操作。
 
 ```java
-package LeetCode;
+public class BST {
+    // 节点定义
+    class TreeNode {
+        int val;
+        int size; // 以该节点为根节点的子树的节点总数
+        TreeNode left;
+        TreeNode right;
 
-public class BSTNode {
-    int val;
-    BSTNode left;
-    BSTNode right;
-
-    public BSTNode(int x){
-        val = x;
-        left = null;
-        right = null;
+        TreeNode(int x) {
+            val = x;
+            size = 1;
+        }
     }
 
-    public static BSTNode makeBST(int[] vals) {
-        BSTNode root = null;
-        for(int val : vals){
-            //root = insertRecursive(root,val);
-            root = insertNonRecursive(root,val);
+    private TreeNode root;
+
+    // 查询BST中是否存在值为key的节点，若存在，返回对应节点；反之，返回null
+    public TreeNode search(int key) {
+        return search(root, key);
+    }
+
+    private TreeNode search(TreeNode root, int key) {
+        if (root == null) return null;
+        if (key == root.val) return root;
+        else if (key < root.val) return search(root.left, key);
+        else return search(root.right, key);
+    }
+
+    // 向BST中插入一个值为key的节点
+    public void insert(int key) {
+        root = insert(root, key);
+    }
+
+    private TreeNode insert(TreeNode root, int key) {
+        if (root == null) return new TreeNode(key);
+
+        if (key < root.val) {
+            root.left = insert(root.left, key);
+        } else {
+            root.right = insert(root.right, key);
         }
+        //
+        root.size = size(root.left) + size(root.right) + 1;
+
         return root;
     }
 
-    // 插入
-    // 1. 递归版本
-    public static BSTNode insertRecursive(BSTNode root, int x){
-        if(root == null)
-            return new BSTNode(x);
-        else if(x < root.val)
-            root.left = insertRecursive(root.left, x);
-        else
-            root.right = insertRecursive(root.right, x);
-        return root;
+    // 删除给定key值的节点，返回树的根节点（根节点可能发生调整或删除）
+    // 假定key总是BST中的值
+    public void deleteNode(int key) {
+        root = deleteNode(root, key);
     }
 
-    // 2. 迭代版本（参考《算法导论》p166）
-    public static BSTNode insertNonRecursive(BSTNode root, int x){
-        BSTNode parent = null;
-        BSTNode curr = root;
-        while(curr != null) {
-            parent = curr;
-            if(x < curr.val) curr = curr.left;
-            else curr = curr.right;
-        }
-        if(parent == null) root = new BSTNode(x);
-        else if(x <= parent.val) parent.left = new BSTNode(x);
-        else parent.right = new BSTNode(x);
-        return root;
-    }
+    private TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
 
-    // 遍历
-    // 中序遍历，按序输出
-    public static void inorderTraversal(BSTNode root) {
-        if(root != null) {
-            inorderTraversal(root.left);
-            System.out.print(root.val + " ");
-            inorderTraversal(root.right);
-        }
-    }
-
-    // 查找
-    // 查找关键字为x的节点，如果存在，返回对应的节点；否则返回null
-    public static BSTNode find(BSTNode root, int x) {
-        BSTNode curr = root;
-        while(curr != null && curr.val != x) {
-            if(x < curr.val) curr = curr.left;
-            else curr = curr.right;
-        }
-        return curr;
-    }
-
-    // 查找最大值
-    public static BSTNode findMax(BSTNode root) {
-        BSTNode curr = root;
-        while(curr.right != null)
-            curr = curr.right;
-        return curr;
-    }
-
-    // 查找最小值
-    public static BSTNode findMin(BSTNode root) {
-        BSTNode curr = root;
-        while(curr.left != null)
-            curr = curr.left;
-        return curr;
-    }
-
-    // 删除（写法1：参考《算法笔记》）
-    // 删除值为 x 的节点，并返回二叉搜索树的根
-    public static BSTNode delete(BSTNode root, int x) {
-        if(root == null) return null;
-        if(x == root.val) {
-            if(root.left == null && root.right == null){
-                root = null;
-            }else if(root.left != null) {
-                BSTNode preNode = findMax(root.left);
-                root.val = preNode.val;
-                root.left = delete(root.left,preNode.val);
-            }else {
-                BSTNode nextNode = findMin(root.right);
-                root.val = nextNode.val;
-                root.right = delete(root.right,nextNode.val);
+        if (key < root.val) {
+            root.left = deleteNode(root.left, key);
+        } else if (key > root.val) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            // 待删除节点只有一个孩子节点时，将其孩子节点提升为父节点即可
+            if (root.left == null) {
+                root = root.right;
+            } else if (root.right == null) {
+                root = root.left;
+            } else {
+                // 关键
+                TreeNode rightMin = findMin(root.right);
+                rightMin.right = deleteMin(root.right);
+                rightMin.left = root.left;
+                root = rightMin;
             }
-        }else if(x < root.val) {
-            root.left = delete(root.left, x);
-        }else {
-            root.right = delete(root.right, x);
         }
+
+        root.size = size(root.left) + size(root.right) + 1;
         return root;
     }
 
-    // 删除（写法2：参考《算法》第4版）
-    public static BSTNode delete2(BSTNode root, int x) {
-        if(root == null) return null;
-
-        if(x < root.val) root.left = delete2(root.left,x);
-        else if(x > root.val) root.right = delete2(root.right,x);
-        else { // 当前root节点为待删除的节点
-            //如果当前节点只有一个孩子节点，则直接将其孩子节点提升为新的根节点
-            if(root.left == null) return root.right;
-            if(root.right == null) return root.left;
-
-            //如果当前节点有两个孩子节点
-            BSTNode successor = findMin(root.right);
-            successor.right = deleteMin(root.right);
-            successor.left = root.left;
-            return successor;
-        }
-        return root;
+    // 寻找以root为根节点的最小值
+    private TreeNode findMin(TreeNode root) {
+        if(root.left == null) return root; 
+        return findMin(root.left);
     }
 
-    private static BSTNode deleteMin(BSTNode root) {
-        if(root.left == null)
-            return root.right;
+    // 删除以root为根节点的最小值节点
+    private TreeNode deleteMin(TreeNode root) {
+        if (root.left == null) return root.right;
         root.left = deleteMin(root.left);
+        root.size = size(root.left) + size(root.right) + 1;
         return root;
+    }
+
+    // 查询BST中第k小的数（保证 1 ≤ k ≤ BST's total elements.）
+    public int select(int k) {
+        return select(root, k);
+    }
+
+    private int select(TreeNode root, int k) {
+        int leftSize = size(root.left);
+        if(leftSize == k - 1) return root.val;
+        else if(leftSize > k - 1) return select(root.left, k);
+        else return select(root.right, k-leftSize-1);
+    }
+
+    public int size() {
+        return size(root);
+    }
+
+    private int size(TreeNode root) {
+        if(root == null) return 0;
+        return root.size;
+    }
+
+    /**
+     * 用于测试
+     * @return 中序序列
+     */
+    public List<Integer> inOrder() {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        inOrder(root, res);
+        return res;
+    }
+
+    private void inOrder(TreeNode root, List<Integer> res) {
+        if (root == null) return;
+        inOrder(root.left, res);
+        res.add(root.val);
+        inOrder(root.right, res);
     }
 
     public static void main(String[] args) {
-        int[] vals = {5, 3, 8, 1, 6, 9, 7};
-        BSTNode root = makeBST(vals);
-        inorderTraversal(root);
-        System.out.println();
-        System.out.println(findMax(root).val);
-        System.out.println(findMin(root).val);
-        if(find(root,6) != null) {
-            System.out.println("find node 6");
-        }else {
-            System.out.println("can't find node 6");
-        }
+        BST bst = new BST();
+        bst.insert(6);
+        bst.insert(3);
+        bst.insert(9);
+        bst.insert(1);
+        bst.insert(5);
+        bst.insert(11);
 
-        root = delete2(root,6);
-        inorderTraversal(root);
+        System.out.println("size:" + bst.size() +", " +bst.inOrder());
+
+        System.out.println(bst.search(9) != null); // true
+        System.out.println(bst.search(10) != null); // false
+
+        bst.insert(10);
+        System.out.println(bst.search(10) != null); // true
+        System.out.println("size:" + bst.size() +", " +bst.inOrder());
+
+        bst.deleteNode(11); // 删除叶节点
+        System.out.println("size:" + bst.size() +", " +bst.inOrder());
+
+        bst.deleteNode(6); // 删除非叶节点
+        System.out.println("size:" + bst.size() +", " +bst.inOrder());
+
+        System.out.println(bst.select(3));
+        //System.out.println(bst.kthSmallest(10)); // 无效
     }
 }
 ```
 
-二叉搜索树相关：
 
-* 删除二叉搜索树中的一个节点（[450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/) ）
 
-直接套用上面分析的模板即可，不再赘述。
+##### [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/) [五星++]
 
-* 设计二叉搜索树的迭代器（[173. Binary Search Tree Iterator](https://leetcode-cn.com/problems/binary-search-tree-iterator/) ）
+给定一个整数 n，生成所有由 1 ... n 为节点所组成的**二叉搜索树**。
+
+```
+输入: 3
+输出:
+[
+  [1,null,3,2],
+  [3,2,null,1],
+  [3,1,null,null,2],
+  [2,1,3],
+  [1,null,2,null,3]
+]
+解释:
+以上的输出对应以下 5 种不同结构的二叉搜索树：
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+```
+
+分析：本题在[96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) 的基础上，要求求出每个二叉搜索树的结构，最终返回每一种树形结构的根节点。
+
+我们从序列 `1..n` 中取出数字 `i`，作为当前树的树根。于是，剩余 `i - 1` 个元素可用于左子树，`n - i` 个元素用于右子树。和上一题分析的一样，这样会产生`F(i-1)`种左子树 和 `F(n-i)` 种右子树，其中 F 是卡特兰数。
+
+![image.png](https://pic.leetcode-cn.com/f709dff506c20ac970d4cd7ace0436aafca7828c67b510cdbaaa60d54f5479b3-image.png)
+
+现在，我们对序列 `1 ... i-1` 重复上述过程，以构建所有的左子树；然后对 `i+1 ... n`重复，以构建所有的右子树。这样，我们就有了树根 i 和可能的左子树、右子树的列表。最后一步，对两个列表循环，将左子树和右子树连接在根上。
+
+```java
+class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        if(n <= 0) return new ArrayList<>(); // corner case
+        return helper(1, n);
+    }
+    
+    private List<TreeNode> helper(int left, int right) {
+        List<TreeNode> result = new ArrayList<>();
+        if(left > right) {
+            result.add(null);
+            return result;
+        }
+        
+        for(int i = left; i <= right; i++) {
+            List<TreeNode> lList = helper(left, i-1); // 左子树列表
+            List<TreeNode> rList = helper(i+1, right);// 右子树列表 
+            for(TreeNode lNode : lList) {
+                for(TreeNode rNode : rList) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = lNode;
+                    root.right = rNode;
+                    result.add(root);
+                }
+            }
+        }
+        return result;
+    }
+}
+```
+
+（ps：这一题第一遍做是完全不会的，第二遍做还是懵懂，显然自己还不是真正的掌握，属于“背题”而已，暂时记录于此，待3刷4刷给彻底整明白...）
+
+##### [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) [五星]
+
+给定一个整数 *n*，求以 1 ... *n* 为节点组成的二叉搜索树有多少种？
+
+```
+输入: 3
+输出: 5
+解释:
+给定 n = 3, 一共有 5 种不同结构的二叉搜索树:
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+```
+
+分析：本题第一遍做的时候毫无思路，看过题解才发现其本质上考察的是**卡特兰数**，如果有了这个前置知识，再结合二叉搜索树本身的性质，就不是很难了。
+
+**什么是卡特兰数**(catalan)?
+
+```
+F(n) = F(0)×F(n-1) + F(1)×F(n-2) + ... + F(n-1)×F(0), 其中 F(0)=1, F(1)=1
+```
+
+卡特兰数和斐波那契数列一样，都是常见的数学递推式，并且在算法题中经常出现，因此了解一下是必须的。
+
+**假设n个节点可构成不同形状的二叉搜索树个数为F(n)**，那么：
+
+```
+F(n) = f(1) + f(2) + ... + f(n), (公式1), 其中 f(i) 表示以 i 为根节点所构成的二叉搜索树的个数，且有
+f(i) = F(i-1)×F(n-i)             (公式2)
+```
+
+比如以 3 为根节点，那么根据二叉搜索树的特点，
+
+```
+左子树有(3-1)个节点 ==> 对应有F(3-1)种子树
+右子树有(n-3)个节点 ==> 对应有F(n-3)种子树
+
+结合公式1,2, 即可推出
+F(n) = F(0)×F(n-1) + F(1)×F(n-2) + ... + F(n-1)×F(0)
+```
+
+也就是卡特兰数递推公式，再转化成代码即可.
+
+复杂度分析：时间复杂度为$\sum_{i= 2}^n i = \frac{(2+n)(n-1)}{2}$ ，也就是$O(n^2)$ ，空间复杂度为$O(n)$ 。 
+
+```java
+class Solution {
+    // 卡特兰数
+    public int numTrees(int n) {
+        int[] F = new int[n+1];
+        F[0] = 1;
+        F[1] = 1;
+        for(int i = 2; i <= n; i++) {
+            for(int j = 0; j < i; j++) {
+                F[i] += F[j]*F[i-j-1];
+            }
+        }
+        return F[n];
+    }
+}
+```
+
+
+
+##### [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) [五星]
+
+给定一棵二叉树，验证其是否是二叉搜索树。
+
+分析：涉及二叉搜索树的题，八成是通过“**中序序列是递增序列**”这一性质出发的。本题就是这一性质最基本的应用。
+
+方法1：我们可以通过中序遍历得到给定二叉树的中序序列，然后判断该序列是否为递增序列，如果是，则为二叉搜索树；反之则不是。这是最直接的解法。不过需要O(n)的辅助空间，并且需要2次遍历，一次是遍历二叉树的所有节点产生序列，第二次是遍历序列检查递增性是否满足要求。
+
+方法2：在方法1中，我们把遍历二叉树和检查序列的递增性分解成2步了，但事实上这是没必要的，我们可以**在遍历二叉树的同时进行递增性检查**，这样的话就只需要一趟遍历即可。
+
+我们定义一个全局的`inorder`用于存放中序序列，并采用递归法进行遍历，因此代码骨架差不多是这样的：
+
+```java
+boolean isValid(TreeNode root) {
+  	if(root == null) return true;
+  	if(!isValid(root.left)) return false;
+    // 针对 root 节点的操作
+  	// 如果inorder为空，表示当前访问到的节点是首个节点，于是把它存入inorder内
+    // 如果inorder不为空，那么在把当前访问到的节点值存入之前，
+    //   先比较一下上一次访问的节点值是否比当前节点值大，如果是的，说明在这里就不满足递增性了，
+    //   于是返回false;如果不是，那么继续按正常的步骤进行
+  	return isValid(root.right);
+}
+```
+
+翻译成代码如下：
+
+```java
+class Solution {
+    List<Integer> inorder = new ArrayList<>();
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root);
+    }
+    
+    private boolean isValid(TreeNode root) {
+        if(root == null) return true;
+        if(!isValid(root.left)) return false;
+        // 在这里处理存储中序序列和比较递增性问题
+        if(inorder.isEmpty()) {
+            inorder.add(root.val);
+        }else {
+            if(inorder.get(inorder.size()-1) >= root.val) return false;
+            inorder.add(root.val);
+        }
+        return isValid(root.right);
+    }
+}
+```
+
+方法2改进：在上一个版本中，我们仍然使用了O(n)的辅助空间，但事实上**在比较递增性的时候，我们仅与“上一次访问的节点”进行比较**，也就是说，我们只需要O(1)辅助空间就够了。原理还是一样，我们将中序遍历的上一次访问到的那个节点记为 prev，对其初始化为 null，代码如下：
+
+```java
+// 时间复杂度：O(n)
+// 空间复杂度：O(1)
+class Solution {
+    private TreeNode prev = null;
+    public boolean isValidBST(TreeNode root) {
+        if(root == null) return true;
+        if(!isValidBST(root.left)) return false;
+        if(prev == null) {
+            prev = root;
+        }else {
+            if(prev.val >= root.val) return false;
+            else prev = root;
+        }
+        return isValidBST(root.right);
+    }
+}
+```
+
+
+
+##### [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/) [五星]
+
+已知二叉搜索树中的**两个**节点被错误地交换。在**不改变其结构**的情况下，恢复这棵树。比如：
+
+```
+输入: [3,1,4,null,null,2]
+
+  3
+ / \
+1   4
+   /
+  2
+
+输出: [2,1,4,null,null,3]
+
+  2
+ / \
+1   4
+   /
+  3
+```
+
+**进阶:**
+
+- 使用 O(*n*) 空间复杂度的解法很容易实现。
+- 你能想出一个只使用常数空间的解决方案吗？
+
+分析：如果深刻理解了[98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/) 题，那么这道题其实就是换了个马甲罢了。第98题要我们验证，这一题要我们找出2个乱序的节点，本质都是从“二叉搜索树的中序序列是递增序列”这一性质出发的，完全就是一回事儿。而且在上一题中，空间复杂度已经从O(n)优化到了O(1)，因此，这里就直接采用O(1)的解法了。
+
+对于有两个乱序节点的"二叉搜索树"来说，观察其中序序列，可以发现如下特点。注，题目条件给的例子可能不容易发现这样的特点，需要自己多举几个测试用例加以验证。比如：
+
+```
+    4
+   / \
+  2   3
+ /\   /\
+1  6 5  7
+观察可以很容易的知道节点6和节点3的位置错了，对应的中序序列为
+inorder: 1,2,[6],4,5,[3],7
+
+```
+
+当**第一次**出现逆序时，前一个节点就是第1个位置错误的节点；
+
+当**最后一次**出现逆序时，后一个节点就是第2个位置错误的节点；
+
+再比如下面这个例子，
+
+```
+  3
+ / \
+1   4
+   /
+  2
+inorder: 1,[3],[2],4
+```
+
+一定注意我这里的描述！我们记录好这两个位置错误的节点，最后把它俩的值交换一下即可。
+
+代码如下，可以看到其整体骨架和前一题毫无区别，就是在前一题的模板上再根据本题的特点进行简单扩充。
+
+```java
+class Solution {
+    private TreeNode first = null;
+    private TreeNode second = null;
+    private TreeNode prev = null;
+    
+    public void recoverTree(TreeNode root) {
+        inOrder(root);
+        int t = first.val;
+        first.val = second.val;
+        second.val = t;
+    }
+    
+    private void inOrder(TreeNode root) {
+        if(root == null) return;
+        inOrder(root.left);
+        if(prev == null) {
+            prev = root;
+        }else {
+            if(first == null && prev.val > root.val) {
+                first = prev;
+            }
+            if(prev.val > root.val) {
+                second = root;
+            }
+            // update prev
+            prev = root;
+        }
+        inOrder(root.right);
+    }
+}
+```
+
+
+
+##### [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/) [二星]
+
+将一个按照升序排列的有序数组，转换为一棵**高度平衡二叉搜索树**。
+
+```java
+// 时间复杂度：O(n) 每个节点需要访问一次
+// 空间复杂度：O(log(n)) 递归栈
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return helper(nums, 0, nums.length-1);
+    }
+    
+    private TreeNode helper(int[] nums, int left, int right) {
+        if(left > right) return null;
+        int mid = (right - left) / 2 + left;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = helper(nums, left, mid-1);
+        root.right = helper(nums, mid+1, right);
+        return root;
+    }
+}
+```
+
+
+
+##### 
+
+
+
+##### [173. Binary Search Tree Iterator](https://leetcode-cn.com/problems/binary-search-tree-iterator/) 
 
 本题考察的本质是利用BST中序序列是升序的特点，要求以非递归的方式进行中序遍历。
 
-
-
-
-
-
-
-
-
-### 平衡二叉树（AVL）
-
-平衡二叉树的性质：一个二叉树每个节点的左右两个子树的高度差的绝对值不超过1。
-
-平衡二叉树的插入、删除操作比较繁琐（PAT考过，LeetCode好像还没刷到过），至少要会判断给定的二叉树是否为平衡二叉树。
-
-（1）判断任意二叉树是否为平衡二叉树
-
-方法1：根据平衡二叉树的定义，对每个节点，分别计算其左右子树的高度，如果左右子树高度之差的绝对值大于1，则判定其为false；当且仅当左右子树**均满足**平衡二叉树的定义时，整棵树才是平衡二叉树。这种方法会导致没必要的重复计算，对于每个节点，计算其左右子树高度需要O(lgN)的时间，总共有N个节点，因此，时间复杂度为O(NlgN)，而空间复杂度为O(H) (H为树的高度)。
-
 ```java
-public boolean isBalanced(TreeNode root) {
-  	// 边界
-	if(root == null) return true;
-  	int leftHeight = height(root.left);
-  	int rightHeight = height(root.right);
-  	if(Math.abs(leftHeight-rightHeight) > 1) return false;
-  	// 递归判定左右子树
-  	return isBalanced(root.left) && isBalanced(root.right);
-}
-// 计算以root为根节点的树的高度
-private int height(TreeNode root) {
-  	if(root == null) return 0;
-  	return 1 + Math.max(height(root.left), height(root.right));
+class BSTIterator {
+    Stack<TreeNode> stack;
+    public BSTIterator(TreeNode root) {
+        stack = new Stack<>();
+        TreeNode p = root;
+        while(p != null) {
+            stack.push(p);
+            p = p.left;
+        }
+    }
+    
+    public int next() {
+        TreeNode t = stack.pop();
+        TreeNode p = t.right;
+        while(p != null) {
+            stack.push(p);
+            p = p.left;
+        }
+        return t.val;
+    }
+    
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }    
 }
 ```
 
 
 
-方法2：时间复杂度O(N)，空间复杂度O(H) (H为树的高度)
+##### [230. Kth Smallest Element in a BST](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
 
-在方法1中，我们对每一个子树都计算其高度，这其实是没必要的。在遍历过程中，只要发现有某一棵子树不满足平衡二叉树，就可以结束程序。在方法2中，如果子树满足平衡二叉树，则返回对应正常的高度，如果不满足，则返回-1。
+返回二叉搜索树中第k小的元素。
 
 ```java
-public boolean isBalanced(TreeNode root) {
-	return height(root) != -1; //即 height(root) == -1 ? false : true;
-}
-private int height(TreeNode root) {
-  	if(root == null) return 0;
-  	int left = height(root.left);
-  	if(left == -1) return -1;
-  	int right = height(root.right);
-  	if(right == -1) return -1;
-  	if(Math.abs(left - right) > 1) return -1;
-  	return 1 + Math.max(left, right);
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        if(root == null) return -1; // never happens
+        int leftSize = size(root.left);
+        if(leftSize == k - 1) return root.val;
+        else if(leftSize > k - 1) return kthSmallest(root.left, k);
+        else return kthSmallest(root.right, k-leftSize-1);
+    }
+    
+    // 返回以 root 为根节点的树的节点个数
+    private int size(TreeNode root) {
+        if(root == null) return 0;
+        return size(root.left) + size(root.right) + 1;
+    }
 }
 ```
 
-相关题目：
+**follow-up** ：
+如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化 `kthSmallest` 函数？
 
-[110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/)
+答：在leetcode提交的解法中，每调用一次 `kthSmallest` 函数，内部都会调用一个`size()`函数，计算节点个数，由于这个`size()`是递归实现的，因此如果频繁的调用会很耗时。优化的做法就是在每个节点中新增一个`size`域，表示以该节点为根节点的子树的节点个数。
 
+##### [450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/) 
 
-
-### 完全二叉树
-
-什么是完全二叉树？
-
-对于一颗二叉树，假设其深度为d（d>1）。除了第d层外，其它各层的节点数目均已达最大值，且第d层所有节点**从左向右**连续地紧密排列，这样的二叉树被称为完全二叉树。
-
-如下图，区分满二叉树和完全二叉树。
-
-![img](https://raw.githubusercontent.com/grandyang/leetcode/master/img/222_full_binary_tree.png)
-
-关于完全二叉树的一个常规题目就是，**如何判断给定的树是否为完全二叉树**？
-
-根据上面的定义，可以借助队列进行层次遍历，把节点的孩子节点（包括空节点）都入队，这里的空节点是用来判定完全二叉树的关键要素。**若在空节点之后还存在非空节点，则说明不是完全二叉树**。
+删除二叉搜索树中的一个节点。
 
 ```java
-public boolean isCompleteTree(TreeNode root) {
-	if(root == null) return true;
-
-	List<TreeNode> queue = new ArrayList<>();
-	queue.add(root);
-	while(!queue.isEmpty()) {
-		TreeNode node = queue.remove(0);
-		if(node == null) {
-			while(!queue.isEmpty()) {
-				node = queue.remove(0);
-				if(node != null) return false;
-			}
-		}
-		if(node != null) {
-			queue.add(node.left);
-			queue.add(node.right);
-		}
-	}
-	return true;
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null) return null;
+        if(key < root.val) {
+            root.left = deleteNode(root.left, key);
+        }else if(key > root.val) {
+            root.right = deleteNode(root.right, key);
+        }else {
+            // 待删除节点仅有一个孩子节点(或没有孩子节点)
+            if(root.left == null) {
+                root = root.right;
+            }else if(root.right == null) {
+                root = root.left;
+            }else {
+            // 待删除节点含有两个孩子节点
+                TreeNode rightMin = findMin(root.right);
+                rightMin.right = deleteMin(root.right);
+                rightMin.left = root.left;
+                root = rightMin;
+            }
+        }
+        return root;
+    }
+    
+    // 返回以root为根节点的子树的最小节点
+    private TreeNode findMin(TreeNode root) {
+        if(root.left == null) return root; 
+        return findMin(root.left);
+    }
+    
+    // 删除以root为根节点的子树的最小节点，并返回子树的根节点
+    private TreeNode deleteMin(TreeNode root) {
+        if(root.left == null) return root.right;
+        root.left = deleteMin(root.left);
+        return root;
+    }
 }
 ```
-
-相关题目：
-
-[958. Check Completeness of a Binary Tree](https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/)
-
-[222. Count Complete Tree Nodes](https://leetcode-cn.com/problems/count-complete-tree-nodes/)
 
 
 
 ---
 
-上面介绍了有关二叉树的基础知识，下面归纳整理了LeetCode中有关树的习题。
+#### 平衡二叉树
 
-二叉树经常还和链表结合起来一起考察！
+平衡二叉树的性质：一个二叉树每个节点的左右两个子树的高度差的绝对值不超过1。
 
+平衡二叉树的插入、删除操作比较繁琐（PAT考过，LeetCode好像还没刷到过），至少要会判断给定的二叉树是否为平衡二叉树。
 
+##### [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) [五星]
 
+给定一个二叉树，判断其是否为平衡二叉树。
 
+分析：这一题和第543题很像，这两题我都只能想出暴力法。两个题目一定要一起思考。
 
-翻转二叉树[226. Invert Binary Tree](https://leetcode-cn.com/problems/invert-binary-tree/)
-
-题解：
+**方法1：暴力法**。判断一个二叉树是否为平衡二叉树，需要递归的判断其左右子树是否为平衡二叉树，此外，还要判断以当前节点为根节点的左右子树高度之差是否小于1。
 
 ```java
-// 自己的写法
-public TreeNode invertTree(TreeNode root) {
-	invert(root);
-    return root;        
-}
-private void invert(TreeNode root) {
-    if(root == null) return;
-    TreeNode t = root.left;
-    root.left = root.right;
-    root.right = t;
-    invert(root.left);
-    invert(root.right);
-}
-
-// 参考的写法
-public TreeNode invertTree(TreeNode root) {
-    if (root == null) return null;
- 
-    TreeNode right = invertTree(root.right);
-    TreeNode left = invertTree(root.left);
-    root.left = right;
-    root.right = left;
-    return root;
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) return true;
+        return isBalanced(root.left) 
+            && isBalanced(root.right)
+            && Math.abs(height(root.left) - height(root.right)) < 2;
+    }
+    
+    private int height(TreeNode root) {
+        if(root == null) return 0;
+        return Math.max(height(root.left), height(root.right)) + 1;
+    }
 }
 ```
 
-时间复杂度：O(n)（因为对每个节点必须要遍历一遍，这是少不了的）
+这种方法是自顶向下考虑的，比如针对下面这样一棵树，在判断根节点4是否满足时，会计算其左右子树的高度。而在递归的判断其左右子树是否平衡时，又会重复的计算子树高度，从而造成大量不必要的重复计算。
 
-空间复杂度：O(H)（H是树的高度，因为H∈O(n)，所以空间复杂度也是O(n)）
+![img](https://pic.leetcode-cn.com/Figures/110/110-unbalanced-wheight-highlighted.png)
+
+复杂度分析：由于需要遍历完所有节点O(n)，并且每遍历一个节点就要计算其左右子树的高度O(log n)，因此时间复杂度是O(nlogn)。空间复杂度即为O(h)，h为树的高度。
+
+**方法2：最优解**。这种方法的核心思想是自底向上，也就是先判断左右子树是否平衡（如果有其一不满足就可以直接返回了），然后再比较左右子树的高度来判断父节点是否平衡。这种方法使得每个节点的高度仅计算一次，在实现的过程中，我们把”计算树的高度“和”判断是否平衡“两个功能点放在同一个方法中实现。在递归求树高的方法`height(TreeNode root)`中，正常情况下返回的值是一个非负整数，因此我们可以令其返回一个负数，以表示以`root`为根节点的子树不满足平衡要求。（务必好好体会这种方法）
+
+```java
+// 时间复杂度：O(n)
+// 空间复杂度：O(h) h为树高
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return height(root) != -1;
+    }
+    private int height(TreeNode root) {
+        if(root == null) return 0;
+        int left = height(root.left);
+        if(left == -1) return -1;
+        int right = height(root.right);
+        if(right == -1) return -1;
+        if(Math.abs(left - right) > 1) return -1;
+        return Math.max(left, right) + 1;
+    }
+}
+```
 
 
 
+---
+
+#### 完全二叉树
+
+什么是完全二叉树？定义如下：
+
+>  在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2^h 个节点。
+
+##### [222. Count Complete Tree Nodes](https://leetcode-cn.com/problems/count-complete-tree-nodes/)
+
+计算完全二叉树的节点个数。
+
+**方法1**：计算二叉树节点个数的通用方法。时间复杂度是O(n)，即要遍历所有节点。
+
+```java
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null) return 0;
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+}
+```
+
+**方法2**：利用完全二叉树特有的性质。参考[这里](https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/chang-gui-jie-fa-he-ji-bai-100de-javajie-fa-by-xia/) 。
+
+首先回顾一下**满二叉树**的节点个数怎么计算，如果满二叉树的层数为h，则总节点数为：`2^h - 1`。
+那么我们来对root节点的左右子树进行高度统计，分别记为left和right，有以下两种结果：
+
+* left == right：这说明，左子树一定是满二叉树，因为节点已经填充到右子树了，左子树必定已经填满了。所以左子树的节点总数我们可以直接得到，是`2^left - 1`，加上当前这个root节点，则正好是`2^left`。再对右子树进行递归统计。存在以下两种情况：
+
+![cbt1](../img/cbt1.png)
+
+* left != right：说明此时最后一层不满，但倒数第二层已经满了，可以直接得到右子树的节点个数。同理，右子树节点个数加上root节点，总数为`2^right`。再对左子树进行递归查找。存在以下两种情况：
+
+![cbt1](../img/cbt2.png)
+
+```java
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null) return 0;
+        int left = height(root.left);
+        int right = height(root.right);
+        if(left == right) return (1<<left) + countNodes(root.right);
+        else return (1<<right) + countNodes(root.left);
+    }
+    
+    private int height(TreeNode root) {
+        if(root == null) return 0;
+        TreeNode curr = root;
+        int h = 1;
+        while(curr.left != null) {
+            h++;
+            curr = curr.left;
+        }
+        return h;
+    }
+}
+```
+
+复杂度分析：这种做法的时间复杂度是O((log n)^2)，因为计算高度需要O(log n)，而自顶向下的过程中，每一次选择一个分支(相当于二分搜索的思想)，也是O(log n)；空间复杂度需要O(log n)，递归栈。
+
+方法2还有另外一种[写法](https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/wan-quan-er-cha-shu-de-jie-dian-ge-shu-by-leetcode/)，是更直观的二分查找的思想。
 
 
 
+##### [958. Check Completeness of a Binary Tree](https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/)
+
+判断给定的树是否为完全二叉树。
+
+分析：根据定义，可以借助队列进行层次遍历，把节点的孩子节点（包括空节点）都入队，这里的空节点是用来判定完全二叉树的关键要素。**若在空节点之后还存在非空节点，则说明不是完全二叉树**。
+
+```java
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        if(root == null) return true;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if(node == null) {
+                while(!queue.isEmpty()) {
+                    node = queue.poll();
+                    if(node != null) return false;
+                }
+            }
+            if(node != null) {
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+        }
+        return true;
+    }
+}
+```
