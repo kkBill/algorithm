@@ -2,60 +2,52 @@
 
 题目列表
 
-|      | 题号                                       | 评注                                       |
-| ---- | ---------------------------------------- | ---------------------------------------- |
-| 1    | [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/) | 树的遍历，要熟练掌握迭代写法                           |
-| 2    | [144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/) |                                          |
-| 3    | [145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/) |                                          |
-|      | [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) | 层序遍历，借助队列实现                              |
-|      | [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) | 巧用链表的头插法实现逆序                             |
-|      | [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) | 同103题                                    |
-|      |                                          | 卡特兰数♥♥                                   |
-|      |                                          | ♥♥♥                                      |
-|      |                                          |                                          |
-|      |                                          |                                          |
-|      |                                          |                                          |
-|      | [100. Same Tree](https://leetcode-cn.com/problems/same-tree/) | ♥                                        |
-|      | [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/) | 本题是第100题的变形♥♥                            |
-|      | [112. Path Sum](https://leetcode-cn.com/problems/path-sum/) | ♥♥♥                                      |
-|      | [113. Path Sum II](https://leetcode-cn.com/problems/path-sum-ii/) | ♥♥♥                                      |
-|      | [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) | **[前缀和]( <https://oi-wiki.org/basic/prefix-sum/)**的应用♥♥♥♥♥(第一次见) |
-|      | [114. Flatten Binary Tree to Linked List](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/) | ⭐⭐⭐⭐⭐                                    |
-|      | [116. Populating Next Right Pointers in Each Node](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/) | ⭐⭐⭐⭐⭐                                    |
-|      | [117. Populating Next Right Pointers in Each Node II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/) | ⭐⭐⭐⭐⭐极致巧用dummy                           |
-|      | [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/) | 求叉树的右侧节点, 递归法不容易                         |
-|      | [226. Invert Binary Tree](https://leetcode-cn.com/problems/invert-binary-tree/) |                                          |
-|      |                                          |                                          |
-|      | [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/) | 任意节点组成的最大点权和♥♥♥♥♥                        |
-|      | [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/) | 树的所有路径♥♥♥                                |
-|      | [129. Sum Root to Leaf Numbers](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/) | 和257题其实是一回事                              |
-|      | [104. Maximum Depth of Binary Tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/) | 树的最大高度♥                                  |
-|      | [111. Minimum Depth of Binary Tree](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/) | 树的最小高度, 多种方法                             |
-|      | [543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/) | 五星, 树的最大直径♥♥♥                            |
-|      | [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/) | 和543题类似，自底向上法♥♥♥                         |
-|      | [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/) | 五星, 树的最大宽度♥♥                             |
-|      |                                          |                                          |
-|      | [617. Merge Two Binary Trees](https://leetcode-cn.com/problems/merge-two-binary-trees/) | 合并两个二叉树, 前序遍历的应用                         |
-|      | 二叉搜索树相关：                                 |                                          |
-|      |                                          |                                          |
-|      |                                          |                                          |
-
 普通二叉树：
 
-1. ​
-
+1. [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+2. [144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+3. [145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
+4. [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) [层序遍历，借助队列实现]
+5. [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) [巧用链表的头插法，实现逆序]
+6. [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) [同上]
+7. [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/) 
+8. [106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+9. [889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/) [较难]
+10. 通过层序序列+中序序列构建二叉树 [自己补充的]
+11. [100. Same Tree](https://leetcode-cn.com/problems/same-tree/)  
+12. [101. Symmetric Tree](https://leetcode-cn.com/problems/symmetric-tree/)  
+13. [112. Path Sum](https://leetcode-cn.com/problems/path-sum/)
+14. [113. Path Sum II](https://leetcode-cn.com/problems/path-sum-ii/)
+15. [437. Path Sum III](https://leetcode-cn.com/problems/path-sum-iii/) [[前缀和]( <https://oi-wiki.org/basic/prefix-sum/)的应用]
+16. [114. Flatten Binary Tree to Linked List](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/) [⭐⭐⭐⭐⭐]
+17. [116. Populating Next Right Pointers in Each Node](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/) [⭐⭐⭐⭐⭐]
+18. [117. Populating Next Right Pointers in Each Node II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/) [⭐⭐⭐⭐⭐]
+19. [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/) [求叉树的右侧节点, 递归法不容易]
+20. [226. Invert Binary Tree](https://leetcode-cn.com/problems/invert-binary-tree/) [翻转二叉树, 狗头  
+21. [236. Lowest Common Ancestor of a Binary Tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/) [经典问题]
+22. [124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)  任意节点组成的最大点权和
+23. [257. Binary Tree Paths](https://leetcode-cn.com/problems/binary-tree-paths/)  树的所有路径
+24. [129. Sum Root to Leaf Numbers](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)  和257题其实是一回事 
+25. [104. Maximum Depth of Binary Tree](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)  树的最大高度
+26. [111. Minimum Depth of Binary Tree](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/)  树的最小高度, 多种方法
+27. [543. Diameter of Binary Tree](https://leetcode-cn.com/problems/diameter-of-binary-tree/)  树的最大直径, 五星
+28. [110. Balanced Binary Tree](https://leetcode-cn.com/problems/balanced-binary-tree/)  和543题类似，自底向上法
+29. [662. Maximum Width of Binary Tree](https://leetcode-cn.com/problems/maximum-width-of-binary-tree/)  五星, 树的最大宽度
+30. [617. Merge Two Binary Trees](https://leetcode-cn.com/problems/merge-two-binary-trees/) 
+31. ​
 
 
 二叉搜索树：
 
 1. [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
-2. [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/)
+2. [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/) [卡特兰数]
 3. [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 4. [99. Recover Binary Search Tree](https://leetcode-cn.com/problems/recover-binary-search-tree/)
 5. [108. Convert Sorted Array to Binary Search Tree](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
 6. [173. Binary Search Tree Iterator](https://leetcode-cn.com/problems/binary-search-tree-iterator/) 
 7. [230. Kth Smallest Element in a BST](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
-8. [450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/)
+8. [450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/) 
+9. [235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 
 平衡二叉树：
 
@@ -66,309 +58,16 @@
 1. [222. Count Complete Tree Nodes](https://leetcode-cn.com/problems/count-complete-tree-nodes/)
 2. [958. Check Completeness of a Binary Tree](https://leetcode-cn.com/problems/check-completeness-of-a-binary-tree/)
 
+其他：
+
+1. [297. Serialize and Deserialize Binary Tree](https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/)
+2. [449. Serialize and Deserialize BST](https://leetcode-cn.com/problems/serialize-and-deserialize-bst/)
+
 ---
 
 #### 普通二叉树
 
-二叉树的前序遍历、中序遍历、后序遍历的递归和迭代写法，以及层次遍历。
-
-二叉树的很多问题均有四种遍历扩展而来，所以要非常熟悉，其中迭代写法由于自己平时写的不多，要尤为注意。一些问题用递归不太直观，用迭代遍历则很好理解。
-
-除了二叉树的遍历，还有通过“前序序列+中序序列”、“后序序列+中序序列”或“层序序列+中序序列”构建二叉树也是必须要掌握的。
-
-树节点的定义
-
-```java
- public class TreeNode {
-   int val;
-   TreeNode left;
-   TreeNode right;
-   TreeNode(int x) { val = x; }
- }
-```
-
-（1）前序遍历
-
-递归写法
-
-```java
-public List<Integer> preorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-  	result.add(root.val);
-	helper(root.left, result);
-  	helper(root.right, result);
-}
-```
-
-非递归写法
-
-```java
-public List<Integer> preorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	if(root == null) return result;	
-  
-  	Stack<TreeNode> s = new Stack<>();
-  	TreeNode p = root;
-  	while(p != null || !s.empty()) {
-      	if(p != null) {
-        	result.add(p.val);
-          	s.push(p);
-          	p = p.left;
-        }else {
-          	p = s.pop();
-          	p = p.right;
-        }
-  	}
-  	return result;
-}
-```
-
-
-
-（2）中序遍历
-
-递归写法
-
-```java
-public List<Integer> inorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-	helper(root.left, result);
-  	result.add(root.val);
-  	helper(root.right, result);
-}
-```
-
-非递归写法
-
-```java
-public List<Integer> inorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	Stack<TreeNode> s = new Stack<>();
-  	TreeNode p = root;
-  	while(p != null || !s.empty()){
-    	if(p != null){
-      		s.push(p);
-      		p = p.left;
-    	}else{
-      		p = s.pop();
-      		result.add(p.val);
-      		p = p.right;
-    	}
-  	}
-  	return result;
-}
-```
-
-
-
-（3）后序遍历
-
-递归写法
-
-```java
-public List<Integer> postorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
-  	helper(root, result);
-  	return result;
-}
-public void helper(TreeNode root, List<Integer> result) {
-  	if(root == null) return;
-	helper(root.left, result);
-  	helper(root.right, result);
-  	result.add(root.val);
-}
-```
-
-**非递归写法（重点）**
-
-```java
-public List<Integer> postorderTraversal(TreeNode root) {
-	List<Integer> result = new ArrayList<>();
- 	if(root == null) return result;
-  	
-  	TreeNode p = root;
-  	TreeNode lastVisitNode = null;//标记最后一次被访问的节点
-  	Stack<TreeNode> s = new Stack<>();
-  	while(p != null || !s.empty()) {
-      	if(p != null) {
-        	s.push(p);
-          	p = p.left;
-        }else {
-            TreeNode temp = s.peek();
-          	if(temp.right != null && temp.right != lastVisitNode) {
-            	p = temp.right;
-            }else {
-              	result.add(temp.val);
-              	s.pop();
-              	lastVisitNode = temp;
-            	p = null;
-            }
-        }
-  	}// while
-  	return result;
-}
-```
-
-相关题目：
-
-[94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
-
-[144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
-
-[145. Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
-
-
-
-（4）层次遍历
-
-层次遍历二叉树需要借助队列
-
-```java
-/**
- * 层序遍历二叉树
- * 关键在于如何确定每一层对应有哪些节点，这里以每一行作为一个遍历单元，
- * 核心代码在 for{} 处，当前队列中存放的节点就是上一层遍历时存进去的节点
- */
-public List<List<Integer>> levelOrder(TreeNode root) {
-	List<List<Integer>> result = new ArrayList<>();
-  	if (root == null) return result;
-
-  	List<TreeNode> queue = new ArrayList<>();
-  	queue.add(root);
-  	while (!queue.isEmpty()) {
-    	int size = queue.size();//当前这一层的节点数量
-    	List<Integer> levelNode = new ArrayList<>();
-    	for (int i = 0; i < size; i++) {
-      		TreeNode node = queue.remove(0);
-      		levelNode.add(node.val);
-      		if (node.left != null) {
-        		queue.add(node.left);
-      		}
-      		if (node.right != null) {
-       			queue.add(node.right);
-      		}
-    	}
-   		result.add(levelNode);
-  	}
-  	return result;
-}
-```
-
-相关题目：
-
-[102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
-
-
-
-（5）通过前序序列+中序序列构建二叉树（模板题）
-
-前序序列的首个元素是根节点，在中序序列中找到根节点，划分出左右子区间，然后递归进行处理。
-
-```java
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-	return build(preorder, 0, preorder.length-1, inorder, 0, inorder.length-1);
-}
-private TreeNode build(int[] preorder, int pl, int pr, int[] inorder, int il, int ir) {
-    // 边界条件
-    if (pl > pr || il > ir) return null;
-    // 确定root节点
-    int rootVal = preorder[pl];
-    TreeNode root = new TreeNode(rootVal);
-    int pos = il;
-    while (inorder[pos] != rootVal) pos++; // pos 最终停留在中序序列root节点的位置
-
-    int leftNum = pos - il; // 左子树的节点个数
-    root.left = build(preorder, pl + 1, pl + leftNum, inorder, il, pos - 1);
-    root.right = build(preorder, pl + leftNum + 1, pr, inorder, pos + 1, ir);
-    return root;
-}
-```
-
-相关题目：
-
-[105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
-
-（6）通过中序序列+后序序列构建二叉树
-
-原理同上
-
-```java
-public TreeNode buildTree(int[] inorder, int[] postorder) {
-    return build(inorder,0,inorder.length-1,postorder,0,postorder.length-1);
-}
-private TreeNode build(int[] inorder, int il, int ir, int[] postorder, int pl, int pr) {
-	if(il > ir || pl > pr) return null;
-	int rootVal = postorder[pr];
-  	TreeNode root = new TreeNode(rootVal);
-    int pos = il;
-    while (inorder[pos] != rootVal) pos++;
-    
-  	int leftNum = pos - il;
-	root.left = build(inorder,il,pos-1,postorder,pl,pl+leftNum-1);
-  	root.right = build(inorder,pos+1,ir,postorder,pl+leftNum,pr-1);
-	return root;
-}
-```
-
-相关题目：
-
-[106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
-
-（7）通过层序序列+中序序列构建二叉树
-
-
-
-（8）通过前序序列+后序序列构建二叉树
-
-仅根据前序序列和后序序列并**不能确定唯一的二叉树**，只需要构建一个符合要求的即可。乍一看觉得没有思路，但思考的切入点还是之前几题一样的。
-
-分析：
-
-```java
-public TreeNode constructFromPrePost(int[] pre, int[] post) {
-    return build(pre, 0, pre.length - 1, post, 0, post.length - 1);
-}
-
-private TreeNode build(int[] pre, int preL, int preR, int[] post, int postL, int postR) {
-    if (preL > preR) return null;
-    if (preL == preR) return new TreeNode(pre[preL]);
-
-    TreeNode root = new TreeNode(pre[preL]);
-    int childIndex = preL + 1;
-    int childVal = pre[childIndex];
-    int pos = postL;
-    while (post[pos] != childVal) pos++;
-
-  	// 以root为根节点的树只含有一个孩子节点（根据题意，我们可以任意指定为左孩子（或右孩子））
-  	if (preR - childIndex == pos - postL) {
-    	root.left = null;
-    	root.right = build(pre, childIndex, preR, post, postL, pos);
-  	} else {
-       	int leftNum = pos - postL + 1;// 以root为根节点的左子树的节点个数
-    	root.left = build(pre, childIndex, childIndex + leftNum - 1, post, postL, pos);
-    	root.right = build(pre, childIndex + leftNum, preR, post, pos + 1, postR - 1);
-  	}
-  	return root;
-}
-```
-
-相关题目：
-
-[889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
-
-
-
-
+二叉树类型的题目主要分为两个方面，(1)二叉树的遍历（前序/中序/后续/层次），以及重建二叉树。这一部分主要考察对“树”这一数据结构的理解；(2)利用二叉树的遍历求解一些问题，比如比较两个二叉树的结构是否一致，二叉树的最大/最小高度，最大宽度等等。第(1)部分会比较简单，就是几个模板，问题是死的；而第(2)部分的问题就是天马行空了，需要多总结。
 
 ##### [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/) 
 
@@ -376,8 +75,18 @@ private TreeNode build(int[] pre, int preL, int preR, int[] post, int postL, int
 
 递归版本
 
-```
-略
+```java
+public List<Integer> inorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+	helper(root.left, result);
+  	result.add(root.val);
+  	helper(root.right, result);
+}
 ```
 
 非递归版本
@@ -411,8 +120,18 @@ class Solution {
 
 递归版本
 
-```
-略
+```java
+public List<Integer> preorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+  	result.add(root.val);
+	helper(root.left, result);
+  	helper(root.right, result);
+}
 ```
 
 非递归版本
@@ -446,8 +165,18 @@ class Solution {
 
 递归版本
 
-```
-略
+```java
+public List<Integer> postorderTraversal(TreeNode root) {
+	List<Integer> result = new ArrayList<>();
+  	helper(root, result);
+  	return result;
+}
+public void helper(TreeNode root, List<Integer> result) {
+  	if(root == null) return;
+	helper(root.left, result);
+  	helper(root.right, result);
+  	result.add(root.val);
+}
 ```
 
 非递归版本
@@ -481,7 +210,7 @@ class Solution {
 
 
 
-##### [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) [一星]
+##### [102. Binary Tree Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 
 
 二叉树的层次遍历
 
@@ -511,7 +240,7 @@ class Solution {
 
 
 
-##### [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) [二星]
+##### [103. Binary Tree Zigzag Level Order Traversal](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/) 
 
 之字形层次遍历。
 
@@ -552,7 +281,7 @@ class Solution {
 
 
 
-##### [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) [一星]
+##### [107. Binary Tree Level Order Traversal II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/) 
 
 层次遍历，要求自底向上逐行输出。
 
@@ -583,6 +312,104 @@ class Solution {
 ```
 
 
+
+##### [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+通过前序序列+中序序列构建二叉树（模板题）
+
+前序序列的首个元素是根节点，在中序序列中找到根节点，划分出左右子区间，然后递归进行处理。
+
+```java
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return build(preorder, 0, preorder.length-1, inorder, 0, inorder.length-1);
+    }
+    private TreeNode build(int[] preorder, int pl, int pr, int[] inorder, int il, int ir) {
+        // 边界条件
+        if (pl > pr || il > ir) return null;
+        // 确定root节点
+        int rootVal = preorder[pl];
+        TreeNode root = new TreeNode(rootVal);
+        int pos = il;
+        while (inorder[pos] != rootVal) pos++; // pos 最终停留在中序序列root节点的位置
+
+        int leftNum = pos - il; // 左子树的节点个数
+        root.left = build(preorder, pl + 1, pl + leftNum, inorder, il, pos - 1);
+        root.right = build(preorder, pl + leftNum + 1, pr, inorder, pos + 1, ir);
+        return root;
+    }
+}
+```
+
+
+
+##### [106. Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+通过中序序列+后序序列构建二叉树。原理同上。
+
+```java
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        return build(inorder,0,inorder.length-1,postorder,0,postorder.length-1);
+    }
+    private TreeNode build(int[] inorder, int il, int ir, int[] postorder, int pl, int pr) {
+        if(il > ir || pl > pr) return null;
+        int rootVal = postorder[pr];
+        TreeNode root = new TreeNode(rootVal);
+        int pos = il;
+        while (inorder[pos] != rootVal) pos++;
+
+        int leftNum = pos - il;
+        root.left = build(inorder,il,pos-1,postorder,pl,pl+leftNum-1);
+        root.right = build(inorder,pos+1,ir,postorder,pl+leftNum,pr-1);
+        return root;
+    }
+}
+```
+
+
+
+##### [889. Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+通过前序序列+后序序列构建二叉树。仅根据前序序列和后序序列并**不能确定唯一的二叉树**，只需要构建一个符合要求的即可。乍一看觉得没有思路，但思考的切入点还是之前几题一样的。
+
+```java
+class Solution {
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+        return build(pre, 0, pre.length-1, post, 0, post.length);
+    }
+    private TreeNode build(int[] pre, int preL, int preR, int[] post, int postL, int postR) {
+        if(preL > preR) return null;
+        if(preL == preR) return new TreeNode(pre[preL]);
+        
+        TreeNode root = new TreeNode(pre[preL]);
+    
+        int childVal = pre[preL + 1];
+        int pos = postL;
+        while(post[pos] != childVal) pos++;
+        
+        if(pos - postL + 1 == preR - preL) { // root 节点只有一个孩子
+            root.left = null;
+            root.right = build(pre, preL+1, preR, post, postL, pos);
+        }else { // root 节点有两个孩子
+            int leftNum = pos - postL + 1; // 左子树的节点个数
+            root.left = build(pre, preL+1, preL+leftNum, post, postL, pos);
+            root.right = build(pre, preL+leftNum+1, preR, post, pos+1, postR-1);
+        }
+        return root;
+    }
+}
+```
+
+
+
+##### 补充：通过层序序列+中序序列构建二叉树
+
+分析：
+
+```
+
+```
 
 
 
@@ -1235,6 +1062,23 @@ class Solution {
 方法4：层序遍历实现
 
 
+
+##### [236. Lowest Common Ancestor of a Binary Tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+求普通二叉树的最低公共祖先。
+
+```java
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) return null;
+        if(root == p || root == q) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if(left != null && right != null) return root;
+        else return left != null ? left : right;
+    }
+}
+```
 
 
 
@@ -2254,10 +2098,6 @@ class Solution {
 
 
 
-##### 
-
-
-
 ##### [173. Binary Search Tree Iterator](https://leetcode-cn.com/problems/binary-search-tree-iterator/) 
 
 本题考察的本质是利用BST中序序列是升序的特点，要求以非递归的方式进行中序遍历。
@@ -2319,6 +2159,8 @@ class Solution {
 
 答：在leetcode提交的解法中，每调用一次 `kthSmallest` 函数，内部都会调用一个`size()`函数，计算节点个数，由于这个`size()`是递归实现的，因此如果频繁的调用会很耗时。优化的做法就是在每个节点中新增一个`size`域，表示以该节点为根节点的子树的节点个数。
 
+
+
 ##### [450. Delete Node in a BST](https://leetcode-cn.com/problems/delete-node-in-a-bst/) 
 
 删除二叉搜索树中的一个节点。
@@ -2359,6 +2201,23 @@ class Solution {
         if(root.left == null) return root.right;
         root.left = deleteMin(root.left);
         return root;
+    }
+}
+```
+
+
+
+##### [235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+求BST的最低公共祖先。由于是BST，所以可以利用BST特有的性质求解。
+
+```java
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) return null;
+        if(root.val < Math.min(p.val, q.val)) return lowestCommonAncestor(root.right, p, q);
+        else if(root.val > Math.max(p.val, q.val)) return lowestCommonAncestor(root.left, p, q);
+        else return root;
     }
 }
 ```
@@ -2497,7 +2356,7 @@ class Solution {
 
 分析：根据定义，可以借助队列进行层次遍历，把节点的孩子节点（包括空节点）都入队，这里的空节点是用来判定完全二叉树的关键要素。**若在空节点之后还存在非空节点，则说明不是完全二叉树**。
 
-```java
+```c++
 class Solution {
     public boolean isCompleteTree(TreeNode root) {
         if(root == null) return true;
@@ -2521,3 +2380,4 @@ class Solution {
     }
 }
 ```
+
