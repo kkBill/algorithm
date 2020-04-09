@@ -1681,4 +1681,145 @@ class Solution {
 
 
 
+##### [289. 生命游戏](https://leetcode-cn.com/problems/game-of-life/)
+
+给定一个包含 m × n 个格子的面板，每一个格子都可以看成是一个细胞。每个细胞都具有一个初始状态：1 即为活细胞（live），或 0 即为死细胞（dead）。每个细胞与其八个相邻位置（水平，垂直，对角线）的细胞都遵循以下四条生存定律：
+
+* 如果活细胞周围八个位置的活细胞数少于两个，则该位置活细胞死亡；
+* 如果活细胞周围八个位置有两个或三个活细胞，则该位置活细胞仍然存活；
+* 如果活细胞周围八个位置有超过三个活细胞，则该位置活细胞死亡；
+* 如果死细胞周围正好有三个活细胞，则该位置死细胞复活；
+
+根据当前状态，写一个函数来计算面板上所有细胞的下一个（一次更新后的）状态。下一个状态是通过将上述规则同时应用于当前状态下的每个细胞所形成的，其中细胞的出生和死亡是同时发生的。
+
+```
+输入： 
+[
+  [0,1,0],
+  [0,0,1],
+  [1,1,1],
+  [0,0,0]
+]
+输出：
+[
+  [0,0,0],
+  [1,0,1],
+  [0,1,1],
+  [0,1,0]
+]
+```
+
+进阶：
+
+* 你可以使用原地算法解决本题吗？请注意，面板上所有格子需要同时被更新：你不能先更新某些格子，然后使用它们的更新后的值再更新其他格子。
+* 本题中，我们使用二维数组来表示面板。原则上，面板是无限的，但当活细胞侵占了面板边界时会造成问题。你将如何解决这些问题？
+
+方法1：借助辅助数组
+
+```java
+class Solution {
+    public void gameOfLife(int[][] board) {
+        int m = board.length;
+        if(m == 0) return;
+        int n = board[0].length;
+        
+        // 辅助数组，统计每个点周围8个位置中活细胞的个数
+        int[][] count = new int[m][n];
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int liveCells = getLiveCell(board, i, j);
+                count[i][j] = liveCells;
+            }
+        }
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == 1){
+                    if(count[i][j] < 2 || count[i][j] > 3) board[i][j] = 0;
+                }else {
+                    if(count[i][j] == 3) board[i][j] = 1;
+                }
+            }
+        }
+    }
+    
+    private int getLiveCell(int[][] board, int i, int j) {
+        int count = 0;
+        if(isValid(board, i-1, j-1)) count++;
+        if(isValid(board, i-1, j)) count++;
+        if(isValid(board, i-1, j+1)) count++;
+        if(isValid(board, i, j-1)) count++;
+        if(isValid(board, i, j+1)) count++;
+        if(isValid(board, i+1, j-1)) count++;
+        if(isValid(board, i+1, j)) count++;
+        if(isValid(board, i+1, j+1)) count++;
+        return count;
+    }
+    
+    private boolean isValid(int[][] board, int i, int j) {
+        return i >= 0 && i < board.length && j >= 0 && j < board[0].length && board[i][j] == 1;
+    }
+}
+```
+
+
+
+方法2：原地处理，不需要额外空间。
+
+这种方法还是有技巧性的。由于数组只有0和1两种状态，并且用int类型表示，也就是说我们可以充分利用int的倒数第2个比特位，用来标记我们是否需要对原数组的值进行改变。
+
+首先，判断某个位置的值是否为1不再使用`board[i][j] == 1`，而是判断`(board[i][j] & 1) == 1` 。比如，数组中某个位置的值a=1(01)，通过统计需要将其变为0(00)。则如下进行操作：
+
+* 令a = 3(11)，最后一个比特位为1，没有改变，不影响其他位置的判断；而倒数第二个比特位为1，表示这个值需要改变；
+* 最后遍历数组的时候，发现某个值的倒数第二个比特位为1，即判断`(a&2) == 1`，则改变其末位比特位的值为相反数，即`(~a) & 3` 。
+
+```java
+class Solution {
+    private static int[] iaxis = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
+    private static int[] jaxis = new int[]{-1, 0, 1, -1, 1, -1, 0, 1};
+
+    public void gameOfLife(int[][] board) {
+        int m = board.length;
+        if (m == 0) return;
+        int n = board[0].length;
+
+        // mark when condition meet
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int liveCells = getLiveCell(board, i, j);
+                if ((board[i][j] & 1) == 1) { // board[i][j] == 1
+                    if (liveCells < 2 || liveCells > 3) board[i][j] = 3; // 0011
+                } else { // board[i][j] == 0
+                    if (liveCells == 3) board[i][j] = 2; // 0010
+                }
+            }
+        }
+        // convert if needed
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // 0010 说明需要改变状态
+                if ((board[i][j] & 2) == 2) {
+                    board[i][j] = (~board[i][j]) & 3;
+                }
+            }
+        }
+    }
+
+    private int getLiveCell(int[][] board, int i, int j) {
+        int count = 0;
+        for(int k = 0; k < 8; k++) {
+            if (isValid(board, i + iaxis[k], j + jaxis[k])) count++;
+        }
+        return count;
+    }
+
+    private boolean isValid(int[][] board, int i, int j) {
+        return i >= 0 && i < board.length && j >= 0 && j < board[0].length 
+                      && (board[i][j] & 1) == 1;
+    }
+}
+```
+
+
+
+
 

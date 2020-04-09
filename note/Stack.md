@@ -2,17 +2,230 @@
 
 题目列表：
 
-1. [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
-2. [71. 简化路径](https://leetcode-cn.com/problems/simplify-path/)
-3. [224. 基本计算器](https://leetcode-cn.com/problems/basic-calculator/) 
-4. [227. 基本计算器 II](https://leetcode-cn.com/problems/basic-calculator-ii/) 
-5. [772. 基本计算器 III](https://leetcode-cn.com/problems/basic-calculator-iii/) （没做）
-6. [150. 逆波兰表达式求值](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
-7. [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)
-8. [225. 用队列实现栈](https://leetcode-cn.com/problems/implement-stack-using-queues/)
-9. [232. 用栈实现队列](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
-10. [946. 验证栈序列](https://leetcode-cn.com/problems/validate-stack-sequences/) [三星]
-11. ​
+1. [42. Trapping Rain Water](https://leetcode-cn.com/problems/trapping-rain-water/)
+2. [84. Largest Rectangle in Histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+3. [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
+4. [71. 简化路径](https://leetcode-cn.com/problems/simplify-path/)
+5. [224. 基本计算器](https://leetcode-cn.com/problems/basic-calculator/) 
+6. [227. 基本计算器 II](https://leetcode-cn.com/problems/basic-calculator-ii/) 
+7. [772. 基本计算器 III](https://leetcode-cn.com/problems/basic-calculator-iii/) （没做）
+8. [150. 逆波兰表达式求值](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
+9. [155. 最小栈](https://leetcode-cn.com/problems/min-stack/)
+10. [225. 用队列实现栈](https://leetcode-cn.com/problems/implement-stack-using-queues/)
+11. [232. 用栈实现队列](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
+12. [946. 验证栈序列](https://leetcode-cn.com/problems/validate-stack-sequences/) [三星]
+13. ​
+
+
+
+
+---
+
+#### 单调栈(Monotone Stack)
+
+栈的应用中有一类问题称为**单调栈(Monotone Stack)**问题，可以巧妙的将某些问题的时间复杂度降到O(n)级别。那么什么是单调栈呢？
+
+所谓单调栈，就是保持栈中的元素是单调的。假设把数组 [2 1 4 6 5]依次入栈，并保持栈的单调递增性，如下：
+
+1. 元素2入栈，此时栈中元素为[2]
+2. 元素1入栈，由于此时1小于栈顶元素2，把1入栈的话就不满足单调递增性了，于是先把栈顶元素2弹出，再让元素1入栈，此时栈中元素为[1]
+3. 元素4入栈，由于此时4大于栈顶元素1，可以满足递增性，故入栈，此时栈中元素为[1,4]
+4. 元素6入栈，同上，此时栈中元素为[1,4,6]
+5. 元素5入栈，同第2步，在入栈前先把栈顶元素6弹出，故此时栈中元素为[1,4,5]
+
+由于栈中元素(从栈底至栈顶)保持单调递增性，因此，有这样一个性质：
+
+> 假设当前元素为a，栈顶元素（若栈非空）就是元素a左侧第一个小于a的元素
+
+同样的，如果维护一个单调递减栈，那么就有：
+
+> 假设当前元素为a，栈顶元素（若栈非空）就是元素a左侧第一个大于a的元素
+
+
+
+下面就来看一下单调栈的应用。
+
+##### [42. Trapping Rain Water](https://leetcode-cn.com/problems/trapping-rain-water/)
+
+给定 *n* 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/22/rainwatertrap.png)
+
+上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。
+
+分析：本题是单调栈的典型应用。首先，我们考虑该选取单调递减栈还是单调递增栈？
+
+由于要接到雨水，显然，必须要形成“凹”的形状，由此可以确定，应当是选取递减栈，按递减的序列把高度存进去，一旦发现当前的高度大于栈顶元素了，说明形成了凹槽。但是计算凹槽的面积，除了高度，还需要知道宽度，因此，我们应该在栈中存放下标而非直接存放高度。
+
+```java
+class Solution {    
+    public int trap(int[] height) {
+        int n = height.length;
+        int total = 0; // 能接到的雨水总量
+        Stack<Integer> s = new Stack<>(); // 存放数组下标，而非数组元素
+        int i = 0;
+        while(i < n) {
+            // 维护一个单调递减栈
+            if(s.isEmpty() || height[i] < height[s.peek()]) {
+                s.push(i);
+                i++;
+            }else {
+                int bottom = s.pop();
+                if(s.isEmpty()) continue; // 关键
+                int w = i - s.peek() - 1;
+                int h = Math.min(height[s.peek()], height[i]) - height[bottom];
+                total += w * h;
+            }
+        }
+        return total;
+    }
+}
+```
+
+
+
+##### [84. Largest Rectangle in Histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+
+给定 *n* 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram.png)
+
+以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 `[2,1,5,6,2,3]`。
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png)
+
+图中阴影部分为所能勾勒出的最大矩形面积，其面积为 `10` 个单位。
+
+方法1：单调递增栈的应用
+
+```java
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] copy = new int[n + 1];
+        System.arraycopy(heights, 0, copy, 0, n);
+        copy[n] = 0; // 哨兵
+        heights = copy;
+        Stack<Integer> s = new Stack<>();
+        int maxArea = 0;
+        int i = 0;
+        while (i <= n) {
+            if (s.isEmpty() || heights[i] >= heights[s.peek()]) {
+                s.push(i);
+                i++;
+            }else {
+                int idx = s.pop();
+                if(s.isEmpty()) {
+                    maxArea = Math.max(maxArea, heights[idx] * i);
+                }else {
+                    maxArea = Math.max(maxArea, heights[idx] * (i - s.peek() - 1));
+                }
+            }
+        }
+        return maxArea;
+    }
+}
+```
+
+
+
+方法2：我也不清楚这种方法该归类于哪一种，有题解认为这是动态规划类问题，但我感觉这更像是一种模拟。
+
+思路是这样的，遍历给定的heights[]数组，对于每个元素值heights[i]，我们尝试以这个柱子为高度，勾勒出尽可能大的矩形。因此，很自然的我们就想到该如何确定宽度。而确定宽度，就是以heights[i]为中心向左右扩散，直至在左右两侧遇到小于heights[i]的高度，那么中间这块儿就是以当前高度能够勾勒出的最大矩形。
+
+令**left[i]表示heights[i]左侧第一个小于heights[i]的元素下标，right[i]表示heights[i]右侧第一个小于heights[i]的元素下标**。那么，宽度值就等于`right[i] - left[i] - 1`。 稍微需要注意一下的就是边界值的处理，i = 0时，其左侧没有元素，因此初始化left[0] = -1；i = n-1时，其右侧没有元素，则初始化right[n-1] = n。
+
+以题中给出的例子进行说明，其推导出的left[]和right[]数组如下：
+
+```
+    i      0  1  2  3  4  5
+heights[i] 2  1  5  6  2  3
+left[i]   -1 -1  1  2  1  4
+right[i]   1  6  4  4  6  6
+```
+
+由此可以计算，比如：
+
+以高度为1的柱子可形成的矩形面积 = 1 * (6 - (-1) -1) = 6
+
+以高度为5的柱子可形成的矩形面积 = 5 * (4 - 1 - 1) = 10
+
+现在的问题是，如何高效的求出left[]和right[]数组？
+
+首先想到就是暴力法，假设当前处于位置`i`，需要找到其左侧第一个小于 heights[i] 的位置，那就从`i-1`位置开始逐个向左移动。这种方法在极端情况下（给定的heights[]为递减序列时）会达到O(n^2)级别的复杂度。
+
+```java
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        if(n == 0) return 0;
+        
+        int maxArea = 0;
+        // left[i]表示heights[i]左侧第一个小于heights[i]的元素下标
+        // right[i]表示heights[i]右侧第一个小于heights[i]的元素下标
+        int[] left = new int[n];
+        int[] right = new int[n];
+        
+        left[0] = -1;
+        for(int i = 1; i < n; i++) {
+            int t = i-1;
+            while(t >= 0 && heights[t] >= heights[i]) {
+                t--; // 这里可以优化
+            }
+            left[i] = t;
+        }
+        
+        right[n-1] = n;
+        for(int i = n-2; i >= 0; i--) {
+            int t = i+1;
+            while(t < n && heights[t] >= heights[i]) {
+                t++; // 这里可以优化
+            }
+            right[i] = t;
+        }
+        
+        for(int i = 0; i < n; i++) {
+            maxArea = Math.max(maxArea, heights[i]*(right[i]-left[i]-1));
+        }
+        return maxArea;
+    }
+}
+```
+
+
+
+方法2的优化：在预处理left[]和right[]数组的时候，它们的更新可以优化，如下：
+
+假设当前处于 `i` 位置，我们需要确定`left[i] `的值。令 `t=i-1`，假设现在 `heights[t] >= heights[i]`，在while循环内我们其实不需要逐个递减。因为我们忽略了一个事实，就是：heights[]数组在区间`(left[t], t]`的元素值肯定是大于heights[i]的，我们可以直接跨过这部分区间。如果理不清请在回顾left[]数组的定义！因此，在while循环内，我们可以写成`t = left[t]`。 
+
+```java
+left[0] = -1;
+for(int i = 1; i < n; i++) {
+    int t = i-1;
+    while(t >= 0 && heights[t] >= heights[i]) {
+        t = left[t]; // 优化后
+    }
+    left[i] = t;
+}
+
+right[n-1] = n;
+for(int i = n-2; i >= 0; i--) {
+    int t = i+1;
+    while(t < n && heights[t] >= heights[i]) {
+        t = right[t]; // 优化后
+    }
+    right[i] = t;
+}
+```
+
+
+
+
+
+
+
+
+
 
 
 
