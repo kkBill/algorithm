@@ -16,38 +16,35 @@ public class _010_RegularExpressionMatching {
     // 2. 简单的匹配，递归实现
     /*
     public boolean isMatch(String s, String p) {
-        if(p.isEmpty())
-            return s.isEmpty();
-        boolean firstMatch = !s.isEmpty() && s.charAt(0) == p.charAt(0);
+        if (s.length() != p.length()) return false;
+        if (s.length() == 0) return true; // s 和 p 均为空字符串
+        boolean firstMatch = s.charAt(0) == p.charAt(0);
         return firstMatch && isMatch(s.substring(1), p.substring(1));
     }
-
-     */
+    */
 
     // 3. 匹配"."
 //    public boolean isMatch(String s, String p) {
-//        if(p.isEmpty())
-//            return s.isEmpty();
-//        boolean firstMatch = !s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+//        if (s.length() != p.length()) return false;
+//        if (s.length() == 0) return true; // s 和 p 均为空字符串
+//        boolean firstMatch = (s.charAt(0) == p.charAt(0)) || (p.charAt(0) == '.');
 //        return firstMatch && isMatch(s.substring(1), p.substring(1));
 //    }
 
     // 4. 匹配"."和"*"
-    // 时间复杂度和空间复杂度 分析起来比较复杂
-    /*
     public boolean isMatch(String s, String p) {
-        if (p.isEmpty())
-            return s.isEmpty();
-        boolean firstMatch = !s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
-        if (p.length() >= 2 && p.charAt(1) == '*') {
+        // p 为空，当且仅当s也为空的时候，两者是匹配的；除此之外，都不匹配。
+        if(p.length() == 0) return s.length() == 0;
+        // p 不为空
+        boolean firstMatch = s.length() > 0 && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+        if(p.length() >= 2 && p.charAt(1) == '*') {
             // isMatch(s, p.substring(2)) --> 表示 '*' 匹配0个在其之前的那个元素，比如s="aab"和p="c*a*b"这种情况
             // (firstMatch && isMatch(s.substring(1), p)) --> 表示 '*' 匹配1个在其之前的那个元素
             return isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p));
-        } else {
+        }else {
             return firstMatch && isMatch(s.substring(1), p.substring(1));
         }
     }
-    */
 
     // 解法4 是一种暴力递归的解法
     // 这里加上"备忘录"以减少重复计算
@@ -78,12 +75,10 @@ public class _010_RegularExpressionMatching {
 
     /**
      * 动态规划实现
-     *
      */
-    public boolean isMatch(String s, String p) {
-        return false;
-    }
-
+//    public boolean isMatch(String s, String p) {
+//        return false;
+//    }
     public static void main(String[] args) {
         _010_RegularExpressionMatching obj = new _010_RegularExpressionMatching();
         System.out.println(obj.isMatch("ab", ".*"));
@@ -92,5 +87,12 @@ public class _010_RegularExpressionMatching {
         System.out.println(obj.isMatch("aa", "aa"));
         System.out.println(obj.isMatch("aa", "a."));
         System.out.println(obj.isMatch("mississippi", "mis*is*p*."));
+        System.out.println(obj.isMatch("ab", "ab**"));
+
+//        System.out.println(obj.isMatch("ab", "a."));
+//        System.out.println(obj.isMatch("", ""));
+//        System.out.println(obj.isMatch("aa", ""));
+//        System.out.println(obj.isMatch("", "aa"));
+//        System.out.println(obj.isMatch("aaa", "a.b"));
     }
 }

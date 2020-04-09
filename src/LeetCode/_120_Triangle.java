@@ -76,5 +76,6 @@ public class _120_Triangle {
         }
 
         System.out.println(obj.minimumTotal(triangle));
+
     }
 }

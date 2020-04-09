@@ -1,5 +1,8 @@
 package LeetCode;
 
+import javax.swing.*;
+import java.util.Arrays;
+
 public class _085_MaximalRectangle {
 
     /**
@@ -7,6 +10,7 @@ public class _085_MaximalRectangle {
      * 时间复杂度：O(nm)
      * 空间复杂度：O(m)
      */
+    /*
     public int maximalRectangle(char[][] matrix) {
         int rows = matrix.length;
         if (rows == 0) return 0;
@@ -58,6 +62,56 @@ public class _085_MaximalRectangle {
         int maxArea = 0;
         for (int i = 0; i < heights.length; i++) {
             maxArea = Math.max(maxArea, (rightLessMin[i] - leftLessMin[i] - 1) * heights[i]);
+        }
+        return maxArea;
+    }
+     */
+
+    public int maximalRectangle(char[][] matrix) {
+        int m = matrix.length;
+        if(m == 0) return 0;
+        int n = matrix[0].length;
+
+        int[] heights = new int[n];
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Arrays.fill(left, -1);
+        Arrays.fill(right,n);
+        int maxArea = 0;
+
+        for(int i = 0; i < m; i++) {
+            // 计算matrix[0...i]层构成的heights[]数组
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1') heights[j] += 1;
+                else heights[j] = 0;
+            }
+
+            // 更新left[] 和 right[]数组
+            int boundary = -1;
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1') {
+                    left[j] = Math.max(left[j], boundary);
+                }
+                else {
+                    left[j] = -1;
+                    boundary = j;
+                }
+            }
+
+            boundary = n;
+            for(int j = n-1; j >= 0; j--) {
+                if(matrix[i][j] == '1') {
+                    right[j] = Math.min(right[j], boundary);
+                }else {
+                    right[j] = n;
+                    boundary = j;
+                }
+            }
+
+            // 计算面积
+            for(int j = 0; j < n; j++) {
+                maxArea = Math.max(maxArea, heights[j]*(right[j]-left[j]-1));
+            }
         }
         return maxArea;
     }

@@ -1,5 +1,8 @@
 package LeetCode;
 
+import com.sun.corba.se.impl.presentation.rmi.ExceptionHandlerImpl;
+
+import java.util.Arrays;
 import java.util.Stack;
 
 public class _084_LargestRectangleinHistogram {
@@ -103,28 +106,26 @@ public class _084_LargestRectangleinHistogram {
      * 空间复杂度：O(n) 栈空间
      */
     public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int[] copy = new int[n + 1];
+        System.arraycopy(heights, 0, copy, 0, n);
+        copy[n] = 0; // 哨兵
+        heights = copy;
         Stack<Integer> s = new Stack<>();
         int maxArea = 0;
-        int curr = 0;
-        while (curr < heights.length){
-            // 如果此时栈为空，或者当前 curr 的柱高大于栈顶元素对应的柱高，则入栈
-            if(s.isEmpty() || heights[curr] >= heights[s.peek()]){
-                s.push(curr);
-                curr++;
+        int i = 0;
+        while (i <= n) {
+            if (s.isEmpty() || heights[i] >= heights[s.peek()]) {
+                s.push(i);
+                i++;
+            }else {
+                int idx = s.pop();
+                if(s.isEmpty()) {
+                    maxArea = Math.max(maxArea, heights[idx] * i);
+                }else {
+                    maxArea = Math.max(maxArea,heights[idx] * (i - s.peek() - 1));
+                }
             }
-            // 否则将栈顶元素出栈，并计算以栈顶元素对应的柱体的面积
-            else{
-                int p = s.pop();
-                int left = s.isEmpty() ? -1 : s.peek();
-                maxArea = Math.max(maxArea, (curr-left-1)*heights[p]);
-            }
-        }
-        // 最后出现逐层递增(不再下降)的情况
-        // 此时 curr 停留在 heights.length
-        while (!s.isEmpty()){
-            int p = s.pop();
-            int left = s.isEmpty() ? -1 : s.peek();
-            maxArea = Math.max(maxArea, (curr-left-1)*heights[p]);
         }
         return maxArea;
     }
