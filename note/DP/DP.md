@@ -8,7 +8,23 @@
 
 题目列表
 
-1. [5. Longest Palindromic Substring](./0005Longest_Palindromic_Substring.md)
-2. [516. Longest Palindromic Subsequence](./0516Longest_Palindromic_Subsequence.md)
-3. [300. Longest Increasing Subsequence](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
-4. ​
+1. [5. Longest Palindromic Substring](./0005Longest_Palindromic_Substring.md) [五星]
+2. [516. Longest Palindromic Subsequence](./0516Longest_Palindromic_Subsequence.md) [五星]
+3. [300. Longest Increasing Subsequence](https://leetcode-cn.com/problems/longest-increasing-subsequence/) [五星]
+4. [1143. Longest Common Subsequence](https://leetcode-cn.com/problems/longest-common-subsequence/) [五星]
+5. [10. Regular Expression Matching](https://leetcode-cn.com/problems/regular-expression-matching/) [五星+++]
+6. [44. Wildcard Matching](https://leetcode-cn.com/problems/wildcard-matching/) [五星+++]
+7. [53. Maximum Subarray](https://leetcode-cn.com/problems/maximum-subarray/) [五星]
+8. [152. Maximum Product Subarray](https://leetcode-cn.com/problems/maximum-product-subarray/) [五星++]
+9. [62. Unique Paths](https://leetcode-cn.com/problems/unique-paths/)
+10. [63. Unique Paths II](https://leetcode-cn.com/problems/unique-paths-ii/)
+11. [64. Minimum Path Sum](https://leetcode-cn.com/problems/minimum-path-sum/) [和62题是一样的]
+12. [174. Dungeon Game](https://leetcode-cn.com/problems/dungeon-game/) 
+13. [741. Cherry Pickup](https://leetcode-cn.com/problems/cherry-pickup/) [round trip, 暂时放弃...]
+14. [120. Triangle](https://leetcode-cn.com/problems/triangle/) [第64题的变形, 自底向上/自顶向下]
+15. [509. Fibonacci Number](https://leetcode-cn.com/problems/fibonacci-number/)
+16. [70. Climbing Stairs](https://leetcode-cn.com/problems/climbing-stairs/)
+17. [746. Min Cost Climbing Stairs](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+18. ​
+
+
