@@ -69,7 +69,7 @@ class Solution {
 
 
 
-方法2：
+方法2：优化
 
 ```java
 // 时间复杂度：O(m*n)
