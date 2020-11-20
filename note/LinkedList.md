@@ -1,8 +1,34 @@
 # 链表问题汇总
 
 题目列表：
+  - [2. Add Two Numbers](#2-add-two-numbers)
+  - [445. Add Two Numbers II](#445-add-two-numbers-ii)
+  - [19. 删除链表的倒数第N个节点 [简单]](#19-删除链表的倒数第n个节点-简单)
+  - [21. Merge Two Sorted Lists](#21-merge-two-sorted-lists)
+  - [23. Merge k Sorted Lists](#23-merge-k-sorted-lists)
+  - [24. Swap Nodes in Pairs [五星+]](#24-swap-nodes-in-pairs-五星)
+  - [25. Reverse Nodes in k-Group  [五星+++]](#25-reverse-nodes-in-k-group--五星)
+  - [61. Rotate List [四星]](#61-rotate-list-四星)
+  - [83. Remove Duplicates from Sorted List [五星]](#83-remove-duplicates-from-sorted-list-五星)
+  - [82. Remove Duplicates from Sorted List II [四星]](#82-remove-duplicates-from-sorted-list-ii-四星)
+  - [86. Partition List [三星]](#86-partition-list-三星)
+  - [206. Reverse Linked List [3种解法, 递归版不熟悉]](#206-reverse-linked-list-3种解法-递归版不熟悉)
+  - [92. Reverse Linked List II [四星，头插法的应用]](#92-reverse-linked-list-ii-四星头插法的应用)
+  - [109. Convert Sorted List to Binary Search Tree [五星+]](#109-convert-sorted-list-to-binary-search-tree-五星)
+  - [138. Copy List with Random Pointer [四星]](#138-copy-list-with-random-pointer-四星)
+  - [141. Linked List Cycle [二星, 基础]](#141-linked-list-cycle-二星-基础)
+  - [142. Linked List Cycle II [需要给出证明过程]](#142-linked-list-cycle-ii-需要给出证明过程)
+  - [143. Reorder List [四星, 细节要注意]](#143-reorder-list-四星-细节要注意)
+  - [147. Insertion Sort List [链表插入排序, 必须熟练]](#147-insertion-sort-list-链表插入排序-必须熟练)
+  - [148. Sort List [五星, 链表归并排序, bottom-to-up的解法不够熟练]](#148-sort-list-五星-链表归并排序-bottom-to-up的解法不够熟练)
+  - [160. Intersection of Two Linked Lists [四星, 很好的思路]](#160-intersection-of-two-linked-lists-四星-很好的思路)
+  - [203. Remove Linked List Elements [一星]](#203-remove-linked-list-elements-一星)
+  - [237. Delete Node in a Linked List [五星]](#237-delete-node-in-a-linked-list-五星)
+  - [234. Palindrome Linked List [一星, 常规题]](#234-palindrome-linked-list-一星-常规题)
+  - [328. Odd Even Linked List [五星, 第一遍的代码优雅]](#328-odd-even-linked-list-五星-第一遍的代码优雅)
+  - [876. Middle of the Linked List [一星]](#876-middle-of-the-linked-list-一星)
 
-[toc]
+
 
 ---
 
