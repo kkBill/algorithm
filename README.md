@@ -1,25 +1,23 @@
-#### 关于
+### 关于
 
-本仓库包括自己的所有算法练习，主要包括LeetCode，剑指offer，以及常见的算法与数据结构的练习实现。
+本仓库用于基础算法练习，主要包括LeetCode，以及基于不同语言对常见数据结构的练习实现。
 
-[LeetCode List](https://github.com/kkBill/algorithm/blob/master/note/LeetCode.md) （完成240+题）
+当学习一门新语言时，为了熟练其语法，常常用这种语言来写几道题，实现一些相对比较复杂的数据结构。
 
-[剑指offer List](https://github.com/kkBill/algorithm/blob/master/note/%E5%89%91%E6%8C%87Offer.md) （完成0题）
-
-#### 题目分类（注：根据个人做题习惯分类）
+### 题目分类
 
 - [Array](https://github.com/kkBill/algorithm/blob/master/note/Array.md)
 - [String](https://github.com/kkBill/algorithm/blob/master/note/String.md)
-- [Linked List](https://github.com/kkBill/algorithm/blob/master/note/Linked_List.md) （25题，✔）
+- [Linked List](https://github.com/kkBill/algorithm/blob/master/note/LinkedList.md) 
 - [Tree](https://github.com/kkBill/algorithm/blob/master/note/Tree.md)
 - [Heap](https://github.com/kkBill/algorithm/blob/master/note/Heap.md)
 - [Stack](https://github.com/kkBill/algorithm/blob/master/note/Stack.md)
 - [Search](https://github.com/kkBill/algorithm/blob/master/note/Search.md)
-- [Binary Search](https://github.com/kkBill/algorithm/blob/master/note/Binary_Search.md)
-- [Two Pointers](https://github.com/kkBill/algorithm/blob/master/note/Two_Pointers.md)
+- [Binary Search](https://github.com/kkBill/algorithm/blob/master/note/BinarySearch.md)
+- [Two Pointers](https://github.com/kkBill/algorithm/blob/master/note/TwoPointers.md)
 - [Math](https://github.com/kkBill/algorithm/blob/master/note/Math.md)
-- [Bit Manipulation](https://github.com/kkBill/algorithm/blob/master/note/Bit_Manipulation.md)
-- [Divide and Conquer](https://github.com/kkBill/algorithm/blob/master/note/Divide_and_Conquer.md)
+- [Bit Manipulation](https://github.com/kkBill/algorithm/blob/master/note/BitManipulation.md)
+- [Divide and Conquer](https://github.com/kkBill/algorithm/blob/master/note/DivideAndConquer.md)
 - [Backtracking](https://github.com/kkBill/algorithm/blob/master/note/Backtracking.md)
 - [Dynamic Programming](https://github.com/kkBill/algorithm/tree/master/note/DP)
 - [Design](https://github.com/kkBill/algorithm/blob/master/note/Design.md)
