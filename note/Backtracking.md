@@ -1,6 +1,53 @@
 # 回溯问题
+问题列表
+  - [写在前面](#写在前面)
+  - [17. 电话号码的字母组合](#17-电话号码的字母组合)
+  - [22. 括号生成](#22-括号生成)
+  - [37. 解数独](#37-解数独)
+  - [39. 组合总和](#39-组合总和)
+  - [40. 组合总和II](#40-组合总和ii)
+  - [46. 全排列](#46-全排列)
+  - [47. 全排列II](#47-全排列ii)
+  - [77. 组合](#77-组合)
+  - [78. 子集](#78-子集)
+  - [90. 子集II](#90-子集ii)
+  - [79. 单词搜索](#79-单词搜索)
+  - [212. 单词搜索II](#212-单词搜索ii未完成)
+  - [93. 复原IP地址](#93-复原ip地址)
+  - [131. 分割回文串](#131-分割回文串)
+  - [679. 24 点游戏](#679-24-点游戏)
 
-[toc]
+
+---
+
+## 写在前面
+
+关于回溯算法的基本思想，可以看[回溯思想](./回溯思想.md)这篇文章先有个整体的了解。
+
+回溯算法的基本代码模板：
+
+```java
+public void recursion(int level, int param) {
+    // 1. 递归边界
+    if(level > MAX_LEVEL) {
+        // 处理结果
+        return
+    }
+
+    // 2. 处理当前层的逻辑
+    process(level, param)
+
+    // 3. 进入到下一层
+    recursion(level+1, newParam)
+
+    // 4. 如果有必要，在这里进行状态重置或者资源清理(也就是回溯，回到前一个状态)
+    ...
+}
+```
+
+简单的说，回溯可以理解为递归的一种形式。只要是递归，最重要的一点，就是要设置合理的递归出口，否则递归会一直进行下去。在对回溯(递归)类问题进行抽象建模的时候，我认为，最重要的就是如何理解递归的“层次关系”，也就是模板代码中的`level`所代表的的含义。一旦确定了这个“层次关系”，就可以明确递归出口是什么了，然后，我们只要处理当前递归层的逻辑即可。
+
+---
 
 ## [17. 电话号码的字母组合](https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/)
 
@@ -16,7 +63,9 @@
 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
 ```
 
-分析：
+分析：这一题属于求“所有解”的问题。
+
+Java版
 
 ```java
 class Solution {
@@ -54,6 +103,50 @@ class Solution {
 }
 ```
 
+Go版
+
+```go
+func letterCombinations(digits string) []string {
+    if digits == "" {
+        return []string{}
+    }
+	phone := map[string]string {
+		"2":"abc",
+		"3":"def",
+		"4":"ghi",
+		"5":"jkl",
+		"6":"mno",
+		"7":"pqrs",
+		"8":"tuv",
+		"9":"wxyz",
+	}
+
+	var res []string
+	var dfs func(index, n int, path string)
+	dfs = func(index, n int, path string) {
+    // 边界条件
+		if index == n {
+			res = append(res, path)
+			return
+		}
+        
+		digit := string(digits[index])
+		chars, _ := phone[digit]
+		for _, ch := range chars {
+      // 处理当前层逻辑
+			path += string(ch)
+      // 进入下一层
+			dfs(index+1,n,path)
+			// 回溯
+      path = path[:len(path)-1]
+		}
+	}
+
+	dfs(0, len(digits), "")
+	return res
+}
+```
+
 
 
 ## [22. 括号生成](https://leetcode-cn.com/problems/generate-parentheses/)
@@ -71,8 +164,8 @@ class Solution {
      ]
 ```
 
-分析：思路：以下思路摘自[这里](https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution)
-
+分析：摘自[这里](https://leetcode.com/problems/generate-parentheses/discuss/10100/Easy-to-understand-Java-backtracking-solution)
+```
 The goal is to print a string of “(“ ,”)” in certain order. The length of string is 2n. The constraints are that “(“s need to match “)”s.
 
 Without constraints, we just simply print out “(“ or “)” until length hits n. So the base case will be length ==2 n, recursive case is print out “(“ and “)”. The code will look like
@@ -101,6 +194,9 @@ add a “(“
 if(number of “(“s > number of “)”s){
 add a “)"
 }
+```
+
+Java版
 
 ```java
 class Solution {
@@ -128,9 +224,35 @@ class Solution {
 }
 ```
 
+Go版
+
+```go
+func generateParenthesis(n int) []string {
+	var res []string
+	var dfs func(left, right int, s string)
+	// left,right分别表示左括号和右括号的个数
+	dfs = func(left, right int, s string) {
+		// 边界条件
+		if left + right == 2 * n {
+			res = append(res, s)
+			return
+		}
+		// 处理当前层，并进入下一层
+		if left < n {
+			dfs(left+1, right, s + "(")
+		}
+		if left > right {
+			dfs(left, right+1, s + ")")
+		}
+	}
+	dfs(0, 0, "")
+	return res
+}
+```
 
 
-## [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/)[如何定义边界条件值得学习]
+
+## [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/)
 
 编写一个程序，通过已填充的空格来解决数独问题。
 
@@ -141,29 +263,29 @@ class Solution {
 * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
 * 空白格用 '.' 表示。
 
-思路：
+分析：
 
 3*3分块的索引计算如下：假设当前位置是(row, col)，那么**块索引 = (row / 3) * 3 + col / 3**，示意图如下：
 
-![36_boxes_2.png](https://pic.leetcode-cn.com/5a7856c3c2a2185600b7cb5cd3fd50101281af7391a70a63293d82d62873aadd-36_boxes_2.png)
+<img src="https://pic.leetcode-cn.com/5a7856c3c2a2185600b7cb5cd3fd50101281af7391a70a63293d82d62873aadd-36_boxes_2.png" alt="img" style="zoom:30%;" />
 
 基本思路是逐行填写，填写的时候逐一检查1~9是否符合约束条件，如果当前数字d符合条件，就填入当前位置，然后递归填写下一个位置；
 
-这里的**约束条件**指的是：如果数字d放置在(row, col)，那么对于整个矩阵来说，第row行、第col列、以及第 i 块都不能再放置这个数字了（这里的 i = (row / 3) * 3 + col / 3）。
+这里的**约束条件**指的是：如果数字d放置在(row, col)，那么对于整个矩阵来说，第row行、第col列、以及第 i 块都不能再放置这个数字了（这里的 `i = (row / 3) * 3 + col / 3`）。
 
 我们定义三个布尔数组，分别标记数字 d 在行、列、块是否已经使用过
 
-* boolean\[9][10] rowUsed。如果rowUsed\[0][9]==true，表示在第0行，数字9已经使用过了，那么在第0行不能再填入数字9了。
-* boolean\[9][10] colUsed。解释同上。
-* boolean\[9][10] blockUsed。如果blockUsed\[0][9]==true，表示在第0块，数字9已经使用过了，那么在第0块不能再填入数字9了。
+* `boolean[9][10] rowUsed`。如果`rowUsed[0][9]==true`，表示在第0行，数字9已经使用过了，那么在第0行不能再填入数字9了。
+* `boolean[9][10] colUsed`。解释同上。
+* `boolean[9][10] blockUsed`。如果`blockUsed[0][9]==true`，表示在第0块，数字9已经使用过了，那么在第0块不能再填入数字9了。
 
 
 思路：
 
-本题的题解完全符合“回溯思想”摘录中case 1（判断一个问题有没有解）的情况。自己做的时候没有严格遵循模板所以在细节处出错了。
+本题完全符合“回溯思想”摘录中case 1（判断一个问题有没有解）的情况。
 
 
-题解：
+Java版
 
 ```java
 class Solution {
@@ -221,6 +343,127 @@ class Solution {
 }
 ```
 
+Go版（为啥提交有错？）
+
+```go
+var (
+	colUsed [9][10]bool
+	rowUsed [9][10]bool
+	blockUsed [9][10]bool
+)
+func solveSudoku(board [][]byte)  {
+	// 初始化
+	for r := 0; r < 9; r++ {
+		for c := 0; c < 9; c++ {
+			if board[r][c] != '.' {
+				num := int(board[r][c]-'0')
+				rowUsed[r][num] = true
+				colUsed[c][num] = true
+				blockUsed[(r / 3) * 3 + c / 3][num] = true
+			}
+		}
+	}
+	dfs(board, 0, 0, 9, 9)
+}
+
+func dfs(board [][]byte, r, c, rows, cols int) bool {
+	// 边界条件
+	if c == cols {
+		c = 0
+		r++
+		if r == rows {
+			return true
+		}
+	}
+	if board[r][c] != '.' {
+		return dfs(board, r, c+1, rows, cols)
+	}
+	// 处理当前层逻辑
+	block := (r / 3) * 3 + c / 3 // 位置(r，c)所在的区块
+	for i := 1; i <= 9; i++ {
+		if !rowUsed[r][i] && !colUsed[c][i]&& !blockUsed[block][i] {
+			// 处理当前层
+			board[r][c] = byte(i+'0')
+			rowUsed[r][i] = true
+			colUsed[c][i] = true
+			blockUsed[block][i] = true
+			// 进入下一层
+			if dfs(board, r, c+1, rows, cols) {
+				return true
+			}
+			// 回溯
+			board[r][c] = byte('.')
+			rowUsed[r][i] = false
+			colUsed[c][i] = false
+			blockUsed[block][i] = false
+		}
+	}
+	return false
+}
+```
+
+Go版（这样提交就不会有错~）
+
+```go
+func solveSudoku(board [][]byte)  {
+    var (
+        colUsed [9][10]bool
+        rowUsed [9][10]bool
+        blockUsed [9][10]bool
+    )
+    // 初始化
+    for r := 0; r < 9; r++ {
+      for c := 0; c < 9; c++ {
+        if board[r][c] != '.' {
+          num := int(board[r][c]-'0')
+          rowUsed[r][num] = true
+          colUsed[c][num] = true
+          blockUsed[(r / 3) * 3 + c / 3][num] = true
+        }
+      }
+    }
+
+    var dfs func(board [][]byte, r, c, rows, cols int) bool
+
+    dfs = func (board [][]byte, r, c, rows, cols int) bool {
+        // 边界条件
+        if c == cols {
+            c = 0
+            r++
+            if r == rows {
+                return true
+            }
+        }
+        if board[r][c] != '.' {
+            return dfs(board, r, c+1, rows, cols)
+        }
+        // 处理当前层逻辑
+        block := (r / 3) * 3 + c / 3 // 位置(r，c)所在的区块
+        for i := 1; i <= 9; i++ {
+            if !rowUsed[r][i] && !colUsed[c][i]&& !blockUsed[block][i] {
+                // 处理当前层
+                board[r][c] = byte(i+'0')
+                rowUsed[r][i] = true
+                colUsed[c][i] = true
+                blockUsed[block][i] = true
+                // 进入下一层
+                if dfs(board, r, c+1, rows, cols) {
+                    return true
+                }
+                // 回溯
+                board[r][c] = byte('.')
+                rowUsed[r][i] = false
+                colUsed[c][i] = false
+                blockUsed[block][i] = false
+            }
+        }
+        return false
+    }
+
+	dfs(board, 0, 0, 9, 9)
+}
+```
+
 
 
 ## [39. 组合总和](https://leetcode-cn.com/problems/combination-sum/)
@@ -255,6 +498,8 @@ candidates 中的数字可以**无限制重复被选取**。
 
 分析：
 
+Java版
+
 ```java
 class Solution {
     public List<List<Integer>> combinationSum(int[] nums, int target) {
@@ -263,7 +508,8 @@ class Solution {
         return res;
     }
 
-    public void dfs(int[] nums, int start, int target, List<Integer> path, List<List<Integer>> res) {
+    public void dfs(int[] nums, int start, int target, 
+                    List<Integer> path, List<List<Integer>> res) {
         if(target == 0) {
             res.add(new ArrayList<>(path));
             return;
@@ -278,6 +524,38 @@ class Solution {
             target += nums[i];
         }
     }
+}
+```
+
+Go版
+
+```go
+func combinationSum(candidates []int, target int) [][]int {
+	var res [][]int
+	var dfs func(target, begin int, path []int)
+	dfs = func(target, begin int, path []int) {
+		// 边界条件
+		if target == 0 {
+			res = append(res, append([]int{}, path...))
+			return
+		}
+		for i := begin; i < len(candidates); i++ {
+			if target - candidates[i] < 0 {
+				continue
+			}
+			// 处理当前层逻辑
+			path = append(path, candidates[i])
+			target -= candidates[i]
+			// 进入下一层
+			dfs(target, i, path)
+			// 回溯
+			target += candidates[i]
+			path = path[:len(path)-1]
+		}
+	}
+
+	dfs(target,0,[]int{})
+	return res
 }
 ```
 
@@ -314,38 +592,9 @@ candidates 中的每个数字在**每个组合中只能使用一次**。
 ]
 ```
 
-分析：注意，本题与39题的区别在于，==**数组中的元素可能是重复的，并且每个元素只能使用一次**==。
+分析：注意，本题与39题的区别在于，**数组中的元素可能是重复的，并且每个元素只能使用一次**。
 
-### 方法1：通过判断结果集中是否存在去重(偷懒做法)
-
-```java
-class Solution {
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> res = new ArrayList<>();
-        if(candidates.length == 0) return res;
-        Arrays.sort(candidates); 
-        dfs(candidates, 0, target, new ArrayList<>(), res);
-        return res;
-    }
-
-    private void dfs(int[] candidates, int start, int target, List<Integer> path, List<List<Integer>> res) {
-        if(target == 0) {
-            if(!res.contains(path)) { // 通过判断是否存在实现去重
-                res.add(new ArrayList<>(path));
-            }
-            return;
-        }
-
-        for(int i = start; i < candidates.length && target - candidates[i] >= 0; i++) {
-            path.add(candidates[i]);
-            dfs(candidates, i+1, target-candidates[i], path, res);
-            path.remove(path.size()-1);
-        }
-    }
-}
-```
-
-### 方法2：通过剪枝去重
+Java版
 
 ```java
 class Solution {
@@ -357,7 +606,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] candidates, int index, int target, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] candidates, int index, int target, 
+                     List<Integer> path, List<List<Integer>> res) {
         if(target == 0) {
             res.add(new ArrayList<>(path));
             return;
@@ -376,9 +626,95 @@ class Solution {
 }
 ```
 
+Go版（在这个版本实现中，我使用了used []bool来标记一个元素是否被访问过，但这其实没有必要的。在一段时间后重新做这个题目，我把这一题与第47题搞混了）
+
+```go
+func combinationSum2(candidates []int, target int) [][]int {
+	sort.Slice(candidates, func(i, j int) bool {
+		return candidates[i] < candidates[j]
+	})
+	var res [][]int
+	var dfs func(target, begin int, path []int, used []bool)
+	dfs = func(target, begin int, path []int, used []bool) {
+		// 边界条件
+		if target == 0 {
+			res = append(res, append([]int{}, path...))
+			return
+		}
+		// 处理当前层的逻辑
+		for i := begin; i < len(candidates); i++ {
+			// 剪枝
+			if target - candidates[i] < 0 {
+				return
+			}
+			// 去重
+			if i > begin && candidates[i] == candidates[i-1] && !used[i-1] {
+				continue
+			}
+
+			path = append(path, candidates[i])
+			target -= candidates[i]
+			used[i] = true
+			// 进入下一层
+			dfs(target, i+1, path, used)
+			// 回溯
+			target += candidates[i]
+			path = path[:len(path)-1]
+			used[i] = false
+		}
+	}
+
+	dfs(target, 0, []int{}, make([]bool, len(candidates)))
+	return res
+}
+```
+
+Go版（正确版）
+
+```go
+func combinationSum2(candidates []int, target int) [][]int {
+	sort.Slice(candidates, func(i, j int) bool {
+		return candidates[i] < candidates[j]
+	})
+	var res [][]int
+	var dfs func(target, begin int, path []int)
+	dfs = func(target, begin int, path []int) {
+		// 边界条件
+		if target == 0 {
+			res = append(res, append([]int{}, path...))
+			return
+		}
+		// 处理当前层的逻辑
+		for i := begin; i < len(candidates); i++ {
+			// 剪枝
+			if target - candidates[i] < 0 {
+				return
+			}
+			// 去重
+			if i > begin && candidates[i] == candidates[i-1] {
+				continue
+			}
+			// 处理当前层
+			path = append(path, candidates[i])
+			target -= candidates[i]
+			// 进入下一层
+			dfs(target, i+1, path)
+			// 回溯
+			target += candidates[i]
+			path = path[:len(path)-1]
+		}
+	}
+
+	dfs(target, 0, []int{})
+	return res
+}
+```
 
 
-## [46. 全排列](https://leetcode-cn.com/problems/permutations/)(不包含重复数字)
+
+
+
+## [46. 全排列](https://leetcode-cn.com/problems/permutations/)
 
 给定一个 **没有重复** 数字的序列，返回其所有可能的全排列。
 
@@ -395,42 +731,28 @@ class Solution {
 ]
 ```
 
-### 方法1：通过visit数组标记(通用解法)
+**方法1**：通过visit数组标记已经被访问过的元素，个人认为这是比较通用的解法，**每次遍历都从下标0开始**。
 
-code flow like this:
-
+代码流如下：
+```
 path []
-
 i=0: used[0]==false -> path=[1],used[0]=true
-
-​	i=0: used[0]==true -> continue
-
-​	i=1: used[1]==false -> path=[1,2],used[1]=true
-
-​		i=0: used[0]==true -> continue
-
-​		i=1: used[1]==true -> continue
-
-​		i=2: used[2]==false -> path=[1,2,3],used[2]=true  ==> collect [1,2,3]
-
-​		(紧接着发生两次回溯)
-
-​	i=2: used[2]==false -> path=[1,3],used[2]=true
-
-​		i=0: used[0]==true -> continue
-
-​		i=1: used[1]==false -> path=[1,3,2],used[1]=true ==> collect [1,3,2]
-
-​		(紧接着发生一次回溯)
-
-​		i=2: used[2]==true -> continue
-
-​		(紧接着发生两次回溯)
-
+	i=0: used[0]==true -> continue
+	i=1: used[1]==false -> path=[1,2],used[1]=true
+		i=0: used[0]==true -> continue
+		i=1: used[1]==true -> continue
+		i=2: used[2]==false -> path=[1,2,3],used[2]=true  ==> collect [1,2,3]
+		(紧接着发生两次回溯)
+	i=2: used[2]==false -> path=[1,3],used[2]=true
+		i=0: used[0]==true -> continue
+		i=1: used[1]==false -> path=[1,3,2],used[1]=true ==> collect [1,3,2]
+		(紧接着发生一次回溯)
+		i=2: used[2]==true -> continue
+		(紧接着发生两次回溯)
 i=1: 	used[1]==false -> path=[2],used[1]=true
-
-​	...
-
+	...
+```
+Java版
 ```java
 class Solution {
     public List<List<Integer>> permute(int[] nums) {
@@ -441,7 +763,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, boolean[] visited, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] nums, boolean[] visited, 
+                     List<Integer> path, List<List<Integer>> res) {
         if(path.size() == nums.length) {
             res.add(new ArrayList<>(path));
             return;
@@ -459,7 +782,42 @@ class Solution {
 }
 ```
 
-### 方法2：通过交换(不熟)
+Go版
+
+```go
+func permute(nums []int) [][]int {
+	var res [][]int
+	var dfs func(n int, path []int, visit []bool)
+	dfs = func(n int, path []int, visit []bool) {
+		if len(path) == n {
+			//tmp := make([]int, n)
+			//copy(tmp, path)
+			//res = append(res, tmp)
+			res = append(res, append([]int{}, path...))
+			return
+		}
+		for i := 0; i < n; i++ {
+			if visit[i] { // 如果下标为i的元素已经被访问过了
+				continue
+			}
+			// 处理当前层逻辑
+			visit[i] = true
+			path = append(path, nums[i])
+			// 进入下一层（注意，这里的"层数"指的是path内包含的元素个数）
+			dfs(n, path, visit)
+			// 回溯，重置状态
+			path = path[:len(path)-1]
+			visit[i] = false
+		}
+	}
+	dfs(len(nums), []int{}, make([]bool, len(nums)))
+	return res
+}
+```
+
+
+
+**方法2**：通过交换
 
 ```java
 class Solution {
@@ -495,7 +853,7 @@ class Solution {
 
 
 
-## [47. 全排列II](https://leetcode-cn.com/problems/permutations-ii/)(包含重复数字)
+## [47. 全排列II](https://leetcode-cn.com/problems/permutations-ii/)
 
 给定一个可**包含重复数字**的序列，返回所有不重复的全排列。
 
@@ -509,7 +867,9 @@ class Solution {
 ]
 ```
 
-方法1：
+分析：
+
+Java版
 
 ```java
 class Solution {
@@ -521,7 +881,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, boolean[] visited, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] nums, boolean[] visited, 
+                     List<Integer> path, List<List<Integer>> res) {
         if(path.size() == nums.length) {
             res.add(new ArrayList<>(path));
             return;
@@ -540,13 +901,110 @@ class Solution {
 }
 ```
 
+Go版
+
+```go
+func permuteUnique(nums []int) [][]int {
+	var res [][]int
+	var dfs func(n int, path []int, visit []bool)
+	sort.Slice(nums, func(i, j int) bool {return nums[i] < nums[j]})
+
+	dfs = func(n int, path []int, visit []bool) {
+		if len(path) == n {
+			res = append(res, append([]int{}, path...))
+			return
+		}
+		for i := 0; i < n; i++ {
+			if visit[i] { // 如果下标为i对应的元素已经被访问过了
+				continue
+			}
+			if i > 0 && nums[i] == nums[i-1] && !visit[i-1] { // 去重
+				continue
+			}
+			// 处理当前层逻辑
+			visit[i] = true
+			path = append(path, nums[i])
+			// 进入下一层（注意，这里的"层数"指的是path内包含的元素个数）
+			dfs(n, path, visit)
+			// 回溯，重置状态
+			path = path[:len(path)-1]
+			visit[i] = false
+		}
+	}
+	dfs(len(nums), []int{}, make([]bool, len(nums)))
+	return res
+}
+```
 
 
-## [78. 子集](https://leetcode-cn.com/problems/subsets/)(不含重复元素)
+
+## [77. 组合](https://leetcode-cn.com/problems/combinations/)
+
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+```
+示例:
+输入: n = 4, k = 2
+输出:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+分析：
+
+Java版
+
+```
+
+```
+
+Go版
+
+```go
+func combine(n int, k int) [][]int {
+	var res [][]int
+	var dfs func(begin int, path []int)
+	dfs = func(begin int, path []int) {
+		// 边界条件（达到了k个数）
+		if len(path) == k {
+			// 注意不能直接res = append(res, path)，底层是同一个引用
+			res = append(res, append([]int{}, path...))
+			return
+		}
+
+		// 剪枝
+		// n-begin+1 表示从当前位置到最后n的个数，如果len(path)+n-begin+1 都不可能大于等于 k 了
+		// 说明从位置 begin 开始就没必要继续递归下去了
+		if len(path) + n - begin + 1 < k {
+			return
+		}
+
+		for i := begin; i <= n; i++ {
+			// 处理当前层
+			path = append(path, i)
+			// 进入下一层
+			dfs(i+1, path)
+			// 状态恢复，回溯
+			path = path[:len(path)-1]
+		}
+	}
+
+	dfs(1, []int{})
+	return res
+}
+```
+
+
+
+## [78. 子集](https://leetcode-cn.com/problems/subsets/)
 
 给定一组**不含重复元素**的整数数组 *nums*，返回该数组所有可能的子集。
 
-**说明：**解集不能包含重复的子集。
+**说明**：解集不能包含重复的子集。
 
 ```
 输入: nums = [1,2,3]
@@ -565,7 +1023,9 @@ class Solution {
 
 分析：
 
-### 方法1：以子集的长度为基准构建递归树
+**方法1**：以子集的长度为基准构建递归树
+
+Java版
 
 ```java
 class Solution {
@@ -577,7 +1037,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, int start, int subLen, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] nums, int start, int subLen, 
+                     List<Integer> path, List<List<Integer>> res) {
         if(path.size() == subLen) {
             //System.out.println(path.toString());
             res.add(new ArrayList<>(path));
@@ -589,6 +1050,37 @@ class Solution {
             path.remove(path.size()-1);
         }
     }
+}
+```
+
+Go版
+
+```go
+func subsets(nums []int) [][]int {
+	var res [][]int
+	var dfs func(size int, begin int, path []int)
+
+	dfs = func(size int, begin int, path []int) {
+		// 边界
+		if size == len(path) {
+			res = append(res, append([]int{}, path...))
+			//fmt.Printf("%v\n", res)
+			return
+		}
+		for i := begin; i < len(nums); i++ {
+			// 处理当前层逻辑
+			path = append(path, nums[i])
+			// 进入下一层
+			dfs(size, i+1, path)
+			// 回溯
+			path = path[:len(path)-1]
+		}
+	}
+
+	for size := 0; size <= len(nums); size++ {
+		dfs(size, 0, []int{})
+	}
+	return res
 }
 ```
 
@@ -605,7 +1097,9 @@ class Solution {
 [1, 2, 3]
 ```
 
-### 方法2：深度优先递归
+**方法2**：深度优先递归 
+
+Java版
 
 ```java
 class Solution {
@@ -615,8 +1109,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, int start, List<Integer> path, List<List<Integer>> res) {
-        //System.out.println(path.toString());
+    private void dfs(int[] nums, int start, 
+                     List<Integer> path, List<List<Integer>> res) {
         res.add(new ArrayList<>(path));
         for(int i = start; i < nums.length; i++) {
             path.add(nums[i]);
@@ -624,6 +1118,34 @@ class Solution {
             path.remove(path.size()-1);
         }
     }
+}
+```
+
+Go版
+
+```go
+func subsets(nums []int) [][]int {
+	var res [][]int
+	var dfs func(begin int, path []int)
+	dfs = func(begin int, path []int) {
+    // 边界条件(其实，这个函数递归出口不写也可以，因为对于范围外的begin，下面的for loop是进不去的)
+    // 但思考的过程是不能省略的！
+		if begin > len(nums) {
+			return
+		}
+		// 处理当前层的逻辑
+		res = append(res, append([]int{}, path...))
+		for i := begin; i < len(nums); i++ {
+			path = append(path, nums[i])
+			// 进入下一层
+			dfs(i+1, path)
+			// 回溯
+			path = path[:len(path)-1]
+		}
+	}
+
+	dfs(0, []int{})
+	return res
 }
 ```
 
@@ -645,11 +1167,11 @@ i=2: add(3),path=[3]         ==> res=[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
 
 
 
-## [90. 子集II](https://leetcode-cn.com/problems/subsets-ii/)(包含重复元素)
+## [90. 子集II](https://leetcode-cn.com/problems/subsets-ii/)
 
 给定一个**可能包含重复元素**的整数数组 ***nums***，返回该数组所有可能的子集。
 
-**说明：**解集不能包含重复的子集。
+**说明**：解集不能包含重复的子集。
 
 ```
 输入: [1,2,2]
@@ -664,7 +1186,9 @@ i=2: add(3),path=[3]         ==> res=[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
 ]
 ```
 
-### 方法1：根据子集长度构建递归树
+**方法1**：根据子集长度构建递归树
+
+Java版（Go版略）
 
 ```java
 class Solution {
@@ -677,7 +1201,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, int start, int subLen, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] nums, int start, int subLen, 
+                     List<Integer> path, List<List<Integer>> res) {
         if(path.size() == subLen) {
             res.add(new ArrayList<>(path));
             return;
@@ -692,7 +1217,9 @@ class Solution {
 }
 ```
 
-### 方法2：深度优先递归
+**方法2**：深度优先递归
+
+Java版
 
 ```java
 class Solution {
@@ -703,7 +1230,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int[] nums, int start, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(int[] nums, int start, 
+                     List<Integer> path, List<List<Integer>> res) {
         res.add(new ArrayList<>(path));
         for(int i = start; i < nums.length; i++) {
             if(i > start && nums[i] == nums[i-1]) continue;
@@ -715,9 +1243,39 @@ class Solution {
 }
 ```
 
+Go版
+
+```go
+func subsetsWithDup(nums []int) [][]int {
+	var res [][]int
+	var dfs func(begin int, path []int)
+	sort.Slice(nums, func(i, j int) bool {return nums[i] < nums[j]})
+
+	dfs = func(begin int, path []int) {
+		//if begin > len(nums) {
+		//	return
+		//}
+		res = append(res, append([]int{}, path...))
+		//fmt.Printf("%v\n", res)
+		for i := begin; i < len(nums); i++ {
+			// 去重
+			if i > begin && nums[i] == nums[i-1] {
+				continue
+			}
+			path = append(path, nums[i])
+			dfs(i+1, path)
+			path = path[:len(path)-1]
+		}
+	}
+
+	dfs(0, []int{})
+	return res
+}
+```
 
 
-## [79. 单词搜索](https://leetcode-cn.com/problems/word-search/)[局部存在解，全局就有解]
+
+## [79. 单词搜索](https://leetcode-cn.com/problems/word-search/)
 
 给定一个二维网格和一个单词，找出该单词是否存在于网格中。
 
@@ -735,47 +1293,9 @@ board =
 给定 word = "ABCB", 返回 false
 ```
 
-写法1：这种写法，在传入参数前，完全不考虑参数的有效性，比如”是否越界“，”是否已经被访问过“等等，因此在进入dfs()函数的第一步，就是要对这些边界条件进行判断。条件判断的顺序也很有讲究，**首先要判断的就是是否越界，这是最根本的；其次是当前节点是否被访问过**。这两个条件必须放在最前面，且两者的顺序不能变。
+分析：对于上下左右四个方向，我们只要走通一个方向，即可确定最终解。这种模型就是说，只要有**至少一个**局部解存在，全局解就存在。
 
-**另外一个需要关注的点是「最终边界条件」的判定，如果写成`if(start == word.length()) return true;` ，当出现`board=[["a"]], word="a"`的情况时，会出现错误。原因还是如前面所说，”在传入参数前，完全不考虑参数的有效性“，在主函数`exist()`中传入参数时，我们并没有考虑`board[x][y]` 是否与` word.charAt(i)`相等。因此必须写成”条件4“的形式。**
-
-对于上下左右四个方向，我们只要走通一个方向，即可确定最终解。这种模型就是说，==只要有**至少一个**局部解存在，全局解就存在==。
-
-```java
-class Solution {
-    private boolean[][] visited;
-
-    public boolean exist(char[][] board, String word) {
-        visited = new boolean[board.length][board[0].length];
-        for(int x = 0; x < board.length; x++) {
-            for(int y = 0; y < board[0].length; y++) {
-                if(dfs(board, x, y, word, 0))  {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean dfs(char[][] board, int x, int y, String word, int start) {
-        if(x < 0 || x >= board.length || y < 0 || y >= board[0].length) return false; //条件1
-        if(visited[x][y]) return false; //条件2
-        if(board[x][y] != word.charAt(start)) return false; //条件3
-        //if(start == word.length()) return true; // 在这种写法下，这样写是错的，比如 board=[["a"]], word="a"
-        if(start == word.length()-1) return board[x][y] == word.charAt(start); //条件4
-        
-        visited[x][y] = true;
-        boolean flag = dfs(board, x-1, y, word, start+1) || 
-               dfs(board, x+1, y, word, start+1) ||
-               dfs(board, x, y-1, word, start+1) ||
-               dfs(board, x, y+1, word, start+1);
-        visited[x][y] = false; // 回溯
-        return flag;
-    }
-}    
-```
-
-写法2
+Java版
 
 ```java
 class Solution {
@@ -816,6 +1336,66 @@ class Solution {
 }
 ```
 
+Go版：这一版本写的边界条件不够简洁，还是Java版实现的更好。但还是贴出来，以示自己的思维过程。
+
+```go
+func exist(board [][]byte, word string) bool {
+	// 初始化
+	Iaxis := []int{-1, 1, 0, 0}
+	Jaxis := []int{0, 0, -1, 1}
+	ROWS, COLS := len(board), len(board[0])
+	visited := make([][]bool, ROWS)
+	for i := range visited {
+		visited[i] = make([]bool, COLS)
+	}
+
+	// 定义函数
+	var dfs func(index, i, j int, visited [][]bool) bool
+	dfs = func(index, i, j int, visited [][]bool) bool {
+		// 边界条件
+		if index == len(word) {
+			return true
+		}
+		// 处理当前层逻辑
+		if word[index] != board[i][j] {
+			return false
+		}else if index == len(word)-1 {
+			return word[index] == board[i][j]
+		}
+		visited[i][j] = true
+		for k := 0; k < 4; k++ {
+			nextI := i + Iaxis[k]
+			nextJ := j + Jaxis[k]
+			// 判断是否越界
+			if nextI < 0 || nextI >= ROWS || nextJ < 0 || nextJ >= COLS {
+				continue
+			}
+			// 判断是否已经被访问过
+			if visited[nextI][nextJ] {
+				continue
+			}
+
+			// 进入下一层
+			if dfs(index + 1, nextI, nextJ, visited) {
+				return true
+			}
+		}
+		visited[i][j] = false
+		return false
+	}
+
+	// 执行
+	for i := 0; i < ROWS; i++ {
+		for j := 0; j < COLS; j++ {
+			if dfs(0, i, j, visited) {
+				return true
+			}
+		}
+	}
+	return false
+}
+```
+
 
 
 ## [212. 单词搜索II](https://leetcode-cn.com/problems/word-search-ii/)[未完成]
@@ -840,60 +1420,9 @@ class Solution {
 输出: ["0.0.0.0"]
 ```
 
-### 方法1：回溯法
+分析：
 
-```java
-class Solution {
-    public List<String> restoreIpAddresses(String s) {
-        List<String> res = new ArrayList<>();
-        dfs(s, 0, new ArrayList<>(), res);
-        return res;
-    }
-
-    private void dfs(String s, int i, List<String> path, List<String> res) {
-        if(path.size() > 4) return;
-
-        if(i >= s.length() && path.size() == 4) {
-            StringBuilder sb = new StringBuilder();
-            for(int j = 0; j < path.size(); j++) {
-                sb.append(path.get(j));
-                if(j < path.size() - 1) sb.append(".");
-            }
-            res.add(sb.toString());
-            return;
-        }
-        if(i + 1 <= s.length()) {
-            String sub1 = s.substring(i, i+1);
-            int a = Integer.parseInt(sub1);
-            if(a >= 0 && a <= 255 && !(sub1.length() > 1 && sub1.startsWith("0"))) {
-                path.add(sub1);
-                dfs(s, i+1, path, res);
-                path.remove(path.size()-1);//path.remove(sub1))就会出错
-            }
-        }
-        if(i + 2 <= s.length()) {
-            String sub2 = s.substring(i, i+2);
-            int b = Integer.parseInt(sub2);
-            if(b >= 0 && b <= 255 && !(sub2.length() > 1 && sub2.startsWith("0"))) {
-                path.add(sub2);
-                dfs(s, i+2, path, res);
-                path.remove(path.size()-1); 
-            }
-        }
-        if(i + 3 <= s.length()) {
-            String sub3 = s.substring(i, i+3);
-            int c = Integer.parseInt(sub3);
-            if(c >= 0 && c <= 255 && !(sub3.length() > 1 && sub3.startsWith("0"))) {
-                path.add(sub3);
-                dfs(s, i+3, path, res);
-                path.remove(path.size()-1);
-            }
-        }
-    }
-}
-```
-
-代码精简版
+Java版
 
 ```java
 class Solution {
@@ -936,36 +1465,46 @@ class Solution {
 }
 ```
 
-### 方法2：暴力法也可以哦~
+Go版
 
-```java
-class Solution {
-	public List<String> restoreIpAddresses(String s) {
-        List<String> result = new ArrayList<>();
-        int len = s.length();
-        for (int i = 1; i <= 3; i++) {
-            for (int j = i + 1; j <= i + 4; j++) {
-                for (int k = j + 1; k <= j + 4; k++) {
-                    if (k < len) {
-                        String tmp1 = s.substring(0, i);
-                        String tmp2 = s.substring(i, j);
-                        String tmp3 = s.substring(j, k);
-                        String tmp4 = s.substring(k);
-                        if (check(tmp1) && check(tmp2) && check(tmp3) && check(tmp4)) {
-                            result.add(tmp1 + "." + tmp2 + "." + tmp3 + "." + tmp4);
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-    private boolean check(String s) {
-        if (s.length() > 3 || (s.length() != 1 && s.charAt(0) == '0') 
-            || Integer.parseInt(s) > 255)
-            return false;
-        return true;
-    }
+```go
+func restoreIpAddresses(s string) []string {
+	var res []string
+	var dfs func(begin int, path []string)
+	dfs = func(begin int, path []string) {
+		// 边界条件
+    if len(path) > 4 { // 注意这个条件
+			return
+		}
+		if begin == len(s) && len(path) == 4 {
+			res = append(res, strings.Join(path, "."))
+			return
+		}
+		for i := begin; i < len(s) && i < begin+3; i++ {
+			sub := s[begin : i+1]
+			// 判断这个分段是否合理
+			// case 1: 当首字母为0时，当且仅当"0"是合法的，而"023"这样的是不合法的
+			if sub[0] == '0' && len(sub) > 1 {
+				continue
+			}
+			// case 2: 分段的大小在0~255之间
+			val, err := strconv.Atoi(sub)
+			if err != nil {
+				panic(err)
+			}
+			if val < 0 || val > 255 {
+				continue
+			}
+			//
+			path = append(path, sub)
+      // 进入下一层
+			dfs(i+1, path)
+      // 回溯
+			path = path[:len(path)-1]
+		}
+	}
+	dfs(0, []string{})
+	return res
 }
 ```
 
@@ -985,6 +1524,8 @@ class Solution {
 ```
 
 分析：
+
+Java版
 
 ```java
 class Solution {
@@ -1057,9 +1598,49 @@ class Solution {
 }
 ```
 
+Go版
+
+```go
+func partition(s string) [][]string {
+	var res [][]string
+	var dfs func(begin int, path []string)
+	var isPalindrome func(s string) bool
+	isPalindrome = func(s string) bool {
+		l, r := 0, len(s)-1
+		for l < r {
+			if s[l] != s[r] {
+				return false
+			}
+			l++
+			r--
+		}
+		return true
+	}
+	dfs = func(begin int, path []string) {
+		// 边界条件
+		if begin == len(s) && len(path) > 0 {
+			res = append(res, append([]string{}, path...))
+			return
+		}
+		//
+		for i := begin; i < len(s); i++ {
+			sub := s[begin:i+1]
+			if !isPalindrome(sub) {
+				continue
+			}
+			path = append(path, sub)
+			dfs(i+1, path)
+			path = path[:len(path)-1]
+		}
+	}
+	dfs(0, []string{})
+	return res
+}
+```
 
 
-## [679. 24 点游戏](https://leetcode-cn.com/problems/24-game/)[五星]
+
+## [679. 24 点游戏](https://leetcode-cn.com/problems/24-game/)
 
 你有 4 张写有 1 到 9 数字的牌。你需要判断是否能通过 `*`，`/`，`+`，`-`，`(`，`)` 的运算得到 24。
 
@@ -1140,7 +1721,8 @@ class Solution {
                     }else if(op == SUB) {
                         tmp.add(a-b);
                     }else if(op == DIV) {
-                        if(Math.abs(b) <= eps) continue; // 当b小于eps时，认为b==0，因此不能作为被除数
+                        // 当b小于eps时，认为b==0，因此不能作为被除数
+                        if(Math.abs(b) <= eps) continue; 
                         tmp.add(a/b);
                     }
                     if(dfs(tmp)) return true;
@@ -1280,7 +1862,8 @@ public class _697_24Game {
                         tmp_nums.add(a-b);
                         tmp_path.add("("+as+"-"+bs+")");
                     }else if(op == DIV) {
-                        if(Math.abs(b) <= eps) continue; // 当b小于eps时，认为b==0，因此不能作为被除数
+                        // 当b小于eps时，认为b==0，因此不能作为被除数
+                        if(Math.abs(b) <= eps) continue; 
                         tmp_nums.add(a/b);
                         tmp_path.add("("+as+"/"+bs+")");
                     }
@@ -1299,4 +1882,3 @@ public class _697_24Game {
     }
 }
 ```
-
